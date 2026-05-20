@@ -1,6 +1,10 @@
 # Change Log
 
-## 3.9.0
+## 3.10.0
+- Added support for OR selection groups in custom bet probability calculations via the new `ICalculateRequestBuilder` interface (accessible through `ICustomBetManagerV2`), allowing customers to build requests where any one of a set of selections satisfies a leg.
+- Fixed an issue with reloading variant market description on failure when `Throw` exception handling strategy is configured (e.g. when market outcomes cached in the SDK do not match outcomes coming in the feed message). SDK is now able to properly invalidate and re-fetch the market.
+
+## 2026-05-04 3.9.0
 - Added support for prebuilt bet recommendations via the new `ICustomBetManagerV2` interface, providing event-based bet suggestions without breaking existing `ICustomBetManager` usage.
 
 ## 2026-03-02 3.8.0

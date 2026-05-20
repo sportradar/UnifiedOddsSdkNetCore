@@ -215,7 +215,7 @@ public class ConfigurationBuilderWithSectionWithCustomSectionTests : Configurati
         const int port = 1234;
         const bool useSsl = false;
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' environment='Custom' host='{CustomRabbitHost}' port='{port}' useSsl='{useSsl}' />".ToSection();
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
                     .SelectCustom()
                     .LoadFromConfigFile()
@@ -257,7 +257,7 @@ public class ConfigurationBuilderWithSectionWithCustomSectionTests : Configurati
         const string accessToken = "CustomAccessToken";
         const bool useApiSsl = false;
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' environment='Custom' apiHost='{CustomApiHost}' apiUseSsl='{useApiSsl}' />".ToSection();
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
                     .SelectCustom()
                     .LoadFromConfigFile()
@@ -301,7 +301,7 @@ public class ConfigurationBuilderWithSectionWithCustomSectionTests : Configurati
         const bool useSsl = false;
         const bool useApiSsl = false;
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' environment='Custom' host='{CustomRabbitHost}' port='{port}' useSsl='{useSsl}' apiHost='{CustomApiHost}' apiUseSsl='{useApiSsl}' />".ToSection();
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
                     .SelectCustom()
                     .LoadFromConfigFile()
@@ -343,8 +343,8 @@ public class ConfigurationBuilderWithSectionWithCustomSectionTests : Configurati
         const string accessToken = "CustomAccessToken";
         const bool useApiSsl = false;
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' environment='Custom' apiHost='{CustomApiHost}' apiUseSsl='{useApiSsl}' />".ToSection();
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider()).BuildFromConfigFile();
-        //var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider()).SetAccessTokenFromConfigFile().SelectCustom().LoadFromConfigFile().Build();
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider()).BuildFromConfigFile();
+        //var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider()).SetAccessTokenFromConfigFile().SelectCustom().LoadFromConfigFile().Build();
 
         Assert.Equal(SdkEnvironment.Custom, config.Environment);
 

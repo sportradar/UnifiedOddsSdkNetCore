@@ -273,7 +273,7 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
         const string accessToken = "AccessToken";
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' />".ToSection();
 
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
                     .SelectEnvironment(SdkEnvironment.GlobalProduction)
                     .LoadFromConfigFile()
@@ -314,7 +314,7 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
         const string accessToken = "AccessToken";
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' />".ToSection();
 
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
                     .SelectEnvironment(SdkEnvironment.GlobalIntegration)
                     .LoadFromConfigFile()
@@ -355,7 +355,7 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
         const string accessToken = "AccessToken";
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' />".ToSection();
 
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
                     .SelectEnvironment(SdkEnvironment.Replay)
                     .LoadFromConfigFile()

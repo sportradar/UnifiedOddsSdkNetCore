@@ -44,7 +44,7 @@ public static class UofConfigurations
 
     public static IUofConfiguration GetUofConfiguration(CultureInfo defaultLanguage, List<CultureInfo> desiredLanguages = null, int nodeId = 1, ExceptionHandlingStrategy exceptionHandlingStrategy = ExceptionHandlingStrategy.Throw)
     {
-        var builder = new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var builder = new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
             .SetAccessToken("AnyToken")
             .SelectCustom()
             .SetNodeId(nodeId)

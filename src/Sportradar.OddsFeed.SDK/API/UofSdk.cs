@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -341,9 +342,23 @@ namespace Sportradar.OddsFeed.SDK.Api
         /// Constructs a <see cref="IUofConfiguration"/> instance from provided information
         /// </summary>
         /// <returns>A <see cref="IUofConfiguration"/> instance created from provided information</returns>
+        [ExcludeFromCodeCoverage]
         public static ITokenSetter GetConfigurationBuilder()
         {
-            return new TokenSetter(new UofConfigurationSectionProvider(), null, null);
+            return new TokenSetter(
+                new UofConfigurationSectionProvider(),
+                config =>
+                {
+                    var services = new ServiceCollection();
+                    services.AddUofSdkServices(config);
+                    return services.BuildServiceProvider().GetRequiredService<IBookmakerDetailsProvider>();
+                },
+                config =>
+                {
+                    var services = new ServiceCollection();
+                    services.AddUofSdkServices(config);
+                    return services.BuildServiceProvider().GetRequiredService<IProducersProvider>();
+                });
         }
 
         /// <summary>

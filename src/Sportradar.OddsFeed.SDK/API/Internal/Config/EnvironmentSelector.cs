@@ -15,9 +15,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
     {
         private readonly IUofConfigurationSectionProvider _sectionProvider;
 
-        private readonly IBookmakerDetailsProvider _bookmakerDetailsProvider;
+        private readonly Func<IUofConfiguration, IBookmakerDetailsProvider> _bookmakerDetailsProviderFactory;
 
-        private readonly IProducersProvider _producersProvider;
+        private readonly Func<IUofConfiguration, IProducersProvider> _producersProviderFactory;
 
         private readonly UofConfiguration _configuration;
 
@@ -26,21 +26,20 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// </summary>
         /// <param name="configuration">Current <see cref="UofConfiguration"/></param>
         /// <param name="sectionProvider">A <see cref="IUofConfigurationSectionProvider"/> used to access <see cref="IUofConfigurationSection"/></param>
-        /// <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
-        /// <param name="producersProvider">Provider for available producers</param>
-        // ReSharper disable once TooManyDependencies
+        /// <param name="bookmakerDetailsProviderFactory">Factory to create the bookmaker details provider</param>
+        /// <param name="producersProviderFactory">Factory to create the producers provider</param>
         internal EnvironmentSelector(UofConfiguration configuration,
                                      IUofConfigurationSectionProvider sectionProvider,
-                                     IBookmakerDetailsProvider bookmakerDetailsProvider,
-                                     IProducersProvider producersProvider)
+                                     Func<IUofConfiguration, IBookmakerDetailsProvider> bookmakerDetailsProviderFactory,
+                                     Func<IUofConfiguration, IProducersProvider> producersProviderFactory)
         {
             Guard.Argument(configuration, nameof(configuration)).NotNull();
             Guard.Argument(sectionProvider, nameof(sectionProvider)).NotNull();
 
             _configuration = configuration;
             _sectionProvider = sectionProvider;
-            _bookmakerDetailsProvider = bookmakerDetailsProvider;
-            _producersProvider = producersProvider;
+            _bookmakerDetailsProviderFactory = bookmakerDetailsProviderFactory;
+            _producersProviderFactory = producersProviderFactory;
         }
 
         public IConfigurationBuilder SelectReplay()
@@ -50,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         public ICustomConfigurationBuilder SelectCustom()
         {
-            return new CustomConfigurationBuilder(_configuration, _sectionProvider, _bookmakerDetailsProvider, _producersProvider);
+            return new CustomConfigurationBuilder(_configuration, _sectionProvider, _bookmakerDetailsProviderFactory, _producersProviderFactory);
         }
 
         public IConfigurationBuilder SelectEnvironment(SdkEnvironment ufEnvironment)
@@ -59,7 +58,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             {
                 throw new InvalidOperationException("Use SelectCustom() for custom environment.");
             }
-            return new ConfigurationBuilder(_configuration, _sectionProvider, ufEnvironment, _bookmakerDetailsProvider, _producersProvider);
+            return new ConfigurationBuilder(_configuration, _sectionProvider, ufEnvironment, _bookmakerDetailsProviderFactory, _producersProviderFactory);
         }
 
         public IConfigurationBuilder SelectEnvironmentFromConfigFile()

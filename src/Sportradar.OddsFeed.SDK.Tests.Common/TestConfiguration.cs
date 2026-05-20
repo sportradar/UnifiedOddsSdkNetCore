@@ -12,7 +12,7 @@ internal static class TestConfiguration
 {
     public static IUofConfiguration GetConfig(BookmakerDetailsDto dto = null, ExceptionHandlingStrategy exceptionHandlingStrategy = ExceptionHandlingStrategy.Throw)
     {
-        var configBuilder = new TokenSetter(new TestSectionProvider(TestSection.GetDefaultSection()), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var configBuilder = new TokenSetter(new TestSectionProvider(TestSection.GetDefaultSection()), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                            .SetAccessTokenFromConfigFile()
                            .SelectCustom()
                            .SetApiHost("localhost")

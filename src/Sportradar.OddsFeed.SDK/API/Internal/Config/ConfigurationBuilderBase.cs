@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Microsoft.Extensions.DependencyInjection;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
@@ -23,9 +22,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// </summary>
         internal readonly IUofConfigurationSectionProvider SectionProvider;
 
-        internal IBookmakerDetailsProvider BookmakerDetailsProvider;
+        private readonly Func<IUofConfiguration, IBookmakerDetailsProvider> _bookmakerDetailsProviderFactory;
 
-        internal IProducersProvider ProducersProvider;
+        private readonly Func<IUofConfiguration, IProducersProvider> _producersProviderFactory;
 
         internal readonly UofConfiguration UofConfiguration;
 
@@ -34,17 +33,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// </summary>
         /// <param name="configuration">Current <see cref="UofConfiguration"/></param>
         /// <param name="sectionProvider">A <see cref="IUofConfigurationSectionProvider"/> used to access <see cref="IUofConfigurationSection"/></param>
-        /// <param name="bookmakerDetailsProvider">Provider for bookmaker details (can be null)</param>
-        /// <param name="producersProvider">Provider for available producers</param>
+        /// <param name="bookmakerDetailsProviderFactory">Factory invoked to obtain a <see cref="IBookmakerDetailsProvider"/></param>
+        /// <param name="producersProviderFactory">Factory invoked to obtain a <see cref="IProducersProvider"/></param>
         private protected ConfigurationBuilderBase(UofConfiguration configuration,
                                                    IUofConfigurationSectionProvider sectionProvider,
-                                                   IBookmakerDetailsProvider bookmakerDetailsProvider,
-                                                   IProducersProvider producersProvider)
+                                                   Func<IUofConfiguration, IBookmakerDetailsProvider> bookmakerDetailsProviderFactory,
+                                                   Func<IUofConfiguration, IProducersProvider> producersProviderFactory)
         {
             UofConfiguration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             SectionProvider = sectionProvider ?? throw new ArgumentNullException(nameof(sectionProvider));
-            BookmakerDetailsProvider = bookmakerDetailsProvider;
-            ProducersProvider = producersProvider;
+            _bookmakerDetailsProviderFactory = bookmakerDetailsProviderFactory;
+            _producersProviderFactory = producersProviderFactory;
         }
 
         /// <summary>
@@ -143,29 +142,16 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         protected void FetchBookmakerDetails()
         {
-            if (BookmakerDetailsProvider == null)
-            {
-                var services = new ServiceCollection();
-                services.AddUofSdkServices(UofConfiguration);
-                var serviceProvider = services.BuildServiceProvider();
-                BookmakerDetailsProvider = serviceProvider.GetRequiredService<IBookmakerDetailsProvider>();
-            }
-
-            BookmakerDetailsProvider.LoadBookmakerDetails(UofConfiguration);
+            var bookmakerDetailsProvider = _bookmakerDetailsProviderFactory(UofConfiguration);
+            bookmakerDetailsProvider.LoadBookmakerDetails(UofConfiguration);
         }
 
         protected void FetchProducers()
         {
-            if (ProducersProvider == null)
-            {
-                var services = new ServiceCollection();
-                services.AddUofSdkServices(UofConfiguration);
-                var serviceProvider = services.BuildServiceProvider();
-                ProducersProvider = serviceProvider.GetRequiredService<IProducersProvider>();
-            }
-
-            var producers = ProducersProvider.GetProducers();
+            var producersProvider = _producersProviderFactory(UofConfiguration);
+            var producers = producersProvider.GetProducers();
             ((UofProducerConfiguration)UofConfiguration.Producer).Producers = producers.ToList();
+
         }
     }
 }

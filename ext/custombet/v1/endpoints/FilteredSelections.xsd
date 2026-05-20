@@ -12,14 +12,21 @@
 
   <xs:complexType name="FilterSelectionsType">
     <xs:sequence>
-      <xs:element name="selection" type="FilterSelectionType" maxOccurs="10"/>
+      <xs:element name="selection" type="FilterSelectionType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FilterOrSelectionsType">
+    <xs:sequence>
+      <xs:element name="market" type="FilterSelectionMarketType" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="FilterSelectionType">
-    <xs:sequence>
-      <xs:element name="market" type="FilterSelectionMarketType" maxOccurs="10"/>
-    </xs:sequence>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="market" type="FilterSelectionMarketType"/>
+      <xs:element name="orSelections" type="FilterOrSelectionsType"/>
+    </xs:choice>
     <xs:attribute name="id" type="xs:string" use="required">
       <xs:annotation>
         <xs:documentation>Valid event URN, such as sr:match:123456</xs:documentation>
@@ -48,9 +55,8 @@
     </xs:attribute>
     <xs:attribute name="odds" type="xs:double">
       <xs:annotation>
-        <xs:documentation>Odds for the selection, in EU odds format</xs:documentation>
+        <xs:documentation>Odds for the selection</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
 </xs:schema>
-

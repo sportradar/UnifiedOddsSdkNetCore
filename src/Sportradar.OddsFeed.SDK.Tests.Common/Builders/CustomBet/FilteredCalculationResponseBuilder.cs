@@ -1,6 +1,8 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 
@@ -12,6 +14,7 @@ public class FilteredCalculationResponseBuilder
     private double _probability;
     private bool? _harmonization;
     private Urn _eventId;
+    private readonly List<FilteredMarketType> _markets = new();
 
     public static FilteredCalculationResponseBuilder Create()
     {
@@ -42,9 +45,31 @@ public class FilteredCalculationResponseBuilder
         return this;
     }
 
+    public FilteredCalculationResponseBuilder AddMarket(int marketId, string specifiers, bool conflict, params (string outcomeId, bool outcomeConflict)[] outcomes)
+    {
+        _markets.Add(new FilteredMarketType
+        {
+            id = marketId,
+            specifiers = specifiers,
+            conflict = conflict,
+            conflictSpecified = true,
+            outcome = outcomes.Select(o => new FilteredOutcomeType
+            {
+                id = o.outcomeId,
+                conflict = o.outcomeConflict,
+                conflictSpecified = true
+            }).ToArray()
+        });
+        return this;
+    }
+
     public FilteredCalculationResponseType Build()
     {
-        var filteredEventType = new FilteredEventType { id = _eventId.ToString(), markets = [] };
+        var filteredEventType = new FilteredEventType
+        {
+            id = _eventId.ToString(),
+            markets = _markets.ToArray()
+        };
         var filteredCalculationResultType = new FilteredCalculationResultType
         {
             odds = _odds,

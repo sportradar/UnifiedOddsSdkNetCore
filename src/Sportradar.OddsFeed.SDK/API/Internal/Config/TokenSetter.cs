@@ -18,8 +18,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// </summary>
         private readonly IUofConfigurationSectionProvider _uofConfigurationSectionProvider;
 
-        private readonly IBookmakerDetailsProvider _bookmakerDetailsProvider;
-        private readonly IProducersProvider _producersProvider;
+        private readonly Func<IUofConfiguration, IBookmakerDetailsProvider> _bookmakerDetailsProviderFactory;
+        private readonly Func<IUofConfiguration, IProducersProvider> _producersProviderFactory;
 
         private readonly UofConfiguration _configuration;
 
@@ -27,15 +27,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// Initializes a new instance of the <see cref="TokenSetter"/> class
         /// </summary>
         /// <param name="uofConfigurationSectionProvider">A <see cref="IUofConfigurationSectionProvider"/> instance used to access <see cref="IUofConfigurationSection"/></param>
-        /// <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
-        /// <param name="producersProvider">Provider for available producers</param>
-        internal TokenSetter(IUofConfigurationSectionProvider uofConfigurationSectionProvider, IBookmakerDetailsProvider bookmakerDetailsProvider, IProducersProvider producersProvider)
+        /// <param name="bookmakerDetailsProviderFactory">Factory to create the bookmaker details provider</param>
+        /// <param name="producersProviderFactory">Factory to create the producers provider</param>
+        internal TokenSetter(IUofConfigurationSectionProvider uofConfigurationSectionProvider,
+                             Func<IUofConfiguration, IBookmakerDetailsProvider> bookmakerDetailsProviderFactory,
+                             Func<IUofConfiguration, IProducersProvider> producersProviderFactory)
         {
             Guard.Argument(uofConfigurationSectionProvider, nameof(uofConfigurationSectionProvider)).NotNull();
 
             _uofConfigurationSectionProvider = uofConfigurationSectionProvider;
-            _bookmakerDetailsProvider = bookmakerDetailsProvider;
-            _producersProvider = producersProvider;
+            _bookmakerDetailsProviderFactory = bookmakerDetailsProviderFactory;
+            _producersProviderFactory = producersProviderFactory;
             _configuration = new UofConfiguration(_uofConfigurationSectionProvider);
         }
 
@@ -52,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                 throw new ArgumentException("Value cannot be a null reference or empty string", nameof(accessToken));
             }
             _configuration.AccessToken = accessToken;
-            return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider);
+            return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProviderFactory, _producersProviderFactory);
         }
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
             _configuration.UpdateFromAppConfigSection(true);
 
-            return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider)
+            return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProviderFactory, _producersProviderFactory)
                   .SelectEnvironment(_configuration.Environment)
                   .Build();
         }

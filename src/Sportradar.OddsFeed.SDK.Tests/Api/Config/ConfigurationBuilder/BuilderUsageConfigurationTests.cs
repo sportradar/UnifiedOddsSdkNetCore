@@ -19,7 +19,7 @@ public class BuilderUsageConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay)]
     public void WhenBuiltForPredefinedEnvironmentThenUsageHasDefaultValues(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -31,7 +31,7 @@ public class BuilderUsageConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForCustomEnvironmentThenUsageHasDefaultValues()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -55,7 +55,7 @@ public class BuilderUsageConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay, false)]
     public void WhenUsageExportEnabledSetForPredefinedEnvironmentThenUsageReflectsFlag(SdkEnvironment environment, bool usageExportEnabled)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -70,7 +70,7 @@ public class BuilderUsageConfigurationTests : ConfigurationBuilderSetup
     [InlineData(false)]
     public void WhenUsageExportEnabledSetForCustomEnvironmentThenUsageReflectsFlag(bool usageExportEnabled)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)

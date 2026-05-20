@@ -47,6 +47,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             _bookmakerId = config.BookmakerDetails.BookmakerId;
         }
 
+        public ICalculateRequestBuilder GetCalculateRequestBuilder()
+        {
+            return new CalculateRequestBuilder();
+        }
+
         public Task<IAvailableSelections> GetAvailableSelectionsAsync(Urn eventId)
         {
             if (eventId == null)
@@ -83,16 +88,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             return null;
         }
 
-        public Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
-        {
-            if (selections == null)
-            {
-                throw new ArgumentNullException(nameof(selections));
-            }
-
-            return CalculateProbabilityInternalAsync(selections.ToList());
-        }
-
         public async Task<IPrebuiltBets> GetPrebuiltBets(IPrebuiltBetsRequest prebuiltBetsRequest)
         {
             try
@@ -120,13 +115,45 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             return null;
         }
 
-        private async Task<ICalculation> CalculateProbabilityInternalAsync(IReadOnlyCollection<ISelection> selections)
+        public Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
+        {
+            if (selections == null)
+            {
+                throw new ArgumentNullException(nameof(selections));
+            }
+
+            var builder = new CalculateRequestBuilder();
+            foreach (var selection in selections)
+            {
+                builder.AndSelection(selection);
+            }
+
+            return CalculateProbabilityInternalAsync(builder.Build());
+        }
+
+        public Task<ICalculation> CalculateProbabilityAsync(ICalculateRequestBuilder request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var concreteBuilder = request as CalculateRequestBuilder;
+            if (concreteBuilder == null)
+            {
+                throw new ArgumentException($"The provided {nameof(request)} must be an instance created by {nameof(GetCalculateRequestBuilder)}.", nameof(request));
+            }
+
+            return CalculateProbabilityInternalAsync(concreteBuilder.Build());
+        }
+
+        private async Task<ICalculation> CalculateProbabilityInternalAsync(CalculateRequest request)
         {
             try
             {
-                var selectionStr = string.Join("|", selections);
+                var selectionStr = string.Join("|", request.Items.SelectMany(i => i.Selections));
                 _clientLog.LogInformation("Invoking CustomBetManager.CalculateProbability({Selections})", selectionStr);
-                return await _dataRouterManager.CalculateProbabilityAsync(selections).ConfigureAwait(false);
+                return await _dataRouterManager.CalculateProbabilityAsync(request).ConfigureAwait(false);
             }
             catch (CommunicationException ce)
             {
@@ -155,16 +182,38 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                 throw new ArgumentNullException(nameof(selections));
             }
 
-            return CalculateProbabilityFilterInternalAsync(selections.ToList());
+            var builder = new CalculateRequestBuilder();
+            foreach (var selection in selections)
+            {
+                builder.AndSelection(selection);
+            }
+
+            return CalculateProbabilityFilterInternalAsync(builder.Build());
         }
 
-        private async Task<ICalculationFilter> CalculateProbabilityFilterInternalAsync(IReadOnlyCollection<ISelection> selections)
+        public Task<ICalculationFilter> CalculateProbabilityFilterAsync(ICalculateRequestBuilder request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var concreteBuilder = request as CalculateRequestBuilder;
+            if (concreteBuilder == null)
+            {
+                throw new ArgumentException($"The provided {nameof(request)} must be an instance created by {nameof(GetCalculateRequestBuilder)}.", nameof(request));
+            }
+
+            return CalculateProbabilityFilterInternalAsync(concreteBuilder.Build());
+        }
+
+        private async Task<ICalculationFilter> CalculateProbabilityFilterInternalAsync(CalculateRequest request)
         {
             try
             {
-                var selectionStr = string.Join("|", selections);
+                var selectionStr = string.Join("|", request.Items.SelectMany(i => i.Selections));
                 _clientLog.LogInformation("Invoking CustomBetManager.CalculateProbabilityFilter({Selections})", selectionStr);
-                return await _dataRouterManager.CalculateProbabilityFilteredAsync(selections).ConfigureAwait(false);
+                return await _dataRouterManager.CalculateProbabilityFilteredAsync(request).ConfigureAwait(false);
             }
             catch (CommunicationException ce)
             {

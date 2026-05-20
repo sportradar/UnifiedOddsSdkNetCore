@@ -20,7 +20,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay)]
     public void WhenBuiltForPredefinedEnvironmentThenCacheConfigurationHasDefaultValues(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -32,7 +32,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForCustomEnvironmentThenCacheConfigurationHasDefaultValues()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -56,7 +56,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay, false)]
     public void WhenIgnoreBetPalTimelineSportEventStatusSetForPredefinedEnvironmentThenCacheConfigurationReflectsFlag(SdkEnvironment environment, bool ignoreValue)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -71,7 +71,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [InlineData(false)]
     public void WhenIgnoreBetPalTimelineSportEventStatusSetForCustomEnvironmentThenCacheConfigurationReflectsFlag(bool ignoreValue)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -103,7 +103,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var timeout = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -121,7 +121,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var timeout = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -153,7 +153,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -171,7 +171,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -203,7 +203,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -221,7 +221,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -253,7 +253,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -271,7 +271,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -303,7 +303,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromMinutes(timeoutMinutes);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -321,7 +321,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromMinutes(timeoutMinutes);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)

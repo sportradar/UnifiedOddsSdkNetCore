@@ -116,7 +116,7 @@ public class UofConfigurationTests
     [Fact]
     public void ConfigCanLoadMoreThenOnce()
     {
-        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                                       .SetAccessToken(TestData.AccessToken)
                                       .SelectEnvironment(SdkEnvironment.Integration)
                                       .SetDefaultLanguage(ScheduleData.CultureEn)
@@ -132,7 +132,7 @@ public class UofConfigurationTests
     public void ValuesForwardedFromSectionHaveCorrectValues()
     {
         var customSection = TestSection.GetCustomSection();
-        var config = new TokenSetter(new TestSectionProvider(customSection), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(customSection), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
                     .SelectCustom()
                     .LoadFromConfigFile()
@@ -166,7 +166,7 @@ public class UofConfigurationTests
     [InlineData(SdkEnvironment.GlobalProduction)]
     public void SettingEnvironmentHasCorrectValue(SdkEnvironment environment)
     {
-        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                                       .SetAccessToken(TestData.AccessToken)
                                       .SelectEnvironment(environment)
                                       .SetDefaultLanguage(TestData.Culture)
@@ -185,7 +185,7 @@ public class UofConfigurationTests
     public void SettingReplayEnvironmentHasCorrectValue()
     {
         const SdkEnvironment environment = SdkEnvironment.Replay;
-        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                                       .SetAccessToken(TestData.AccessToken)
                                       .SelectEnvironment(environment)
                                       .SetDefaultLanguage(TestData.Culture)
@@ -204,7 +204,7 @@ public class UofConfigurationTests
     public void SelectingReplayEnvironmentHasCorrectValue()
     {
         const SdkEnvironment environment = SdkEnvironment.Replay;
-        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                                       .SetAccessToken(TestData.AccessToken)
                                       .SelectReplay()
                                       .SetDefaultLanguage(TestData.Culture)
@@ -224,7 +224,7 @@ public class UofConfigurationTests
     public void SettingCustomEnvironmentWithCustomValuesHasCorrectValue()
     {
         const SdkEnvironment environment = SdkEnvironment.Custom;
-        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                                       .SetAccessToken(TestData.AccessToken)
                                       .SelectCustom()
                                       .SetDefaultLanguage(TestData.Culture)
@@ -363,7 +363,7 @@ public class UofConfigurationTests
     public void UofConfigurationWithFullValuesToStringHasAllTheValues()
     {
         var section = TestSection.GetDefaultSection();
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
                     .SelectEnvironmentFromConfigFile()
                     .LoadFromConfigFile()

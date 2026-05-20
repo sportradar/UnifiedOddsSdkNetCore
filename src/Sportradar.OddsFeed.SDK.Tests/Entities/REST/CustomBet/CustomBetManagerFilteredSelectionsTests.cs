@@ -1,0 +1,200 @@
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Moq;
+using Shouldly;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
+using Sportradar.OddsFeed.SDK.Api.Managers;
+using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet;
+using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.CustomBet;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Extensions;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl;
+using Xunit;
+using static Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.CustomBet.FilteredCalculationEndpoint;
+
+namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.CustomBet;
+
+public class CustomBetManagerFilteredSelectionsTests
+{
+    private const int AnyMarketId = 10;
+    private readonly Mock<IDataPoster> _dataPosterMock;
+
+    public CustomBetManagerFilteredSelectionsTests()
+    {
+        _dataPosterMock = new Mock<IDataPoster>();
+    }
+
+    [Fact]
+    public async Task CalculateProbabilityFilterWhenRequestIsNullThenThrowsArgumentNullException()
+    {
+        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+                                                                  .AddDefaultDependencies()
+                                                                  .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
+                                                                  .WithDataPoster(_dataPosterMock.Object)
+                                                                  .Build();
+
+        var exception = await Should.ThrowAsync<ArgumentNullException>(
+            () => manager.CalculateProbabilityFilterAsync(null));
+
+        exception.ParamName.ShouldBe("request");
+    }
+
+    [Fact]
+    public async Task CalculateProbabilityFilterWhenRequestWasNotCreatedByManagerThenThrowsArgumentException()
+    {
+        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+                                                                  .AddDefaultDependencies()
+                                                                  .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
+                                                                  .WithDataPoster(_dataPosterMock.Object)
+                                                                  .Build();
+        var foreignBuilder = new FakeCalculateRequestBuilder();
+
+        var exception = await Should.ThrowAsync<ArgumentException>(
+            () => manager.CalculateProbabilityFilterAsync(foreignBuilder));
+
+        exception.ParamName.ShouldBe("request");
+    }
+
+    [Fact]
+    public async Task CalculateProbabilityFilterWhenRequestContainsOnlyAndSelectionsThenReturnsCalculationFilter()
+    {
+        const int marketIdForAndSelection = 55;
+        var expectedResponse = GetValidFilteredCalculationResponse();
+        _dataPosterMock
+           .Setup(s => s.PostDataAsync(
+                                       It.Is<Uri>(uri => uri.ToString().EndsWith("/calculate-filter")),
+                                       It.Is<HttpContent>(content => content.ReadAsStringAsync().Result.Contains(marketIdForAndSelection.ToString()))))
+           .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+           {
+               Content = new StringContent(MsgSerializer.SerializeToXml(expectedResponse))
+           });
+        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+                                                                  .AddDefaultDependencies()
+                                                                  .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
+                                                                  .WithDataPoster(_dataPosterMock.Object)
+                                                                  .Build();
+
+        var requestContainingOnlyAndSelections = BuildRequestContainingOnlyAndSelections(manager, marketIdForAndSelection);
+        var result = await manager.CalculateProbabilityFilterAsync(requestContainingOnlyAndSelections);
+
+        result.ShouldNotBeNull();
+        result.Odds.ShouldBe(expectedResponse.calculation.odds);
+        result.Probability.ShouldBe(expectedResponse.calculation.probability);
+    }
+
+    [Fact]
+    public async Task CalculateProbabilityFilterWhenRequestContainsOnlyOrSelectionThenReturnsCalculationFilter()
+    {
+        const int marketIdForOrSelection = 65;
+        var expectedResponse = GetValidFilteredCalculationResponse();
+        _dataPosterMock
+           .Setup(s => s.PostDataAsync(
+                                       It.Is<Uri>(uri => uri.ToString().EndsWith("/calculate-filter")),
+                                       It.Is<HttpContent>(content => content.ReadAsStringAsync().Result.Contains(marketIdForOrSelection.ToString()))))
+           .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+           {
+               Content = new StringContent(MsgSerializer.SerializeToXml(expectedResponse))
+           });
+        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+                                                                  .AddDefaultDependencies()
+                                                                  .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
+                                                                  .WithDataPoster(_dataPosterMock.Object)
+                                                                  .Build();
+
+        var result = await manager.CalculateProbabilityFilterAsync(BuildRequestContainingOnlyOrSelections(manager, marketIdForOrSelection));
+
+        result.ShouldNotBeNull();
+        result.Odds.ShouldBe(expectedResponse.calculation.odds);
+        result.Probability.ShouldBe(expectedResponse.calculation.probability);
+    }
+
+    [Fact]
+    public async Task CalculateProbabilityFilterWhenRequestCombinesAndSelectionsWithOrSelectionThenReturnsCalculationFilter()
+    {
+        const int marketIdForAndSelection = 55;
+        const int marketIdForOrSelection = 65;
+        var expectedResponse = GetValidFilteredCalculationResponse();
+        _dataPosterMock
+           .Setup(s => s.PostDataAsync(
+                                       It.Is<Uri>(uri => uri.ToString().EndsWith("/calculate-filter")),
+                                       It.Is<HttpContent>(content => content.ReadAsStringAsync().Result.Contains(marketIdForAndSelection.ToString()) &&
+                                                                     content.ReadAsStringAsync().Result.Contains(marketIdForOrSelection.ToString()))))
+           .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+           {
+               Content = new StringContent(MsgSerializer.SerializeToXml(expectedResponse))
+           });
+        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+                                                                  .AddDefaultDependencies()
+                                                                  .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
+                                                                  .WithDataPoster(_dataPosterMock.Object)
+                                                                  .Build();
+
+        var result = await manager.CalculateProbabilityFilterAsync(BuildRequestCombiningAndSelectionsWithOrSelection(manager, marketIdForAndSelection, marketIdForOrSelection));
+
+        result.ShouldNotBeNull();
+        result.Odds.ShouldBe(expectedResponse.calculation.odds);
+        result.Probability.ShouldBe(expectedResponse.calculation.probability);
+    }
+
+    [Fact]
+    public async Task CalculateProbabilityFilterWhenUnderlyingCallFailsAndStrategyIsCatchThenReturnsNull()
+    {
+        _dataPosterMock
+           .Setup(s => s.PostDataAsync(It.IsAny<Uri>(), It.IsAny<HttpContent>()))
+           .ThrowsAsync(new CommunicationException("Not found", "/v1/custombet/calculate-filter", HttpStatusCode.NotFound, null));
+        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+                                                                  .AddDefaultDependencies()
+                                                                  .WithConfigurationProvidingAnyBookmakerIdAndStrategyCatch()
+                                                                  .WithDataPoster(_dataPosterMock.Object)
+                                                                  .Build();
+
+        var result = await manager.CalculateProbabilityFilterAsync(BuildRequestContainingOnlyAndSelections(manager, AnyMarketId));
+
+        result.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task CalculateProbabilityFilterWhenUnderlyingCallFailsAndStrategyIsThrowThenThrowsCommunicationException()
+    {
+        _dataPosterMock
+           .Setup(s => s.PostDataAsync(It.IsAny<Uri>(), It.IsAny<HttpContent>()))
+           .ThrowsAsync(new CommunicationException("Not found", "/v1/custombet/calculate-filter", HttpStatusCode.NotFound, null));
+        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+                                                                  .AddDefaultDependencies()
+                                                                  .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
+                                                                  .WithDataPoster(_dataPosterMock.Object)
+                                                                  .Build();
+
+        await Should.ThrowAsync<CommunicationException>(
+            () => manager.CalculateProbabilityFilterAsync(BuildRequestContainingOnlyAndSelections(manager, AnyMarketId)));
+    }
+
+    private static ICalculateRequestBuilder BuildRequestContainingOnlyAndSelections(ICustomBetManagerV2 manager, int marketId)
+    {
+        return manager.GetCalculateRequestBuilder()
+                      .AndSelection(new Selection(TestConsts.AnyMatchId, marketId, "9", null))
+                      .AndSelection(new Selection(TestConsts.AnyMatchId, marketId, "74", null));
+    }
+
+    private static ICalculateRequestBuilder BuildRequestCombiningAndSelectionsWithOrSelection(ICustomBetManagerV2 manager, int marketId1, int marketId2)
+    {
+        return manager.GetCalculateRequestBuilder()
+                      .AndSelection(new Selection(TestConsts.AnyMatchId, marketId1, "9", null))
+                      .AndAnyOfSelections(
+                                          new Selection(TestConsts.AnyMatchId, marketId2, "1", null),
+                                          new Selection(TestConsts.AnyMatchId, marketId2, "2", null));
+    }
+
+    private static ICalculateRequestBuilder BuildRequestContainingOnlyOrSelections(ICustomBetManagerV2 manager, int marketId)
+    {
+        return manager.GetCalculateRequestBuilder()
+                      .AndAnyOfSelections(
+                                          new Selection(TestConsts.AnyMatchId, marketId, "1", null),
+                                          new Selection(TestConsts.AnyMatchId, marketId, "2", null));
+    }
+}

@@ -40,12 +40,12 @@ public class ConfigurationBuilderWithSectionSetup
 
     internal static ITokenSetter GetTokenSetter()
     {
-        return new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider());
+        return new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider());
     }
 
     internal static ITokenSetter GetTokenSetter(IUofConfigurationSection section)
     {
-        return new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider());
+        return new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider());
     }
 
     internal static IEnvironmentSelector GetEnvironmentSelector()
@@ -60,7 +60,7 @@ public class ConfigurationBuilderWithSectionSetup
 
     internal static IConfigurationBuilder IntegrationBuilder(IUofConfigurationSection section)
     {
-        return new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessTokenFromConfigFile()
               .SelectEnvironment(SdkEnvironment.Integration)
               .LoadFromConfigFile();
@@ -68,14 +68,14 @@ public class ConfigurationBuilderWithSectionSetup
 
     internal static IConfigurationBuilder IntegrationBuilder(string token)
     {
-        return new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessToken(token)
               .SelectEnvironment(SdkEnvironment.Integration);
     }
 
     internal static IConfigurationBuilder ProductionBuilder(IUofConfigurationSection section)
     {
-        return new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessTokenFromConfigFile()
               .SelectEnvironment(SdkEnvironment.Production)
               .LoadFromConfigFile();
@@ -83,14 +83,14 @@ public class ConfigurationBuilderWithSectionSetup
 
     internal static IConfigurationBuilder ProductionBuilder(string token)
     {
-        return new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessToken(token)
               .SelectEnvironment(SdkEnvironment.Production);
     }
 
     internal static IConfigurationBuilder ReplayBuilder(IUofConfigurationSection section)
     {
-        return new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessTokenFromConfigFile()
               .SelectReplay()
               .LoadFromConfigFile();
@@ -98,14 +98,14 @@ public class ConfigurationBuilderWithSectionSetup
 
     internal static IConfigurationBuilder ReplayBuilder(string token)
     {
-        return new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessToken(token)
               .SelectReplay();
     }
 
     internal static ICustomConfigurationBuilder CustomBuilder(IUofConfigurationSection section)
     {
-        return new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessTokenFromConfigFile()
               .SelectCustom()
               .LoadFromConfigFile();
@@ -113,7 +113,7 @@ public class ConfigurationBuilderWithSectionSetup
 
     internal static ICustomConfigurationBuilder CustomBuilder(string token)
     {
-        return new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessToken(token)
               .SelectCustom()
               .SetApiHost(CustomApiHost)

@@ -30,6 +30,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
+using CalculateRequest = Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 {
@@ -1493,9 +1494,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             }
         }
 
-        public async Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
+        public async Task<ICalculation> CalculateProbabilityAsync(CalculateRequest request)
         {
-            var selectionList = selections.ToList();
             using (var t = new TelemetryTracker(UofSdkTelemetry.DataRouterManager, "endpoint", "CalculateProbability"))
             {
                 WriteLog("Executing CalculateProbability.", true);
@@ -1504,7 +1504,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 int restCallTime;
                 try
                 {
-                    result = await _calculateProbabilityProvider.GetDataAsync(selectionList).ConfigureAwait(false);
+                    result = await _calculateProbabilityProvider.GetDataAsync(request).ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (CommunicationException e)
@@ -1543,9 +1543,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             }
         }
 
-        public async Task<ICalculationFilter> CalculateProbabilityFilteredAsync(IEnumerable<ISelection> selections)
+        public async Task<ICalculationFilter> CalculateProbabilityFilteredAsync(CalculateRequest request)
         {
-            var selectionList = selections.ToList();
             using (var t = new TelemetryTracker(UofSdkTelemetry.DataRouterManager, "endpoint", "CalculateProbabilityFiltered"))
             {
                 WriteLog("Executing CalculateProbabilityFiltered.", true);
@@ -1554,7 +1553,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 int restCallTime;
                 try
                 {
-                    result = await _calculateProbabilityFilteredProvider.GetDataAsync(selectionList).ConfigureAwait(false);
+                    result = await _calculateProbabilityFilteredProvider.GetDataAsync(request).ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (CommunicationException e)

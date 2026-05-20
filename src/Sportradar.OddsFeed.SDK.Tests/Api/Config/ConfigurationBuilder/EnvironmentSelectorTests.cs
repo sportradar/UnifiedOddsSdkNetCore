@@ -16,33 +16,31 @@ namespace Sportradar.OddsFeed.SDK.Tests.API.Config.ConfigurationBuilder;
 public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
 {
     private readonly UofConfiguration _configuration = new(new TestSectionProvider(null));
-    private readonly IBookmakerDetailsProvider _bookmakerDetailsProvider = new TestBookmakerDetailsProvider();
-    private readonly IProducersProvider _producersProvider = new TestProducersProvider();
 
     [Fact]
     public void EnvironmentSelectorConstructWithMissingConfiguration()
     {
-        Assert.Throws<ArgumentNullException>(() => new EnvironmentSelector(null, new TestSectionProvider(BaseSection), _bookmakerDetailsProvider, _producersProvider));
+        Assert.Throws<ArgumentNullException>(() => new EnvironmentSelector(null, new TestSectionProvider(BaseSection), _ => null, _ => null));
     }
 
     [Fact]
     public void EnvironmentSelectorConstructWithMissingSectionProvider()
     {
-        Assert.Throws<ArgumentNullException>(() => new EnvironmentSelector(_configuration, null, _bookmakerDetailsProvider, _producersProvider));
+        Assert.Throws<ArgumentNullException>(() => new EnvironmentSelector(_configuration, null, _ => null, _ => null));
     }
 
     [Fact]
-    public void EnvironmentSelectorConstructWithMissingBookmakerDetailsProvider()
+    public void EnvironmentSelectorConstructWithNullBookmakerDetailsProviderFactory()
     {
-        var selector = new EnvironmentSelector(_configuration, new TestSectionProvider(BaseSection), null, _producersProvider);
+        var selector = new EnvironmentSelector(_configuration, new TestSectionProvider(BaseSection), _ => null, _ => null);
 
         Assert.NotNull(selector);
     }
 
     [Fact]
-    public void EnvironmentSelectorConstructWithMissingProducersProvider()
+    public void EnvironmentSelectorConstructWithNullProducersProviderFactory()
     {
-        var selector = new EnvironmentSelector(_configuration, new TestSectionProvider(BaseSection), _bookmakerDetailsProvider, null);
+        var selector = new EnvironmentSelector(_configuration, new TestSectionProvider(BaseSection), _ => null, _ => null);
 
         Assert.NotNull(selector);
     }
@@ -50,7 +48,7 @@ public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
     [Fact]
     public void SettingEnvironmentFromSectionWhenNonePresentThrows()
     {
-        Assert.Throws<InvalidOperationException>(() => new EnvironmentSelector(_configuration, new TestSectionProvider(null), _bookmakerDetailsProvider, _producersProvider).SelectEnvironmentFromConfigFile());
+        Assert.Throws<InvalidOperationException>(() => new EnvironmentSelector(_configuration, new TestSectionProvider(null), _ => null, _ => null).SelectEnvironmentFromConfigFile());
     }
 
     [Fact]

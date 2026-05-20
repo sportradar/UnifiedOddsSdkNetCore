@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
@@ -206,18 +207,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         Task<IPrebuiltBets> RequestCustomBetPrebuiltBets(IPrebuiltBetsRequest prebuiltBetsRequest);
 
         /// <summary>
-        /// Gets the probability calculation for the specified selections
+        /// Gets the probability calculation for the specified request
         /// </summary>
-        /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be calculated</param>
-        /// <returns>The probability calculation for the specified selections</returns>
-        Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections);
+        /// <param name="request">The <see cref="CalculateRequest"/> containing the ordered legs for which the probability should be calculated</param>
+        /// <returns>The probability calculation for the specified request</returns>
+        Task<ICalculation> CalculateProbabilityAsync(CalculateRequest request);
 
         /// <summary>
-        /// Gets the probability calculation for the specified selections (filtered)
+        /// Gets the probability calculation for the specified request (filtered)
         /// </summary>
-        /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be calculated</param>
-        /// <returns>The probability calculation for the specified selections</returns>
-        Task<ICalculationFilter> CalculateProbabilityFilteredAsync(IEnumerable<ISelection> selections);
+        /// <param name="request">The <see cref="CalculateRequest"/> containing the ordered legs for which the probability should be calculated</param>
+        /// <returns>The probability calculation for the specified request</returns>
+        Task<ICalculationFilter> CalculateProbabilityFilteredAsync(CalculateRequest request);
 
         /// <summary>
         /// Gets the list of all fixtures that have changed in the last 24 hours

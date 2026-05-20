@@ -20,7 +20,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay)]
     public void WhenBuiltForPredefinedEnvironmentThenRabbitHasDefaultValuesAndVirtualHostMatchesBookmaker(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -33,7 +33,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForCustomEnvironmentThenRabbitHasDefaultValues()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -59,7 +59,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -76,7 +76,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -103,7 +103,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -120,7 +120,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)

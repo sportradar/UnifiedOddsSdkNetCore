@@ -16,6 +16,7 @@ using Sportradar.OddsFeed.SDK.Api.EventArguments;
 using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
@@ -1022,6 +1023,16 @@ internal class TestDataRouterManager : IDataRouterManager
         }
 
         return null;
+    }
+
+    public Task<ICalculation> CalculateProbabilityAsync(CalculateRequest request)
+    {
+        return CalculateProbabilityAsync(request?.Items.SelectMany(i => i.Selections));
+    }
+
+    public Task<ICalculationFilter> CalculateProbabilityFilteredAsync(CalculateRequest request)
+    {
+        return CalculateProbabilityFilteredAsync(request?.Items.SelectMany(i => i.Selections));
     }
 
     /// <summary>

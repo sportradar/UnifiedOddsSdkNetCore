@@ -558,13 +558,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration
             {
                 if (firstTime)
                 {
-                    HandleErrorCondition("Retrieved market descriptor has no outcomes", outcomeId, null, culture, null);
-                    //if (((MarketDescription)marketDescriptor).MarketDescriptionCacheItem.CanBeFetched())
-                    {
-                        HandleErrorCondition("Reloading market description", outcomeId, null, culture, null);
-                        await _marketCacheProvider.ReloadMarketDescriptionAsync((int)marketDescriptor.Id, _specifiers).ConfigureAwait(false);
-                        return await GetMarketDescriptionForOutcomeAsync(outcomeId, culture, false).ConfigureAwait(false);
-                    }
+                    _executionLog.LogDebug("Retrieved market descriptor has no outcomes for outcomeId={OutcomeId}, reloading", outcomeId);
+                    await _marketCacheProvider.ReloadMarketDescriptionAsync((int)marketDescriptor.Id, _specifiers).ConfigureAwait(false);
+                    return await GetMarketDescriptionForOutcomeAsync(outcomeId, culture, false).ConfigureAwait(false);
                 }
                 HandleErrorCondition("Retrieved market descriptor does not contain outcomes", outcomeId, null, culture, null);
                 return null;
@@ -575,13 +571,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration
             {
                 if (firstTime)
                 {
-                    HandleErrorCondition("Retrieved market descriptor is missing outcome", outcomeId, null, culture, null);
-                    //if (((MarketDescription)marketDescriptor).MarketDescriptionCacheItem.CanBeFetched())
-                    {
-                        HandleErrorCondition("Reloading market description", outcomeId, null, culture, null);
-                        await _marketCacheProvider.ReloadMarketDescriptionAsync((int)marketDescriptor.Id, _specifiers).ConfigureAwait(false);
-                        return await GetMarketDescriptionForOutcomeAsync(outcomeId, culture, false).ConfigureAwait(false);
-                    }
+                    _executionLog.LogDebug("Retrieved market descriptor is missing outcome={OutcomeId}, reloading", outcomeId);
+                    await _marketCacheProvider.ReloadMarketDescriptionAsync((int)marketDescriptor.Id, _specifiers).ConfigureAwait(false);
+                    return await GetMarketDescriptionForOutcomeAsync(outcomeId, culture, false).ConfigureAwait(false);
                 }
                 HandleErrorCondition("Retrieved market descriptor does not contain outcome", outcomeId, null, culture, null);
                 return null;

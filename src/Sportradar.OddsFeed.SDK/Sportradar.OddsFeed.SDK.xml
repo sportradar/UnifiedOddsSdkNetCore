@@ -2494,19 +2494,19 @@
             Available prebuilt bets for the given request.
             </returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager.CalculateProbabilityAsync(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection})">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager.CalculateProbabilityAsync(Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest)">
             <summary>
-            Gets the probability calculation for the specified selections
+            Gets the probability calculation for the specified request
             </summary>
-            <param name="selections">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing selections for which the probability should be calculated</param>
-            <returns>The probability calculation for the specified selections</returns>
+            <param name="request">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest"/> containing the ordered legs for which the probability should be calculated</param>
+            <returns>The probability calculation for the specified request</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager.CalculateProbabilityFilteredAsync(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection})">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager.CalculateProbabilityFilteredAsync(Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest)">
             <summary>
-            Gets the probability calculation for the specified selections (filtered)
+            Gets the probability calculation for the specified request (filtered)
             </summary>
-            <param name="selections">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing selections for which the probability should be calculated</param>
-            <returns>The probability calculation for the specified selections</returns>
+            <param name="request">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest"/> containing the ordered legs for which the probability should be calculated</param>
+            <returns>The probability calculation for the specified request</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager.GetFixtureChangesAsync(System.Nullable{System.DateTime},Sportradar.OddsFeed.SDK.Common.Urn,System.Globalization.CultureInfo)">
             <summary>
@@ -4708,15 +4708,15 @@
             <param name="config">The config to populate the received bookmaker details</param>
             <returns>True if data was successfully retrieved. False otherwise. May throw <see cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.CommunicationException"/></returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.ConfigurationBuilder.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.ConfigurationBuilder.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment,System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider},System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.ConfigurationBuilder"/> class
             </summary>
             <param name="configuration">Current <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration"/></param>
             <param name="sectionProvider">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider"/> used to access <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSection"/></param>
             <param name="environment">An <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment"/> specifying the selected environment</param>
-            <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
-            <param name="producersProvider">Provider for available producers</param>
+            <param name="bookmakerDetailsProviderFactory">Factory to create the bookmaker details provider</param>
+            <param name="producersProviderFactory">Factory to create the producers provider</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.ConfigurationBuilderBase`1">
             <summary>
@@ -4729,14 +4729,14 @@
             The <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider"/> containing data read from the config file
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.ConfigurationBuilderBase`1.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.ConfigurationBuilderBase`1.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider},System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.ConfigurationBuilderBase`1"/> class
             </summary>
             <param name="configuration">Current <see cref="F:Sportradar.OddsFeed.SDK.Api.Internal.Config.ConfigurationBuilderBase`1.UofConfiguration"/></param>
             <param name="sectionProvider">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider"/> used to access <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSection"/></param>
-            <param name="bookmakerDetailsProvider">Provider for bookmaker details (can be null)</param>
-            <param name="producersProvider">Provider for available producers</param>
+            <param name="bookmakerDetailsProviderFactory">Factory invoked to obtain a <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider"/></param>
+            <param name="producersProviderFactory">Factory invoked to obtain a <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider"/></param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.ConfigurationBuilderBase`1.LoadFromConfigFile">
             <summary>
@@ -4800,14 +4800,14 @@
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.RecoveryConfigurationBuilder`1" />
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" />
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider},System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder"/> class.
             </summary>
             <param name="configuration">Current <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration"/></param>
             <param name="sectionProvider">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider"/> used to access <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSection"/></param>
-            <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
-            <param name="producersProvider">Provider for available producers</param>
+            <param name="bookmakerDetailsProviderFactory">Factory to create the bookmaker details provider</param>
+            <param name="producersProviderFactory">Factory to create the producers provider</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.SetMessagingHost(System.String)">
             <summary>
@@ -4935,14 +4935,14 @@
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector" />
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentSelector.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentSelector.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider},System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider})">
             <summary>
             Constructs a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentSelector"/> class
             </summary>
             <param name="configuration">Current <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration"/></param>
             <param name="sectionProvider">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider"/> used to access <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSection"/></param>
-            <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
-            <param name="producersProvider">Provider for available producers</param>
+            <param name="bookmakerDetailsProviderFactory">Factory to create the bookmaker details provider</param>
+            <param name="producersProviderFactory">Factory to create the producers provider</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentSetting">
             <summary>
@@ -5143,14 +5143,14 @@
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.ConfigurationBuilderBase`1" />
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1" />
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.RecoveryConfigurationBuilder`1.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.RecoveryConfigurationBuilder`1.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider},System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider})">
             <summary>
             Construct RecoveryConfigurationBuilder
             </summary>
             <param name="configuration">Current <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration"/></param>
             <param name="sectionProvider">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider"/> used to access <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSection"/></param>
-            <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
-            <param name="producersProvider">Provider for available producers</param>
+            <param name="bookmakerDetailsProviderFactory">Factory to create the bookmaker details provider</param>
+            <param name="producersProviderFactory">Factory to create the producers provider</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.RecoveryConfigurationBuilder`1.SetInactivitySeconds(System.Int32)">
             <summary>
@@ -5369,13 +5369,13 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider"/> instance used to access <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSection"/>
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.TokenSetter.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.TokenSetter.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider},System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.TokenSetter"/> class
             </summary>
             <param name="uofConfigurationSectionProvider">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider"/> instance used to access <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSection"/></param>
-            <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
-            <param name="producersProvider">Provider for available producers</param>
+            <param name="bookmakerDetailsProviderFactory">Factory to create the bookmaker details provider</param>
+            <param name="producersProviderFactory">Factory to create the producers provider</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.TokenSetter.SetAccessToken(System.String)">
             <summary>
@@ -6374,6 +6374,58 @@
             </summary>
             <param name="eventId">The event id</param>
             <returns><c>true</c> if event was successfully booked, <c>false</c> otherwise</returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequestItem">
+            <summary>
+            Represents a single item in a calculate request — either a single AND selection or an OR group.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequestItem.IsOrGroup">
+            <summary>
+            Returns true if this item is an OR group (contains multiple alternative selections).
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequestItem.Selections">
+            <summary>
+            The selections contained in this item. For an AND leg this is a single element; for an OR group it is multiple.
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.AndSelectionItem">
+            <summary>
+            A single AND selection leg.
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.OrSelectionGroupItem">
+            <summary>
+            An OR group leg — any one of the contained selections satisfies this leg.
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest">
+            <summary>
+            Internal representation of a calculate probability request. Holds an ordered list of legs
+            (AND selections and OR groups) as built by <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequestBuilder"/>.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest.Items">
+            <summary>
+            The ordered list of legs in this request.
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequestBuilder">
+            <summary>
+            The run-time implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder"/> interface.
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequestBuilder.AndSelection(Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection)">
+            <inheritdoc />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequestBuilder.AndAnyOfSelections(Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection[])">
+            <inheritdoc />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequestBuilder.Build">
+            <summary>
+            Builds and returns the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest"/> from the accumulated legs.
+            </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CashOutProbabilitiesProvider.ExecutionLog">
             <summary>
@@ -9168,6 +9220,31 @@
             <param name="eventId">The event id</param>
             <returns><c>true</c> if event was successfully booked, <c>false</c> otherwise</returns>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder">
+            <summary>
+            Defines a builder for constructing a custom bet probability calculation request that supports
+            both AND selections and OR selection groups.
+            </summary>
+            <remarks>
+            The builder preserves insertion order of legs. Each call to <see cref="M:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.AndSelection(Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection)"/> appends
+            a single AND leg; each call to <see cref="M:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.AndAnyOfSelections(Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection[])"/> appends one OR group leg where
+            any one of the provided selections satisfies that leg.
+            </remarks>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.AndSelection(Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection)">
+            <summary>
+            Appends a single AND selection leg to the request.
+            </summary>
+            <param name="selection">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection"/> to add as an AND leg</param>
+            <returns>The current <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder"/> instance for fluent chaining</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.AndAnyOfSelections(Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection[])">
+            <summary>
+            Appends an OR group leg to the request. Any one of the provided selections satisfies this leg.
+            </summary>
+            <param name="selections">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection"/> instances forming the OR group</param>
+            <returns>The current <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder"/> instance for fluent chaining</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.ICashOutProbabilitiesProvider">
             <summary>
             Defines a type used to retrieve market probabilities used for cash out
@@ -9227,6 +9304,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2">
             <summary>
+            Defines methods used to perform various custom bet operations
             Extends <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/> with additional methods for prebuilt bets functionality.
             This interface provides a safe upgrade path for clients with custom implementations of <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/>.
             </summary>
@@ -9247,6 +9325,30 @@
             <returns>
             A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets"/> object for the given request
             </returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.GetCalculateRequestBuilder">
+            <summary>
+            Returns a new <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder"/> instance used to build a probability
+            calculation request that may contain both AND selections and OR selection groups.
+            </summary>
+            <returns>A new <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder"/> instance</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.CalculateProbabilityAsync(Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder)">
+            <summary>
+            Returns an <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation"/> instance providing the probability for the request built
+            via <see cref="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.GetCalculateRequestBuilder"/>. Supports both AND selections and OR selection groups.
+            </summary>
+            <param name="request">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder"/> containing the legs of the bet</param>
+            <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation"/> providing the probability for the specified request</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.CalculateProbabilityFilterAsync(Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder)">
+            <summary>
+            Returns an <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter"/> instance providing the probability for the request built
+            via <see cref="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.GetCalculateRequestBuilder"/>, filtering out conflicting outcomes.
+            Supports both AND selections and OR selection groups.
+            </summary>
+            <param name="request">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder"/> containing the legs of the bet</param>
+            <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter"/> providing the probability for the specified request</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder">
             <summary>
@@ -22965,11 +23067,11 @@
             <param name="deserializer">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1" /> used to deserialize the fetch data</param>
             <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" /></param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.CalculateProbabilityFilteredProvider.GetDataAsync(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.CalculateProbabilityFilteredProvider.GetDataAsync(Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest)">
             <summary>
             Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.FilteredCalculationDto"/> instance
             </summary>
-            <param name="selections">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing selections for which the probability should be fetched</param>
+            <param name="request">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest"/> containing the ordered legs for which the probability should be fetched</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the probability calculation</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.CalculateProbabilityProvider">
@@ -22986,11 +23088,11 @@
             <param name="deserializer">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1" /> used to deserialize the fetch data</param>
             <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" /></param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.CalculateProbabilityProvider.GetDataAsync(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.CalculateProbabilityProvider.GetDataAsync(Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest)">
             <summary>
             Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.CalculationDto"/> instance
             </summary>
-            <param name="selections">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing selections for which the probability should be fetched</param>
+            <param name="request">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest"/> containing the ordered legs for which the probability should be fetched</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the probability calculation</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.CompositeMappingValidator">
@@ -29328,11 +29430,11 @@
             Defines a contract implemented by classes used to provide data probability calculations
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ICalculateProbabilityFilteredProvider.GetDataAsync(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ICalculateProbabilityFilteredProvider.GetDataAsync(Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest)">
             <summary>
             Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.FilteredCalculationDto"/> instance
             </summary>
-            <param name="selections">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing selections for which the probability should be fetched</param>
+            <param name="request">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest"/> containing the ordered legs for which the probability should be fetched</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the probability calculation</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ICalculateProbabilityProvider">
@@ -29340,11 +29442,11 @@
             Defines a contract implemented by classes used to provide data probability calculations
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ICalculateProbabilityProvider.GetDataAsync(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ICalculateProbabilityProvider.GetDataAsync(Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest)">
             <summary>
             Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.CalculationDto"/> instance
             </summary>
-            <param name="selections">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing selections for which the probability should be fetched</param>
+            <param name="request">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest"/> containing the ordered legs for which the probability should be fetched</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the probability calculation</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.IMappingValidator">
@@ -37535,6 +37637,159 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.OutcomeType.id">
             <remarks/>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.OrSelectionType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.OrSelectionType.selection">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.market_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.specifiers">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.outcome_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.odds">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.oddsSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType.market_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType.outcome_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType.specifiers">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType.selection">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType.odds">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType.probability">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.recommendations">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.provided_recommendation">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.source">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredOutcomeType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredOutcomeType.id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredOutcomeType.conflict">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredOutcomeType.conflictSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.outcome">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.specifiers">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.conflict">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.conflictSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredEventType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredEventType.markets">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredEventType.id">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.odds">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.probability">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.harmonization">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.harmonizationSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterOrSelectionsType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterOrSelectionsType.market">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.market_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.specifiers">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.outcome_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.odds">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.oddsSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType.Items">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType.id">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.CalculationResultType">
             <remarks/>
         </member>
@@ -37565,157 +37820,16 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.ResponseType.generated_at">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.odds">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.probability">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.harmonization">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.harmonizationSpecified">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredEventType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredEventType.markets">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredEventType.id">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.outcome">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.specifiers">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.conflict">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.conflictSpecified">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredOutcomeType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredOutcomeType.id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredOutcomeType.conflict">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredOutcomeType.conflictSpecified">
-            <remarks/>
-        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionsType">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionsType.selection">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType.market">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType.id">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.market_id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.specifiers">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.outcome_id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.odds">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.oddsSpecified">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.recommendations">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.provided_recommendation">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.source">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType.selection">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType.odds">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType.probability">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType.market_id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType.outcome_id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType.specifiers">
-            <remarks/>
-        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionsType">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionsType.selection">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.market_id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.specifiers">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.outcome_id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.odds">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.oddsSpecified">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionsType.Items">
             <remarks/>
         </member>
     </members>

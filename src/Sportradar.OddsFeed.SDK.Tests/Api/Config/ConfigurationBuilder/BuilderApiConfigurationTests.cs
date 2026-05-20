@@ -20,7 +20,7 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay)]
     public void WhenBuiltForPredefinedEnvironmentThenApiConfigurationHasDefaultValues(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -32,7 +32,7 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForCustomEnvironmentThenApiConfigurationHasDefaultValues()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -63,7 +63,7 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -81,7 +81,7 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -113,7 +113,7 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -131,7 +131,7 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -163,7 +163,7 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -181,7 +181,7 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -201,7 +201,7 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay, 123)]
     public void WhenMaxConnectionsPerServerSetForPredefinedEnvironmentThenApiConfigurationHasExpectedMaxConnectionsPerServer(SdkEnvironment environment, int maxConnectionsPerServer)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -215,7 +215,7 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     public void WhenMaxConnectionsPerServerSetForCustomEnvironmentThenApiConfigurationHasExpectedMaxConnectionsPerServer()
     {
         const int maxConnectionsPerServer = 5;
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)

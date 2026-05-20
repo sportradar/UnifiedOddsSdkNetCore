@@ -92,6 +92,15 @@ internal class StubProducerProvider : IDataProvider<producers>
         return resultProducers;
     }
 
+    public static producers GetProducerWithId(int producerId)
+    {
+        return new producers
+        {
+            location = "some-location",
+            producer = [LoadProducer(producerId, "LO", "Live Odds", "https://localhost/v1/liveodds/", true, "live", 600)]
+        };
+    }
+
     private static producer LoadProducer(int producerId, string producerName, string producerDesc, string prodApiUrl, bool isActive, string scope, int recoveryWindow)
     {
         return new producer

@@ -20,7 +20,7 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay)]
     public void WhenAccessTokenSetForPredefinedEnvironmentThenConfigurationHasAccessToken(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureHu)
@@ -32,7 +32,7 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenAccessTokenSetForCustomEnvironmentThenConfigurationHasAccessToken()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -61,7 +61,7 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay, 111)]
     public void WhenNodeIdSetForPredefinedEnvironmentThenConfigurationHasNodeId(SdkEnvironment environment, int nodeId)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -77,7 +77,7 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
     [InlineData(111)]
     public void WhenNodeIdSetForCustomEnvironmentThenConfigurationHasNodeId(int nodeId)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -102,7 +102,7 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay, ExceptionHandlingStrategy.Catch)]
     public void WhenExceptionHandlingStrategySetForPredefinedEnvironmentThenConfigurationHasStrategy(SdkEnvironment environment, ExceptionHandlingStrategy strategy)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -117,7 +117,7 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
     [InlineData(ExceptionHandlingStrategy.Catch)]
     public void WhenExceptionHandlingStrategySetForCustomEnvironmentThenConfigurationHasStrategy(ExceptionHandlingStrategy strategy)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -134,8 +134,8 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
     {
         var configViaEnv = new TokenSetter(
                                            UofConfigurationSectionProviderMock.Object,
-                                           BookmakerDetailsProvider,
-                                           ProducersProvider)
+                                           _ => BookmakerDetailsProvider,
+                                           _ => ProducersProvider)
                           .SetAccessToken(TestConsts.AnyAccessToken)
                           .SelectEnvironment(SdkEnvironment.Replay)
                           .SetDefaultLanguage(TestConsts.CultureEn)
@@ -143,8 +143,8 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
 
         var configViaReplay = new TokenSetter(
                                               UofConfigurationSectionProviderMock.Object,
-                                              BookmakerDetailsProvider,
-                                              ProducersProvider)
+                                              _ => BookmakerDetailsProvider,
+                                              _ => ProducersProvider)
                              .SetAccessToken(TestConsts.AnyAccessToken)
                              .SelectReplay()
                              .SetDefaultLanguage(TestConsts.CultureEn)

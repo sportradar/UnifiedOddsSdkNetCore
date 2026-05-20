@@ -18,6 +18,7 @@ internal static class CustomBetManagerBuilderExtensions
         builder.WithConfiguration(new Mock<IUofConfiguration>().Object)
                .WithSelectionBuilderFactory(new Mock<ICustomBetSelectionBuilderFactory>().Object)
                .WithDataFetcher(new Mock<IDataFetcher>().Object)
+               .WithDataPoster(new Mock<IDataPoster>().Object)
                .WithClientLogger(new Mock<ILogger>().Object)
                .WithExecutionLogger(new Mock<ILogger>().Object);
 

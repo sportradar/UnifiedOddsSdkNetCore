@@ -211,6 +211,14 @@ public class CustomBetManagerTests
     }
 
     [Fact]
+    public async Task CalculateProbabilityThrowsWhenSelectionsIsNull()
+    {
+        var act = async () => await _customBetManagerThrow.CalculateProbabilityAsync(null);
+
+        await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("selections");
+    }
+
+    [Fact]
     public async Task CalculateProbabilityReturnsCalculation()
     {
         var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
@@ -298,6 +306,14 @@ public class CustomBetManagerTests
         Assert.Equal(HttpStatusCode.NotFound, exception.ResponseCode);
         exception.Message.Contains("Getting probability calculations failed with message", StringComparison.OrdinalIgnoreCase);
         exception.Message.Contains("No data for the event", StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task CalculateProbabilityFilterThrowsWhenSelectionsIsNull()
+    {
+        var act = async () => await _customBetManagerThrow.CalculateProbabilityFilterAsync(null);
+
+        await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("selections");
     }
 
     [Fact]

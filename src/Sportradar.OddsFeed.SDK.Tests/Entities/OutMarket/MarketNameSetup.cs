@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
@@ -15,7 +16,6 @@ using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
@@ -33,14 +33,15 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.OutMarket;
 [SuppressMessage("Performance", "CA1859:Use concrete types when possible for improved performance")]
 public class MarketNameSetup
 {
-    private readonly Mock<IDataProvider<EntityList<MarketDescriptionDto>>> _invariantMdProviderMock = new Mock<IDataProvider<EntityList<MarketDescriptionDto>>>();
-    private readonly Mock<IDataProvider<EntityList<VariantDescriptionDto>>> _variantMdProviderMock = new Mock<IDataProvider<EntityList<VariantDescriptionDto>>>();
-    private readonly Mock<IDataProvider<MarketDescriptionDto>> _singleVariantMdProviderMock = new Mock<IDataProvider<MarketDescriptionDto>>();
+    private readonly Mock<ILogHttpDataFetcher> _invariantFetcherMock = new();
+    private readonly Mock<ILogHttpDataFetcher> _variantListFetcherMock = new();
+    private readonly Mock<ILogHttpDataFetcherFastFailing> _singleVariantFetcherMock = new();
     internal readonly CultureInfo DefaultLanguage = TestConsts.CultureEn;
-    internal readonly Mock<ISportEvent> AnySportEventMock = new Mock<ISportEvent>();
-    internal readonly Mock<CompetitionForMocks> CompetitionMock = new Mock<CompetitionForMocks>();
-    private readonly Mock<IProfileCache> _profileCacheMock = new Mock<IProfileCache>();
+    internal readonly Mock<ISportEvent> AnySportEventMock = new();
+    internal readonly Mock<CompetitionForMocks> CompetitionMock = new();
+    private readonly Mock<IProfileCache> _profileCacheMock = new();
     internal readonly IMarketFactory MarketFactory;
+    internal readonly IMarketFactory MarketFactoryWithCatchStrategy;
 
     protected MarketNameSetup(ITestOutputHelper testOutputHelper)
     {
@@ -50,9 +51,9 @@ public class MarketNameSetup
         var dataRouterManager = new DataRouterManagerBuilder()
             .AddMockedDependencies()
             .WithCacheManager(cacheManager)
-            .WithInvariantMarketDescriptionsProvider(_invariantMdProviderMock.Object)
-            .WithVariantDescriptionsProvider(_variantMdProviderMock.Object)
-            .WithVariantMarketDescriptionProvider(_singleVariantMdProviderMock.Object)
+            .WithInvariantMarketDescriptionsFetcher(_invariantFetcherMock.Object)
+            .WithVariantDescriptionsFetcher(_variantListFetcherMock.Object)
+            .WithVariantMarketDescriptionFetcher(_singleVariantFetcherMock.Object)
             .Build();
 
         var marketCacheProvider = MarketCacheProviderBuilder.Create()
@@ -81,6 +82,14 @@ public class MarketNameSetup
         namedValuesProviderMock.Setup(x => x.BettingStatuses).Returns(namedValuesCacheMock.Object);
 
         MarketFactory = new MarketFactory(marketCacheProvider, nameProviderFactory, marketMappingProviderFactory, namedValuesProviderMock.Object, namedValuesCacheMock.Object, ExceptionHandlingStrategy.Throw);
+
+        var nameProviderFactoryCatch = new NameProviderFactory(marketCacheProvider,
+            _profileCacheMock.Object,
+            nameExpressionFactory,
+            ExceptionHandlingStrategy.Catch,
+            loggerFactory);
+        var marketMappingProviderFactoryCatch = new MarketMappingProviderFactory(marketCacheProvider, new Mock<ISportEventStatusCache>().Object, ExceptionHandlingStrategy.Catch);
+        MarketFactoryWithCatchStrategy = new MarketFactory(marketCacheProvider, nameProviderFactoryCatch, marketMappingProviderFactoryCatch, namedValuesProviderMock.Object, namedValuesCacheMock.Object, ExceptionHandlingStrategy.Catch);
     }
 
     protected static void SetupDataInMarketDescription(desc_market apiMarketDescription, string marketNameTemplate, IDictionary<string, string> newOutcomes)
@@ -102,25 +111,39 @@ public class MarketNameSetup
             }
         }
     }
+
     protected void SetupInvariantMarketListEndpoint(desc_market marketDescription, CultureInfo language)
     {
-        _invariantMdProviderMock
-           .Setup(s => s.GetDataAsync(It.Is(language.TwoLetterISOLanguageName, StringComparer.OrdinalIgnoreCase)))
-           .ReturnsAsync(MarketDescriptionEndpoint.GetInvariantDto(marketDescription));
+        var xmlResponse = MarketDescriptionEndpoint.GetInvariantList(marketDescription);
+        _invariantFetcherMock
+           .Setup(f => f.GetDataAsync(It.IsAny<Uri>()))
+           .Returns(() => Task.FromResult(DeserializerHelper.SerializeToMemoryStream(xmlResponse)));
     }
 
     protected void SetupVariantMarketListEndpoint(desc_variant marketDescription, CultureInfo language)
     {
-        _variantMdProviderMock
-           .Setup(s => s.GetDataAsync(It.Is(language.TwoLetterISOLanguageName, StringComparer.OrdinalIgnoreCase)))
-           .ReturnsAsync(MarketDescriptionEndpoint.GetVariantDto(marketDescription));
+        var xmlResponse = MarketDescriptionEndpoint.GetVariantList(marketDescription);
+        _variantListFetcherMock
+           .Setup(f => f.GetDataAsync(It.IsAny<Uri>()))
+           .Returns(() => Task.FromResult(DeserializerHelper.SerializeToMemoryStream(xmlResponse)));
     }
 
     protected void SetupSingleVariantMarketEndpoint(desc_market marketDescription, CultureInfo language)
     {
-        _singleVariantMdProviderMock
-           .Setup(s => s.GetDataAsync(marketDescription.id.ToString(), It.Is(language.TwoLetterISOLanguageName, StringComparer.OrdinalIgnoreCase), marketDescription.variant))
-           .ReturnsAsync(MarketDescriptionEndpoint.GetSingleVariantDto(marketDescription));
+        var xmlResponse = MarketDescriptionEndpoint.GetSingleVariantList(marketDescription);
+        _singleVariantFetcherMock
+           .Setup(f => f.GetDataAsync(It.IsAny<Uri>()))
+           .Returns(() => Task.FromResult(DeserializerHelper.SerializeToMemoryStream(xmlResponse)));
+    }
+
+    protected void SetupSingleVariantMarketEndpointSequence(CultureInfo language, params desc_market[] descriptors)
+    {
+        var sequence = _singleVariantFetcherMock.SetupSequence(f => f.GetDataAsync(It.IsAny<Uri>()));
+        foreach (var descriptor in descriptors)
+        {
+            var xmlResponse = MarketDescriptionEndpoint.GetSingleVariantList(descriptor);
+            sequence.Returns(() => Task.FromResult(DeserializerHelper.SerializeToMemoryStream(xmlResponse)));
+        }
     }
 
     protected void SetupCompetitionWithCompetitorIds(matchSummaryEndpoint endpoint, CultureInfo language = null)
@@ -171,6 +194,6 @@ public class MarketNameSetup
 
     protected void VerifySingleVariantProviderWasCalled(Times times)
     {
-        _singleVariantMdProviderMock.Verify(v => v.GetDataAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), times);
+        _singleVariantFetcherMock.Verify(f => f.GetDataAsync(It.IsAny<Uri>()), times);
     }
 }

@@ -229,7 +229,7 @@ public class CustomBetEntityTests
         selection = _customBetSelectionBuilder.SetEventId(eventId).SetMarketId(market.Id).SetOutcomeId(market.Outcomes.First()).SetSpecifiers(market.Specifiers).Build();
         matchSelections.Add(selection);
 
-        var calculation = await _dataRouterManager.CalculateProbabilityAsync(matchSelections);
+        var calculation = await _dataRouterManager.CalculateProbabilityAsync(BuildCalculateRequest(matchSelections));
 
         Assert.NotNull(calculation);
         Assert.Equal(eventId, calculation.AvailableSelections.First().EventId);
@@ -251,7 +251,7 @@ public class CustomBetEntityTests
         selection = _customBetSelectionBuilder.SetEventId(eventId).SetMarketId(market.Id).SetOutcomeId(market.Outcomes.First()).SetSpecifiers(market.Specifiers).Build();
         matchSelections.Add(selection);
 
-        var calculation = await _dataRouterManager.CalculateProbabilityFilteredAsync(matchSelections);
+        var calculation = await _dataRouterManager.CalculateProbabilityFilteredAsync(BuildCalculateRequest(matchSelections));
 
         Assert.NotNull(calculation);
         Assert.Equal(eventId, calculation.AvailableSelections.First().EventId);
@@ -525,5 +525,15 @@ public class CustomBetEntityTests
                 Assert.Null(resultOutcome.IsConflict);
             }
         }
+    }
+
+    private static CalculateRequest BuildCalculateRequest(IEnumerable<ISelection> selections)
+    {
+        var builder = new CalculateRequestBuilder();
+        foreach (var selection in selections)
+        {
+            builder.AndSelection(selection);
+        }
+        return builder.Build();
     }
 }

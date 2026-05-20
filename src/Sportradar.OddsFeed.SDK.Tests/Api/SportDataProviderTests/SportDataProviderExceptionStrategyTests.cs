@@ -113,7 +113,7 @@ public class SportDataProviderExceptionStrategyTests
         configurationSectionProviderMock.Setup(sp => sp.GetSection())
                                         .Returns(_uofConfigurationSection);
 
-        return new TokenSetter(configurationSectionProviderMock.Object, new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(configurationSectionProviderMock.Object, _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessToken("test-token")
               .SelectCustom()
               .UseApiSsl(false)

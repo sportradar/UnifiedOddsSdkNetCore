@@ -19,6 +19,7 @@ internal sealed class CustomBetManagerBuilder
     private IUofConfiguration _configuration;
     private ICustomBetSelectionBuilderFactory _selectionBuilderFactory;
     private IDataFetcher _dataFetcher;
+    private IDataPoster _dataPoster;
     private ILogger _clientLog;
     private ILogger _executionLog;
 
@@ -49,6 +50,12 @@ internal sealed class CustomBetManagerBuilder
         return this;
     }
 
+    public CustomBetManagerBuilder WithDataPoster(IDataPoster dataPoster)
+    {
+        _dataPoster = dataPoster;
+        return this;
+    }
+
     public CustomBetManagerBuilder WithClientLogger(ILogger clientLog)
     {
         _clientLog = clientLog;
@@ -63,20 +70,42 @@ internal sealed class CustomBetManagerBuilder
 
     public ICustomBetManager Build()
     {
-        var prebuiltBetsDataProvider = new DataProvider<PreBuiltBetsType, PrebuiltBetsDto>("/v1/custombet/prebuilt",
-                                                                                           _dataFetcher,
-                                                                                           new Deserializer<PreBuiltBetsType>(),
-                                                                                           new PrebuiltBetsMapperFactory());
         _dataRouterManager = new DataRouterManagerBuilder()
                             .AddMockedDependencies()
-                            .WithPrebuiltBetsDataProvider(prebuiltBetsDataProvider)
-                            .WithConfiguration(_configuration)
-                            .Build();
+                            .WithPrebuiltBetsDataProvider(GetPrebuiltBetsDataProviderWith(_dataFetcher))
+                            .WithCalculateProbabilityProvider(GetCalculateProbabilityProviderWith(_dataPoster))
+                            .WithCalculateProbabilityFilteredProvider(GetCalculateProbabilityFilteredProviderWith(_dataPoster))
+                            .WithConfiguration(_configuration).Build();
 
         return new CustomBetManager(_dataRouterManager,
                                     _configuration,
                                     _selectionBuilderFactory,
                                     _clientLog,
                                     _executionLog);
+    }
+
+    private static CalculateProbabilityFilteredProvider GetCalculateProbabilityFilteredProviderWith(IDataPoster dataPoster)
+    {
+        return new CalculateProbabilityFilteredProvider(
+                                                        "/v1/custombet/calculate-filter",
+                                                        dataPoster,
+                                                        new Deserializer<FilteredCalculationResponseType>(),
+                                                        new CalculationFilteredMapperFactory());
+    }
+
+    private static CalculateProbabilityProvider GetCalculateProbabilityProviderWith(IDataPoster dataPoster)
+    {
+        return new CalculateProbabilityProvider("/v1/custombet/calculate",
+                                                dataPoster,
+                                                new Deserializer<CalculationResponseType>(),
+                                                new CalculationMapperFactory());
+    }
+
+    private static DataProvider<PreBuiltBetsType, PrebuiltBetsDto> GetPrebuiltBetsDataProviderWith(IDataFetcher dataFetcher)
+    {
+        return new DataProvider<PreBuiltBetsType, PrebuiltBetsDto>("/v1/custombet/prebuilt",
+                                                                   dataFetcher,
+                                                                   new Deserializer<PreBuiltBetsType>(),
+                                                                   new PrebuiltBetsMapperFactory());
     }
 }

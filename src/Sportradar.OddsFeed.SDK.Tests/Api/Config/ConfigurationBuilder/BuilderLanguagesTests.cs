@@ -23,7 +23,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay)]
     public void WhenMissingLanguageForPredefinedEnvironmentThenBuildThrows(SdkEnvironment environment)
     {
-        var tokenSetterBuilder = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var tokenSetterBuilder = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                                 .SetAccessToken(TestConsts.AnyAccessToken)
                                 .SelectEnvironment(environment);
         Should.Throw<InvalidOperationException>(() => tokenSetterBuilder.Build());
@@ -32,7 +32,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenMissingLanguageForCustomEnvironmentThenBuildThrows()
     {
-        var customBuilder = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var customBuilder = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                            .SetAccessToken(TestConsts.AnyAccessToken)
                            .SelectCustom()
                            .SetApiHost(TestConsts.AnyApiHost)
@@ -49,7 +49,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay)]
     public void WhenDefaultLanguageSetForPredefinedEnvironmentThenConfigurationHasCorrectLanguage(SdkEnvironment environment)
     {
-        var builder = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var builder = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                      .SetAccessToken(TestConsts.AnyAccessToken)
                      .SelectEnvironment(environment)
                      .SetDefaultLanguage(TestConsts.CultureEn);
@@ -64,7 +64,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenDefaultLanguageSetForCustomEnvironmentThenConfigurationHasCorrectLanguage()
     {
-        var builder = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var builder = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                      .SetAccessToken(TestConsts.AnyAccessToken)
                      .SelectCustom()
                      .SetApiHost(TestConsts.AnyApiHost)
@@ -86,7 +86,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay)]
     public void WhenDesiredLanguagesSetForPredefinedEnvironmentThenConfigurationHasCorrectLanguages(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDesiredLanguages(TestConsts.Cultures3)
@@ -100,7 +100,9 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenDesiredLanguagesSetForCustomEnvironmentThenConfigurationHasCorrectLanguages()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = ConfigurationUnitBuilders.StubbingOutDataProviders()
+                    .WithOneProducerAndAnyBookmakerDetails()
+                    .BuildTokenSetter()
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -123,7 +125,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     {
         IReadOnlyCollection<CultureInfo> theSameLanguageRepeated3Times = [TestConsts.CultureEn, TestConsts.CultureEn, TestConsts.CultureEn];
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDesiredLanguages(theSameLanguageRepeated3Times)
@@ -139,7 +141,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     {
         IReadOnlyCollection<CultureInfo> theSameLanguageRepeated3Times = [TestConsts.CultureEn, TestConsts.CultureEn, TestConsts.CultureEn];
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -160,7 +162,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay)]
     public void WhenDefaultLanguageAndDesiredLanguagesSetForPredefinedEnvironmentThenDefaultIsFirstAndAllLanguagesPresent(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureHu)
@@ -177,7 +179,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenDefaultLanguageAndDesiredLanguagesSetForCustomEnvironmentThenDefaultIsFirstAndAllLanguagesPresent()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -201,7 +203,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Replay)]
     public void WhenDefaultLanguageIncludedInDesiredLanguagesForPredefinedEnvironmentThenLanguagesAreUniqueAndDefaultLanguageIsPreserved(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -218,7 +220,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenDefaultLanguageIncludedInDesiredLanguagesForCustomEnvironmentThenLanguagesAreUniqueAndDefaultLanguageIsPreserved()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)

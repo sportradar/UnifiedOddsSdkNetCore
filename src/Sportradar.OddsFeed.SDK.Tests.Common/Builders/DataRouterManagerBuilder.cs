@@ -8,6 +8,8 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Builders;
 
@@ -256,6 +258,36 @@ internal class DataRouterManagerBuilder
     public DataRouterManagerBuilder WithPrebuiltBetsDataProvider(IDataProviderWithQuery<PrebuiltBetsDto> provider)
     {
         _prebuiltBetsProvider = provider;
+        return this;
+    }
+
+    public DataRouterManagerBuilder WithInvariantMarketDescriptionsFetcher(ILogHttpDataFetcher fetcher)
+    {
+        _invariantMarketDescriptionsProvider = new DataProvider<market_descriptions, EntityList<MarketDescriptionDto>>(
+            "/v1/descriptions/{0}/markets.xml",
+            fetcher,
+            new Deserializer<market_descriptions>(),
+            new MarketDescriptionsMapperFactory());
+        return this;
+    }
+
+    public DataRouterManagerBuilder WithVariantDescriptionsFetcher(ILogHttpDataFetcher fetcher)
+    {
+        _variantDescriptionsProvider = new DataProvider<variant_descriptions, EntityList<VariantDescriptionDto>>(
+            "/v1/descriptions/{0}/variants.xml",
+            fetcher,
+            new Deserializer<variant_descriptions>(),
+            new VariantDescriptionsMapperFactory());
+        return this;
+    }
+
+    public DataRouterManagerBuilder WithVariantMarketDescriptionFetcher(ILogHttpDataFetcherFastFailing fetcher)
+    {
+        _variantMarketDescriptionProvider = new DataProvider<market_descriptions, MarketDescriptionDto>(
+            "/v1/descriptions/{1}/markets/{0}/variants/{2}",
+            fetcher,
+            new Deserializer<market_descriptions>(),
+            new MarketDescriptionMapperFactory());
         return this;
     }
 

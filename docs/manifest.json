@@ -1117,6 +1117,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.yml\" sourcestartlinenumber=\"1\">Defines a builder for constructing a custom bet probability calculation request that supports\nboth AND selections and OR selection groups.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICashOutProbabilitiesProvider.yml",
       "output": {
         ".html": {
@@ -1155,7 +1169,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2",
-      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.yml\" sourcestartlinenumber=\"1\">Extends <xref href=\"Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager\" data-throw-if-not-resolved=\"false\"></xref> with additional methods for prebuilt bets functionality.\nThis interface provides a safe upgrade path for clients with custom implementations of <xref href=\"Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.yml\" sourcestartlinenumber=\"1\">Defines methods used to perform various custom bet operations\nExtends <xref href=\"Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager\" data-throw-if-not-resolved=\"false\"></xref> with additional methods for prebuilt bets functionality.\nThis interface provides a safe upgrade path for clients with custom implementations of <xref href=\"Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5149,6 +5163,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.FilterOrSelectionsType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.FilterOrSelectionsType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Messages.Rest.FilterOrSelectionsType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.yml",
       "output": {
         ".html": {
@@ -5271,6 +5299,20 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Sportradar.OddsFeed.SDK.Messages.Rest.MarketType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.OrSelectionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.OrSelectionType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Messages.Rest.OrSelectionType",
       "Summary": null
     },
     {
