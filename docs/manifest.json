@@ -2153,6 +2153,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IMessageV2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IMessageV2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Entities.IMessageV2",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.IMessageV2.yml\" sourcestartlinenumber=\"1\">Extends <xref href=\"Sportradar.OddsFeed.SDK.Entities.IMessage\" data-throw-if-not-resolved=\"false\"></xref> with AMQP message header information.\nThis V2 interface exists to avoid breaking changes for customers who implement <xref href=\"Sportradar.OddsFeed.SDK.Entities.IMessage\" data-throw-if-not-resolved=\"false\"></xref> directly.\nAccess the new properties via an explicit cast:</p>\n<pre><code class=\"lang-csharp\">if (oddsChange is IMessageV2 v2)\n{\n    var headers = v2.MessageHeaders;\n}</code></pre>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IOddsChange-1.yml",
       "output": {
         ".html": {

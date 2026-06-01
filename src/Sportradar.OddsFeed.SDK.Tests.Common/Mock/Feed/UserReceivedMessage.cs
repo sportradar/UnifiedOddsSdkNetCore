@@ -17,28 +17,40 @@ public class UserReceivedMessage
 
     public ICollection<IMarket> Markets { get; set; }
 
+    public IMessage OriginalMessage { get; set; }
+
     public UserReceivedMessage(long timestamp, ISportEvent sportEvent, string msgType)
     {
         Timestamp = timestamp;
         SportEvent = sportEvent;
         MsgType = msgType;
         Markets = null;
+        OriginalMessage = null;
     }
 
-    public UserReceivedMessage(long timestamp, ISportEvent sportEvent, string msgType, List<IMarketWithOdds> markets)
-        : this(timestamp, sportEvent, msgType)
+    public UserReceivedMessage(long timestamp, ISportEvent sportEvent, string msgType, IMessage originalMessage)
+    {
+        Timestamp = timestamp;
+        SportEvent = sportEvent;
+        MsgType = msgType;
+        Markets = null;
+        OriginalMessage = originalMessage;
+    }
+
+    public UserReceivedMessage(long timestamp, ISportEvent sportEvent, string msgType, List<IMarketWithOdds> markets, IMessage originalMessage)
+        : this(timestamp, sportEvent, msgType, originalMessage)
     {
         InitializeMarkets(markets);
     }
 
-    public UserReceivedMessage(long timestamp, ISportEvent sportEvent, string msgType, List<IMarketCancel> markets)
-        : this(timestamp, sportEvent, msgType)
+    public UserReceivedMessage(long timestamp, ISportEvent sportEvent, string msgType, List<IMarketCancel> markets, IMessage originalMessage)
+        : this(timestamp, sportEvent, msgType, originalMessage)
     {
         InitializeMarkets(markets);
     }
 
-    public UserReceivedMessage(long timestamp, ISportEvent sportEvent, string msgType, List<IMarketWithSettlement> markets)
-        : this(timestamp, sportEvent, msgType)
+    public UserReceivedMessage(long timestamp, ISportEvent sportEvent, string msgType, List<IMarketWithSettlement> markets, IMessage originalMessage)
+        : this(timestamp, sportEvent, msgType, originalMessage)
     {
         InitializeMarkets(markets);
     }

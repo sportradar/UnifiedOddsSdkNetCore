@@ -11,7 +11,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using BookmakerDetailsProvider = Sportradar.OddsFeed.SDK.Api.Internal.Config.BookmakerDetailsProvider;
 
-namespace Sportradar.OddsFeed.SDK.Tests.API.Config.ConfigurationBuilder;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Builders.Configuration;
 
 internal static class ConfigurationUnitBuilders
 {

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using Dawn;
@@ -24,6 +25,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// </summary>
     internal class FeedMessageMapper : IFeedMessageMapper
     {
+        private static readonly IReadOnlyDictionary<string, string> EmptyMessageHeaders = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
+
         private readonly ExceptionHandlingStrategy _externalExceptionStrategy;
         private readonly IMarketFactory _marketFactory;
         private readonly INamedValuesProvider _namedValuesProvider;
@@ -92,7 +95,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                         MessageMapperHelper.GetEnumValue(message.change_typeSpecified, message.change_type, FixtureChangeType.Other, FixtureChangeType.NotAvailable),
                                         message.next_live_timeSpecified ? (long?)message.next_live_time : null,
                                         message.start_time,
-                                        rawMessage);
+                                        rawMessage,
+                                        message.MessageHeaders);
         }
 
         /// <summary>
@@ -115,7 +119,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                   message.request_idSpecified ? (long?)message.request_id : null,
                                   MessageMapperHelper.GetEnumValue(message.market_statusSpecified, message.market_status, MarketStatus.Suspended),
                                   message.groups?.Split('|'),
-                                  rawMessage);
+                                  rawMessage,
+                                  message.MessageHeaders);
         }
 
         /// <summary>
@@ -143,7 +148,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                                                                               message.ProducerId,
                                                                                               message.SportId,
                                                                                               culturesList)),
-                                    rawMessage);
+                                    rawMessage,
+                                    message.MessageHeaders);
         }
 
         /// <summary>
@@ -173,7 +179,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                                                                                       message.ProducerId,
                                                                                                       message.SportId,
                                                                                                       culturesList)),
-                                            rawMessage);
+                                            rawMessage,
+                                            message.MessageHeaders);
         }
 
         /// <summary>
@@ -199,7 +206,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                                                                                          message.SportId,
                                                                                                          culturesList)),
                                         message.certainty,
-                                        rawMessage);
+                                        rawMessage,
+                                        message.MessageHeaders);
         }
 
         /// <summary>
@@ -225,7 +233,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                                                                                                             message
                                                                                                                                .SportId,
                                                                                                                             culturesList)),
-                                                rawMessage);
+                                                rawMessage,
+                                                message.MessageHeaders);
         }
 
         /// <summary>
@@ -255,7 +264,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                      markets,
                                      message.odds_generation_properties,
                                      _namedValuesProvider,
-                                     rawMessage);
+                                     rawMessage,
+                                     message.MessageHeaders);
         }
 
         /// <summary>
@@ -282,7 +292,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                                message.odds?.betting_statusSpecified == true ? (int?)message.odds.betting_status : null,
                                                message.odds?.market?.Select(m => _marketFactory.GetMarketWithProbabilities(GetEventForNameProvider<T>(eventId, sportId, culturesList), m, message.product, sportId, culturesList)).ToList(),
                                                _namedValuesProvider,
-                                               rawMessage);
+                                               rawMessage,
+                                               EmptyMessageHeaders);
         }
 
         /// <summary>

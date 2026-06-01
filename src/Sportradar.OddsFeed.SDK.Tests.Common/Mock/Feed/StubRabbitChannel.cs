@@ -37,15 +37,29 @@ public class StubRabbitChannel : IRabbitMqChannel
 
     public void SendMessage(FeedMessage message)
     {
+        SendMessage(message, null);
+    }
+
+    public void SendMessage(FeedMessage message, IDictionary<string, object> additionalHeaders)
+    {
         var msgXmlBody = FeedMessageBuilder.BuildMessageBody(message);
         var routingKey = FeedMessageBuilder.BuildRoutingKey(message);
         var timestamp = DateTime.Now.ToEpochTime();
 
         var msgBody = Encoding.UTF8.GetBytes(msgXmlBody);
 
+        var headers = new Dictionary<string, object> { { "timestamp_in_ms", timestamp } };
+        if (additionalHeaders != null)
+        {
+            foreach (var kvp in additionalHeaders)
+            {
+                headers[kvp.Key] = kvp.Value;
+            }
+        }
+
         var mockBasicProperties = new Mock<IBasicProperties>();
         mockBasicProperties.Setup(s => s.IsHeadersPresent()).Returns(true);
-        mockBasicProperties.SetupGet(s => s.Headers).Returns(new Dictionary<string, object> { { "timestamp_in_ms", timestamp } });
+        mockBasicProperties.SetupGet(s => s.Headers).Returns(headers);
 
         var basicDeliverEventArgs = new BasicDeliverEventArgs
         {

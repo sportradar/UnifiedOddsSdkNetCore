@@ -144,7 +144,8 @@ public class RabbitManagement
     /// <param name="message">The message to be sent</param>
     /// <param name="routingKey">The routing key to be applied, or it will be generated based on message type</param>
     /// <param name="timestamp">The timestamp  to be applied or Now</param>
-    public void Send(FeedMessage message, string routingKey = null, long timestamp = 0)
+    /// <param name="messageHeaders">Add the message headers</param>
+    public void Send(FeedMessage message, string routingKey = null, long timestamp = 0, IReadOnlyDictionary<string, string> messageHeaders = null)
     {
         var msgBody = FeedMessageBuilder.BuildMessageBody(message);
 
@@ -153,16 +154,17 @@ public class RabbitManagement
             routingKey = FeedMessageBuilder.BuildRoutingKey(message);
         }
 
-        Send(msgBody, routingKey, timestamp);
+        Send(msgBody, routingKey, timestamp, messageHeaders);
     }
 
     /// <summary>
-    ///     Sends the message to the rabbit server
+    /// Sends the message to the rabbit server
     /// </summary>
     /// <param name="message">The message should be valid xml</param>
     /// <param name="routingKey">The routing key</param>
     /// <param name="timestamp">The timestamp applied to the message or Now</param>
-    public void Send(string message, string routingKey, long timestamp = 0)
+    /// <param name="messageHeaders">Add the message headers</param>
+    public void Send(string message, string routingKey, long timestamp = 0, IReadOnlyDictionary<string, string> messageHeaders = null)
     {
         if (timestamp == 0)
         {
@@ -173,6 +175,14 @@ public class RabbitManagement
 
         var basicProperties = _channel.CreateBasicProperties();
         basicProperties.Headers = new Dictionary<string, object> { { "timestamp_in_ms", timestamp } };
+
+        if (!messageHeaders.IsNullOrEmpty())
+        {
+            foreach (var header in messageHeaders!)
+            {
+                basicProperties.Headers.Add(header.Key, header.Value);
+            }
+        }
 
         _channel.BasicPublish(_projConfig.UfExchange,
                               routingKey,

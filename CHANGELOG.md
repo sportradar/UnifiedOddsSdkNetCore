@@ -1,6 +1,9 @@
 # Change Log
 
-## 3.10.0
+## 3.11.0
+- Extended feed messages with IMessageV2 interface exposing MessageHeaders
+
+## 2026-05-20 3.10.0
 - Added support for OR selection groups in custom bet probability calculations via the new `ICalculateRequestBuilder` interface (accessible through `ICustomBetManagerV2`), allowing customers to build requests where any one of a set of selections satisfies a leg.
 - Fixed an issue with reloading variant market description on failure when `Throw` exception handling strategy is configured (e.g. when market outcomes cached in the SDK do not match outcomes coming in the feed message). SDK is now able to properly invalidate and re-fetch the market.
 

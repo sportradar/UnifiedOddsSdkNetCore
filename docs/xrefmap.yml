@@ -7622,6 +7622,25 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp.Sent
   nameWithType: IMessageTimestamp.Sent
+- uid: Sportradar.OddsFeed.SDK.Entities.IMessageV2
+  name: IMessageV2
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IMessageV2.html
+  commentId: T:Sportradar.OddsFeed.SDK.Entities.IMessageV2
+  fullName: Sportradar.OddsFeed.SDK.Entities.IMessageV2
+  nameWithType: IMessageV2
+- uid: Sportradar.OddsFeed.SDK.Entities.IMessageV2.MessageHeaders
+  name: MessageHeaders
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IMessageV2.html#Sportradar_OddsFeed_SDK_Entities_IMessageV2_MessageHeaders
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.IMessageV2.MessageHeaders
+  fullName: Sportradar.OddsFeed.SDK.Entities.IMessageV2.MessageHeaders
+  nameWithType: IMessageV2.MessageHeaders
+- uid: Sportradar.OddsFeed.SDK.Entities.IMessageV2.MessageHeaders*
+  name: MessageHeaders
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IMessageV2.html#Sportradar_OddsFeed_SDK_Entities_IMessageV2_MessageHeaders_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.IMessageV2.MessageHeaders
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.IMessageV2.MessageHeaders
+  nameWithType: IMessageV2.MessageHeaders
 - uid: Sportradar.OddsFeed.SDK.Entities.IOddsChange`1
   name: IOddsChange<T>
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IOddsChange-1.html
@@ -18939,6 +18958,19 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.IsStateful
   nameWithType: FeedMessage.IsStateful
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.MessageHeaders
+  name: MessageHeaders
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.html#Sportradar_OddsFeed_SDK_Messages_Feed_FeedMessage_MessageHeaders
+  commentId: P:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.MessageHeaders
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.MessageHeaders
+  nameWithType: FeedMessage.MessageHeaders
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.MessageHeaders*
+  name: MessageHeaders
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.html#Sportradar_OddsFeed_SDK_Messages_Feed_FeedMessage_MessageHeaders_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.MessageHeaders
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.MessageHeaders
+  nameWithType: FeedMessage.MessageHeaders
 - uid: Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.Name
   name: Name
   href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.html#Sportradar_OddsFeed_SDK_Messages_Feed_FeedMessage_Name

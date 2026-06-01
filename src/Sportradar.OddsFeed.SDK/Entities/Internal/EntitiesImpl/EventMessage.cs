@@ -1,5 +1,6 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System.Collections.Generic;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 
@@ -19,8 +20,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="sportEvent">An <see cref="ISportEvent" /> derived instance representing the sport event associated with the current <see cref="EventMessage{T}" /></param>
         /// <param name="requestId">The id of the request which triggered the current <see cref="EventMessage{T}" /> message or a null reference</param>
         /// <param name="rawMessage">The raw message </param>
-        protected EventMessage(IMessageTimestamp timestamp, IProducer producer, T sportEvent, long? requestId, byte[] rawMessage)
-            : base(timestamp, producer)
+        /// <param name="messageHeaders">The AMQP message headers</param>
+        protected EventMessage(IMessageTimestamp timestamp, IProducer producer, T sportEvent, long? requestId, byte[] rawMessage, IReadOnlyDictionary<string, string> messageHeaders = null)
+            : base(timestamp, producer, messageHeaders)
         {
             Event = sportEvent;
             RequestId = requestId;

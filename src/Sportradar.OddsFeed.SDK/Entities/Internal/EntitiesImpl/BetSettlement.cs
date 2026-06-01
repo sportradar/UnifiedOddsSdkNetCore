@@ -26,14 +26,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="markets">An <see cref="IEnumerable{T}" /> describing markets associated with the current <see cref="IMarketMessage{T, R}" /></param>
         /// <param name="certainty">A <see cref="IBetSettlement{T}"/> certainty</param>
         /// <param name="rawMessage">The raw message</param>
+        /// <param name="messageHeaders">The AMQP message headers</param>
         public BetSettlement(IMessageTimestamp timestamp,
                              IProducer producer,
                              T @event,
                              long? requestId,
                              IEnumerable<IMarketWithSettlement> markets,
                              int certainty,
-                             byte[] rawMessage)
-            : base(timestamp, producer, @event, requestId, markets, rawMessage)
+                             byte[] rawMessage,
+                             IReadOnlyDictionary<string, string> messageHeaders)
+            : base(timestamp, producer, @event, requestId, markets, rawMessage, messageHeaders)
         {
             if (certainty == 1)
             {

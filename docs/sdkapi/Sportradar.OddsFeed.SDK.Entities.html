@@ -185,6 +185,17 @@ Interfaces
 </dd>
     </dl>
     <dl class="jumplist">
+      <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Entities.IMessageV2.html">IMessageV2</a></dt>
+      <dd><p>Extends <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.IMessage.html">IMessage</a> with AMQP message header information.
+This V2 interface exists to avoid breaking changes for customers who implement <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.IMessage.html">IMessage</a> directly.
+Access the new properties via an explicit cast:</p>
+<pre><code class="lang-csharp">if (oddsChange is IMessageV2 v2)
+{
+    var headers = v2.MessageHeaders;
+}</code></pre>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Entities.IOddsChange-1.html">IOddsChange&lt;T&gt;</a></dt>
       <dd><p>Defines a contract implemented by odds-change messages</p>
 </dd>

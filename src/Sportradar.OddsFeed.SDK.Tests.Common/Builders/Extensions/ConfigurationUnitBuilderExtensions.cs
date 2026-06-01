@@ -3,10 +3,11 @@
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Configuration;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Endpoints;
 using Sportradar.OddsFeed.SDK.Tests.Common.Helpers;
 
-namespace Sportradar.OddsFeed.SDK.Tests.API.Config.ConfigurationBuilder;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Builders.Extensions;
 
 internal static class ConfigurationUnitBuilderExtensions
 {

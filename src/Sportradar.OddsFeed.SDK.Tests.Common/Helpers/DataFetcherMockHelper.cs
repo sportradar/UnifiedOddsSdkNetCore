@@ -77,6 +77,14 @@ internal static class DataFetcherMockHelper
         return GetDataFetcherProvidingPrebuiltBets(prebuiltBets, _ => true, headersPredicate);
     }
 
+    public static IDataFetcher GetDataFetcherProvidingCashout(cashout cashoutMessage)
+    {
+        var dataFetcherMock = new Mock<IDataFetcher>();
+        dataFetcherMock.Setup(fetcher => fetcher.GetDataAsync(It.IsAny<Uri>()))
+                       .ReturnsAsync(DeserializerHelper.SerializeFeedMessageToStream(cashoutMessage));
+        return dataFetcherMock.Object;
+    }
+
     public static IDataFetcher GetDataFetcherProvidingProducers(producers producers)
     {
         var dataFetcherMock = new Mock<IDataFetcher>();
