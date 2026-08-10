@@ -1,0 +1,119 @@
+name: SDK Github Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version (e.g. 3.12.0)"
+        required: true
+      is_prerelease:
+        description: "Mark as pre-release?"
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # need tags
+
+      - name: Configure git user for tagging
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Validate version format (SemVer core + optional suffix)
+        run: |
+          set -euo pipefail
+          VERSION="${{ inputs.version }}"
+
+          if [[ "$VERSION" =~ ^v ]]; then
+            echo "::error::Version must not start with 'v' — use format like 1.2.3 or 1.2.3-rc1"
+            exit 1
+          fi
+
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::Version must be X.Y.Z with optional -suffix and optional +build (e.g., 1.2.3-rc1 or 1.2.3-rc.1+build.45)"
+            exit 1
+          fi
+
+      - name: Ensure tag exists (v${{ inputs.version }})
+        run: |
+          set -euo pipefail
+          NEW_TAG="v${{ inputs.version }}"
+          if git rev-parse -q --verify "refs/tags/${NEW_TAG}" >/dev/null; then
+            echo "Tag ${NEW_TAG} already exists."
+          else
+            git tag -a "${NEW_TAG}" -m "${NEW_TAG}"
+            git push origin "${NEW_TAG}"
+          fi
+
+      - name: Prepare release notes (notes.md)
+        run: |
+          # Public CHANGELOG uses "## <version>" or "## <yyyy-mm-dd> <version>" headings
+          awk '
+          BEGIN { found_first = 0; found_second = 0 }
+          /^## / {
+            if (found_first == 0) {
+              found_first = 1
+              next
+            } else {
+              found_second = 1
+              exit
+            }
+          }
+          found_first == 1 && found_second == 0 {
+            print $0
+          }
+          ' CHANGELOG.md > notes.md
+
+          if [ ! -s notes.md ]; then
+            echo "::error::Could not extract latest changelog section from CHANGELOG.md"
+            exit 1
+          fi
+
+      - name: Zip DemoProject
+        run: |
+          set -euo pipefail
+          VERSION="${{ inputs.version }}"
+          DEMO_APP_DIRECTORY="src/Sportradar.OddsFeed.SDK.DemoProject"
+          DEMO_APP_SLN_FILE="src/Sportradar.OddsFeed.SDK.DemoProjectCore.sln"
+          DEMO_PROJECT_DIR="DemoProject_${VERSION}"
+          DEMO_PROJECT_ZIP="DemoProject_${VERSION}.zip"
+
+          if [ ! -d "$DEMO_APP_DIRECTORY" ]; then
+            echo "::error::Demo project directory '$DEMO_APP_DIRECTORY' not found"
+            exit 1
+          fi
+          if [ ! -f "$DEMO_APP_SLN_FILE" ]; then
+            echo "::error::Demo project solution '$DEMO_APP_SLN_FILE' not found"
+            exit 1
+          fi
+
+          rm -rf "$DEMO_APP_DIRECTORY/bin" "$DEMO_APP_DIRECTORY/obj"
+          rm -rf "$DEMO_PROJECT_DIR" "$DEMO_PROJECT_ZIP"
+
+          mkdir "$DEMO_PROJECT_DIR"
+          cp -R "$DEMO_APP_DIRECTORY" "$DEMO_PROJECT_DIR/Sportradar.OddsFeed.SDK.DemoProject"
+          cp "$DEMO_APP_SLN_FILE" "$DEMO_PROJECT_DIR/"
+          zip -r "$DEMO_PROJECT_ZIP" "$DEMO_PROJECT_DIR"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ inputs.version }}"
+          DEMO_PROJECT_ZIP="DemoProject_${VERSION}.zip"
+
+          FLAGS=("--title" "v${VERSION}" "--notes-file" "notes.md")
+          if [ "${{ inputs.is_prerelease }}" = "true" ]; then
+            FLAGS+=("--prerelease")
+          fi
+
+          gh release create "v${VERSION}" "${FLAGS[@]}" "$DEMO_PROJECT_ZIP"
