@@ -11,8 +11,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
     internal sealed class AuthenticationTokenCache : IAuthenticationTokenCache
     {
         public const string FusionCacheInstanceName = "AuthFusionCache";
-        public const string UofApiTokenAudience = "UF-RestAPI";
-        public const string UofFeedTokenAudience = "UF-RabbitMQ";
+        public const string UofApiTokenAudience = "https://api.betradar.com";
+        public const string UofFeedTokenAudience = "https://mq.betradar.com";
         private const float EagerRefreshThreshold = 0.9f; // cache refresh in the background when 90% of duration elapsed
 
         private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);

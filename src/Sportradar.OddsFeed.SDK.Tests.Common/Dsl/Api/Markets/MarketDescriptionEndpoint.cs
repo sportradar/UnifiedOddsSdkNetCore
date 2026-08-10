@@ -79,6 +79,24 @@ public class MarketDescriptionEndpoint
         return new MarketDescriptionDto(market);
     }
 
+    public static market_descriptions GetSingleVariantList(desc_market market)
+    {
+        return new market_descriptions
+        {
+            market = [market],
+            response_codeSpecified = false
+        };
+    }
+
+    public static variant_descriptions GetVariantList(params desc_variant[] variants)
+    {
+        return new variant_descriptions
+        {
+            variant = variants,
+            response_codeSpecified = false
+        };
+    }
+
     public static variant_descriptions GetDefaultVariantList()
     {
         var variantList = new List<desc_variant>

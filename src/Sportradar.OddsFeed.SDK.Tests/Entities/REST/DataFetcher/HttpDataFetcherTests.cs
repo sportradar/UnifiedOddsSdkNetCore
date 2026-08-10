@@ -19,7 +19,7 @@ using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
+namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.DataFetcher;
 
 [Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class HttpDataFetcherTests

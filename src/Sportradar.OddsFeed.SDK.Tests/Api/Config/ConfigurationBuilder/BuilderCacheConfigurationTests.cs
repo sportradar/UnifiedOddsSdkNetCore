@@ -17,10 +17,11 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentThenCacheConfigurationHasDefaultValues(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -32,7 +33,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForCustomEnvironmentThenCacheConfigurationHasDefaultValues()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -52,11 +53,13 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration, false)]
     [InlineData(SdkEnvironment.GlobalProduction, true)]
     [InlineData(SdkEnvironment.GlobalProduction, false)]
-    [InlineData(SdkEnvironment.Replay, true)]
-    [InlineData(SdkEnvironment.Replay, false)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, true)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, true)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, false)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, false)]
     public void WhenIgnoreBetPalTimelineSportEventStatusSetForPredefinedEnvironmentThenCacheConfigurationReflectsFlag(SdkEnvironment environment, bool ignoreValue)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -71,7 +74,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [InlineData(false)]
     public void WhenIgnoreBetPalTimelineSportEventStatusSetForCustomEnvironmentThenCacheConfigurationReflectsFlag(bool ignoreValue)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -96,14 +99,17 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.IgnoreBetpalTimelineTimeoutMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.IgnoreBetpalTimelineTimeoutDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.IgnoreBetpalTimelineTimeoutMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.IgnoreBetpalTimelineTimeoutMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.IgnoreBetpalTimelineTimeoutDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.IgnoreBetpalTimelineTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.IgnoreBetpalTimelineTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.IgnoreBetpalTimelineTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.IgnoreBetpalTimelineTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.IgnoreBetpalTimelineTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.IgnoreBetpalTimelineTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.IgnoreBetpalTimelineTimeoutMax)]
     public void WhenIgnoreBetPalTimelineSportEventStatusCacheTimeoutSetForPredefinedEnvironmentThenCacheConfigurationHasExpectedTimeout(SdkEnvironment environment, int timeoutHours)
     {
         var timeout = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -121,7 +127,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var timeout = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -146,14 +152,17 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.ProfileCacheTimeoutMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.ProfileCacheTimeoutDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.ProfileCacheTimeoutMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.ProfileCacheTimeoutMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.ProfileCacheTimeoutDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.ProfileCacheTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.ProfileCacheTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.ProfileCacheTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.ProfileCacheTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.ProfileCacheTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.ProfileCacheTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.ProfileCacheTimeoutMax)]
     public void WhenProfileCacheTimeoutSetForPredefinedEnvironmentThenCacheConfigurationHasExpectedTimeout(SdkEnvironment environment, int timeoutHours)
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -171,7 +180,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -196,14 +205,17 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.SingleVariantMarketTimeoutMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.SingleVariantMarketTimeoutDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.SingleVariantMarketTimeoutMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.SingleVariantMarketTimeoutMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.SingleVariantMarketTimeoutDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.SingleVariantMarketTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.SingleVariantMarketTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.SingleVariantMarketTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.SingleVariantMarketTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.SingleVariantMarketTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.SingleVariantMarketTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.SingleVariantMarketTimeoutMax)]
     public void WhenVariantMarketDescriptionCacheTimeoutSetForPredefinedEnvironmentThenCacheConfigurationHasExpectedTimeout(SdkEnvironment environment, int timeoutHours)
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -221,7 +233,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -246,14 +258,17 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.SportEventCacheTimeoutMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.SportEventCacheTimeoutDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.SportEventCacheTimeoutMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.SportEventCacheTimeoutMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.SportEventCacheTimeoutDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.SportEventCacheTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.SportEventCacheTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.SportEventCacheTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.SportEventCacheTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.SportEventCacheTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.SportEventCacheTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.SportEventCacheTimeoutMax)]
     public void WhenSportEventCacheTimeoutSetForPredefinedEnvironmentThenCacheConfigurationHasExpectedTimeout(SdkEnvironment environment, int timeoutHours)
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -271,7 +286,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromHours(timeoutHours);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -296,14 +311,17 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.SportEventStatusCacheTimeoutMinutesMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.SportEventStatusCacheTimeoutMinutesDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.SportEventStatusCacheTimeoutMinutesMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.SportEventStatusCacheTimeoutMinutesMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.SportEventStatusCacheTimeoutMinutesDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.SportEventStatusCacheTimeoutMinutesMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.SportEventStatusCacheTimeoutMinutesMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.SportEventStatusCacheTimeoutMinutesMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.SportEventStatusCacheTimeoutMinutesDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.SportEventStatusCacheTimeoutMinutesDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.SportEventStatusCacheTimeoutMinutesMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.SportEventStatusCacheTimeoutMinutesMax)]
     public void WhenSportEventStatusCacheTimeoutSetForPredefinedEnvironmentThenCacheConfigurationHasExpectedTimeout(SdkEnvironment environment, int timeoutMinutes)
     {
         var expected = TimeSpan.FromMinutes(timeoutMinutes);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -321,7 +339,7 @@ public class BuilderCacheConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromMinutes(timeoutMinutes);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)

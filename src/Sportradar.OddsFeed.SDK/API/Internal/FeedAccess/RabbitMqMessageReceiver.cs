@@ -11,9 +11,9 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Api.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Api.Managers;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
@@ -114,7 +114,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             _deserializer = deserializer;
             _keyParser = keyParser;
             _producerManager = producerManager;
-            _useReplay = configuration.Environment == SdkEnvironment.Replay;
+            _useReplay = configuration.Environment.IsReplayEnvironment();
             _executionLog = loggerFactory.CreateLogger<RabbitMqMessageReceiver>();
             _feedLog = loggerFactory.CreateLogger<FeedTraffic>();
         }
@@ -214,6 +214,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
                     LogLongFeedMessageDeserialization(tracker, feedMessage, feedMessage.SportId);
 
                     SetFeedMessageSentAtFromBasicPropertiesHeader(eventArgs, feedMessage);
+                    SetFeedMessageHeaders(eventArgs, feedMessage);
                     UofSdkTelemetry.RabbitMessageReceiverMessageReceived.Add(1, new KeyValuePair<string, object>("FeedMessageType", messageName));
 
                     return (feedMessage, producer, messageName, messageBody);
@@ -368,6 +369,32 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
                 _executionLog.LogDebug("{FeedMessageType} for {EventId} ({GeneratedAt}) is missing sent message header", feedMessage.GetType().Name, feedMessage.EventId, feedMessage.GeneratedAt.ToString(CultureInfo.InvariantCulture));
                 feedMessage.SentAt = feedMessage.GeneratedAt + 1;
             }
+        }
+
+        private static void SetFeedMessageHeaders(BasicDeliverEventArgs eventArgs, FeedMessage feedMessage)
+        {
+            var headers = new Dictionary<string, string>();
+            if (eventArgs.BasicProperties != null
+                && eventArgs.BasicProperties.IsHeadersPresent()
+                && eventArgs.BasicProperties.Headers != null)
+            {
+                foreach (var kvp in eventArgs.BasicProperties.Headers)
+                {
+                    if (kvp.Value is byte[] bytes)
+                    {
+                        headers[kvp.Key] = Encoding.UTF8.GetString(bytes);
+                    }
+                    else if (kvp.Value != null)
+                    {
+                        headers[kvp.Key] = kvp.Value.ToString();
+                    }
+                    else
+                    {
+                        headers[kvp.Key] = null;
+                    }
+                }
+            }
+            feedMessage.MessageHeaders = headers;
         }
 
         /// <summary>

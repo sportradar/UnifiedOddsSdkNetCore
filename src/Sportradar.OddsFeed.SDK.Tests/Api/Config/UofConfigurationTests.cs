@@ -2,15 +2,11 @@
 
 using System;
 using System.Linq;
-using System.Security.Cryptography;
-using Microsoft.IdentityModel.Tokens;
 using Moq;
-using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
-using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
@@ -26,7 +22,6 @@ namespace Sportradar.OddsFeed.SDK.Tests.Api.Config;
 // Ignore Spelling: Uof
 public class UofConfigurationTests
 {
-    private const SdkEnvironment AnyEnvironment = SdkEnvironment.Integration;
     private readonly BookmakerDetailsProvider _defaultBookmakerDetailsProvider;
 
     public UofConfigurationTests()
@@ -121,7 +116,7 @@ public class UofConfigurationTests
     [Fact]
     public void ConfigCanLoadMoreThenOnce()
     {
-        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                                       .SetAccessToken(TestData.AccessToken)
                                       .SelectEnvironment(SdkEnvironment.Integration)
                                       .SetDefaultLanguage(ScheduleData.CultureEn)
@@ -137,7 +132,7 @@ public class UofConfigurationTests
     public void ValuesForwardedFromSectionHaveCorrectValues()
     {
         var customSection = TestSection.GetCustomSection();
-        var config = new TokenSetter(new TestSectionProvider(customSection), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(customSection), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
                     .SelectCustom()
                     .LoadFromConfigFile()
@@ -171,13 +166,13 @@ public class UofConfigurationTests
     [InlineData(SdkEnvironment.GlobalProduction)]
     public void SettingEnvironmentHasCorrectValue(SdkEnvironment environment)
     {
-        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                                       .SetAccessToken(TestData.AccessToken)
                                       .SelectEnvironment(environment)
                                       .SetDefaultLanguage(TestData.Culture)
                                       .Build();
 
-        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
+        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")));
 
         ValidateDefaultConfig(config, environment);
         ValidateDefaultProducerConfig(config);
@@ -186,36 +181,18 @@ public class UofConfigurationTests
         ValidateRabbitConfigForEnvironment(config, environment);
     }
 
-    [Fact]
-    public void SettingReplayEnvironmentHasCorrectValue()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    public void SettingReplayEnvironmentHasCorrectValue(SdkEnvironment environment)
     {
-        const SdkEnvironment environment = SdkEnvironment.Replay;
-        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                                       .SetAccessToken(TestData.AccessToken)
                                       .SelectEnvironment(environment)
                                       .SetDefaultLanguage(TestData.Culture)
                                       .Build();
 
-        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
-
-        ValidateDefaultConfig(config, environment);
-        ValidateDefaultProducerConfig(config);
-        ValidateDefaultCacheConfig(config);
-        ValidateApiConfigForEnvironment(config, environment);
-        ValidateRabbitConfigForEnvironment(config, environment);
-    }
-
-    [Fact]
-    public void SelectingReplayEnvironmentHasCorrectValue()
-    {
-        const SdkEnvironment environment = SdkEnvironment.Replay;
-        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-                                      .SetAccessToken(TestData.AccessToken)
-                                      .SelectReplay()
-                                      .SetDefaultLanguage(TestData.Culture)
-                                      .Build();
-
-        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
+        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")));
 
         ValidateDefaultConfig(config, environment);
         ValidateDefaultProducerConfig(config);
@@ -229,7 +206,7 @@ public class UofConfigurationTests
     public void SettingCustomEnvironmentWithCustomValuesHasCorrectValue()
     {
         const SdkEnvironment environment = SdkEnvironment.Custom;
-        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                                       .SetAccessToken(TestData.AccessToken)
                                       .SelectCustom()
                                       .SetDefaultLanguage(TestData.Culture)
@@ -242,7 +219,7 @@ public class UofConfigurationTests
                                       .SetMessagingPort(222)
                                       .Build();
 
-        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
+        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")));
 
         ValidateDefaultConfig(config, environment);
         ValidateDefaultProducerConfig(config);
@@ -360,116 +337,40 @@ public class UofConfigurationTests
     {
         var summary = new UofConfiguration(new TestSectionProvider(null)).ToString();
 
-        summary.ShouldNotBeNull();
-        summary.ShouldContain("UofConfiguration{");
-        summary.ShouldContain("ApiConfiguration{");
-        summary.ShouldContain("CacheConfiguration{");
-        summary.ShouldContain("ProducerConfiguration{");
-        summary.ShouldContain("RabbitConfiguration{");
-        summary.ShouldContain("AdditionalConfiguration{");
-        summary.ShouldContain("UsageConfiguration{");
-        summary.ShouldContain("Authentication");
-        summary.ShouldContain("BookmakerId=");
-        summary.ShouldContain("AccessToken=");
-        summary.ShouldContain("NodeId=");
-        summary.ShouldContain("DefaultLanguage=");
-        summary.ShouldContain("Languages=");
-        summary.ShouldContain("Environment=");
-        summary.ShouldContain("ExceptionHandlingStrategy=");
+        CheckConfigurationSummaryHasAllValue(summary);
     }
 
     [Fact]
-    public void UofConfigurationForClientAuthenticationToStringHasAllTheValues()
+    public void UofConfigurationWithFullValuesToStringHasAllTheValues()
     {
         var section = TestSection.GetDefaultSection();
-        var uofAuthenticationConfiguration = UofClientAuthentication.PrivateKeyJwt().
-                                                                     SetSigningKeyId("test-value-kid")
-                                                                    .SetClientId("test-value-service-id")
-                                                                    .SetPrivateKey(new RsaSecurityKey(RSA.Create()))
-                                                                    .Build();
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-                    .SetClientAuthentication(uofAuthenticationConfiguration)
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
+                    .SetAccessTokenFromConfigFile()
                     .SelectEnvironmentFromConfigFile()
                     .LoadFromConfigFile()
                     .Build();
         var summary = config.ToString();
 
-        summary.ShouldNotBeNull();
-        summary.ShouldContain("UofConfiguration{");
-        summary.ShouldContain("ApiConfiguration{");
-        summary.ShouldContain("CacheConfiguration{");
-        summary.ShouldContain("ProducerConfiguration{");
-        summary.ShouldContain("RabbitConfiguration{");
-        summary.ShouldContain("AdditionalConfiguration{");
-        summary.ShouldContain("UsageConfiguration{");
-        summary.ShouldContain("Authentication");
-        summary.ShouldContain("BookmakerId=");
-        summary.ShouldContain("AccessToken=");
-        summary.ShouldContain("NodeId=");
-        summary.ShouldContain("DefaultLanguage=");
-        summary.ShouldContain("Languages=");
-        summary.ShouldContain("Environment=");
-        summary.ShouldContain("ExceptionHandlingStrategy=");
+        CheckConfigurationSummaryHasAllValue(summary);
     }
 
-    [Fact]
-    public void UofConfigurationForAccessTokenToStringHasAllTheValues()
+    private static void CheckConfigurationSummaryHasAllValue(string summary)
     {
-        var section = TestSection.GetDefaultSection();
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-                    .SetAccessToken("test-access-token")
-                    .SelectEnvironmentFromConfigFile()
-                    .LoadFromConfigFile()
-                    .Build();
-        var summary = config.ToString();
-
-        summary.ShouldNotBeNull();
-        summary.ShouldContain("UofConfiguration{");
-        summary.ShouldContain("ApiConfiguration{");
-        summary.ShouldContain("CacheConfiguration{");
-        summary.ShouldContain("ProducerConfiguration{");
-        summary.ShouldContain("RabbitConfiguration{");
-        summary.ShouldContain("AdditionalConfiguration{");
-        summary.ShouldContain("UsageConfiguration{");
-        summary.ShouldContain("Authentication");
-        summary.ShouldContain("BookmakerId=");
-        summary.ShouldContain("AccessToken=");
-        summary.ShouldContain("NodeId=");
-        summary.ShouldContain("DefaultLanguage=");
-        summary.ShouldContain("Languages=");
-        summary.ShouldContain("Environment=");
-        summary.ShouldContain("ExceptionHandlingStrategy=");
-    }
-
-    [Fact]
-    public void WhenCallToStringWithUofConfigurationWithoutAuthenticationThenEmptyAuthenticationStringIsReturned()
-    {
-        var section = TestSection.GetDefaultSection();
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-                    .SetAccessToken("test-value-token")
-                    .SelectEnvironment(AnyEnvironment)
-                    .SetDefaultLanguage(TestConsts.CultureEn)
-                    .Build();
-
-        config.ToString()!.ShouldContain($"{nameof(config.Authentication)}=null");
-    }
-
-    [Fact]
-    public void AuthenticationConfigurationToStringHasAllTheValues()
-    {
-        var uofAuthenticationConfiguration = UofClientAuthentication.PrivateKeyJwt().
-                                                                     SetSigningKeyId("test-value-kid")
-                                                                    .SetClientId("test-value-service-id")
-                                                                    .SetPrivateKey(new RsaSecurityKey(RSA.Create()))
-                                                                    .Build();
-        var summary = uofAuthenticationConfiguration.ToString();
-
         Assert.NotNull(summary);
-        Assert.Contains("Authentication{", summary);
-        Assert.Contains("SigningKeyId=", summary);
-        Assert.Contains(SdkInfo.ClearSensitiveData(uofAuthenticationConfiguration.SigningKeyId), summary);
-        Assert.Contains("ClientId=", summary);
-        Assert.Contains(SdkInfo.ClearSensitiveData(uofAuthenticationConfiguration.ClientId), summary);
+        Assert.Contains("UofConfiguration{", summary);
+        Assert.Contains("ApiConfiguration{", summary);
+        Assert.Contains("CacheConfiguration{", summary);
+        Assert.Contains("ProducerConfiguration{", summary);
+        Assert.Contains("RabbitConfiguration{", summary);
+        Assert.Contains("AdditionalConfiguration{", summary);
+        Assert.Contains("UsageConfiguration{", summary);
+        Assert.Contains("BookmakerId=", summary);
+        Assert.Contains("AccessToken=", summary);
+        Assert.Contains("NodeId=", summary);
+        Assert.Contains("DefaultLanguage=", summary);
+        Assert.Contains("Languages=", summary);
+        Assert.Contains("Environment=", summary);
+        Assert.Contains("ExceptionHandlingStrategy=", summary);
     }
 
     private static void ValidateDefaultConfig(IUofConfiguration config, SdkEnvironment environment)

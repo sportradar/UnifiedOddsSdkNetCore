@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
+using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
@@ -54,30 +55,30 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// <summary>
         /// Asynchronously gets a <see cref="CalculationDto"/> instance
         /// </summary>
-        /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be fetched</param>
+        /// <param name="request">The <see cref="CalculateRequest"/> containing the ordered legs for which the probability should be fetched</param>
         /// <returns>A <see cref="Task{CalculationDto}"/> representing the probability calculation</returns>
-        public async Task<CalculationDto> GetDataAsync(IEnumerable<ISelection> selections)
+        public async Task<CalculationDto> GetDataAsync(CalculateRequest request)
         {
-            var capiSelections = new List<SelectionType>();
-            foreach (var selection in selections)
+            var items = new List<object>();
+            foreach (var item in request.Items)
             {
-                var capiSelection = new SelectionType
+                if (item.IsOrGroup)
                 {
-                    id = selection.EventId.ToString(),
-                    market_id = selection.MarketId,
-                    outcome_id = selection.OutcomeId,
-                    specifiers = selection.Specifiers
-                };
-
-                if (selection.Odds != null)
-                {
-                    capiSelection.odds = selection.Odds.Value;
-                    capiSelection.oddsSpecified = true;
+                    var orSelections = new List<SelectionType>();
+                    foreach (var selection in item.Selections)
+                    {
+                        var capiSelection = BuildSelectionType(selection);
+                        orSelections.Add(capiSelection);
+                    }
+                    items.Add(new OrSelectionType { selection = orSelections.ToArray() });
                 }
-                capiSelections.Add(capiSelection);
+                else
+                {
+                    items.Add(BuildSelectionType(item.Selections[0]));
+                }
             }
 
-            var content = GetContent(_serializer, new SelectionsType { selection = capiSelections.ToArray() });
+            var content = GetContent(_serializer, new SelectionsType { Items = items.ToArray() });
 
             var responseMessage = await _poster.PostDataAsync(new Uri(_uriFormat), content).ConfigureAwait(false);
 
@@ -92,6 +93,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 
             var stream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
             return _mapperFactory.CreateMapper(_deserializer.Deserialize(stream)).Map();
+        }
+
+        private static SelectionType BuildSelectionType(ISelection selection)
+        {
+            var capiSelection = new SelectionType
+            {
+                id = selection.EventId.ToString(),
+                market_id = selection.MarketId,
+                outcome_id = selection.OutcomeId,
+                specifiers = selection.Specifiers
+            };
+
+            if (selection.Odds != null)
+            {
+                capiSelection.odds = selection.Odds.Value;
+                capiSelection.oddsSpecified = true;
+            }
+
+            return capiSelection;
         }
 
         internal static HttpContent GetContent<T>(XmlSerializer xmlSerializer, T content)

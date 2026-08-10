@@ -504,11 +504,11 @@ public class CustomConfigurationBuilderWithSectionTests : ConfigurationBuilderWi
 
     private static TokenSetter GetTokenSetterWithoutSection()
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWithoutSection(), new TestBookmakerDetailsProvider(), new TestProducersProvider());
+        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWithoutSection(), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider());
     }
 
     private static TokenSetter GetTokenSetterWithSection(IUofConfigurationSection section)
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWith(section), new TestBookmakerDetailsProvider(), new TestProducersProvider());
+        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWith(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider());
     }
 }

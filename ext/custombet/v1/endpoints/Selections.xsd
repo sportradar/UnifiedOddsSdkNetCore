@@ -12,9 +12,10 @@
   </xs:element>
 
   <xs:complexType name="SelectionsType">
-    <xs:sequence>
-      <xs:element name="selection" type="SelectionType" maxOccurs="10"/>
-    </xs:sequence>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="selection" type="SelectionType"/>
+      <xs:element name="orSelections" type="OrSelectionType"/>
+    </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="SelectionType">
@@ -30,7 +31,10 @@
     </xs:attribute>
     <xs:attribute name="specifiers" type="xs:string">
       <xs:annotation>
-        <xs:documentation>Market specifiers to identify markets with additional parameters, if applicable, such as "total=1.5"</xs:documentation>
+        <xs:documentation>
+          Market specifiers to identify markets with additional parameters, if applicable, such as
+          "total=1.5"
+        </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="outcome_id" type="xs:string" use="required">
@@ -40,9 +44,14 @@
     </xs:attribute>
     <xs:attribute name="odds" type="xs:double">
       <xs:annotation>
-        <xs:documentation>Odds for the selection, in EU odds format</xs:documentation>
+        <xs:documentation>Odds for the selection</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
-</xs:schema>
 
+  <xs:complexType name="OrSelectionType">
+    <xs:sequence>
+      <xs:element name="selection" type="SelectionType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

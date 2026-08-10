@@ -39,6 +39,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
                                                                         new KeyValuePair<string, object>("bookmakerId", config.BookmakerDetails.BookmakerId.ToString())
                                                                     });
 
+            HttpClient CreateUsageHttpClient() =>
+                httpClientFactory.CreateClient(UofSdkBootstrap.HttpClientNameForUsageExporter);
+
             var usageMeterProvider = Sdk
                                     .CreateMeterProviderBuilder()
                                     .SetupUsageMetricsForExporter()
@@ -54,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
                                                              ScheduledDelayMilliseconds = config.Usage.ExportIntervalInSec * 1000,
                                                              ExporterTimeoutMilliseconds = config.Usage.ExportTimeoutInSec * 1000
                                                          };
-                                                         exporterOptions.HttpClientFactory = () => httpClientFactory.CreateClient(UofSdkBootstrap.HttpClientNameForUsageExporter);
+                                                         exporterOptions.HttpClientFactory = CreateUsageHttpClient;
                                                          exporterOptions.TimeoutMilliseconds = config.Usage.ExportTimeoutInSec * 1000;
                                                          metricReaderOptions.TemporalityPreference = MetricReaderTemporalityPreference.Delta;
                                                          metricReaderOptions.PeriodicExportingMetricReaderOptions = new PeriodicExportingMetricReaderOptions

@@ -24,6 +24,36 @@ public static class PreconfiguredFeedMessages
                                 .Build();
     }
 
+    public static odds_change Head2HeadMarketOddsChangeForDrammenSprintWomenTournamentAndCompetitorsRibomAndDahlqvist()
+    {
+        return OddsChangeBuilder.Create()
+                                .WithProduct(3)
+                                .ForEventId(Urn.Parse("sr:simple_tournament:112677"))
+                                .WithTimestamp(1710226442742)
+                                .AddMarket(new oddsChangeMarket
+                                {
+                                    favourite = 1,
+                                    favouriteSpecified = true,
+                                    status = 1,
+                                    statusSpecified = true,
+                                    id = 539,
+                                    specifiers = "id=sr:matchmarket:48463103",
+                                    market_metadata = new marketMetadata
+                                    {
+                                        next_betstop = 1710239400000,
+                                        next_betstopSpecified = true,
+                                        start_time = 1710239400000,
+                                        start_timeSpecified = true
+                                    },
+                                    outcome =
+                                    [
+                                        CreateOddsOutcome("sr:competitor:552379", 1.9, 0.4913668172000739),
+                                        CreateOddsOutcome("sr:competitor:185484", 1.84, 0.5086331830353298)
+                                    ]
+                                })
+                                .Build();
+    }
+
     public static rollback_bet_cancel GsApollonVsAeGravasBetCancelRollback()
     {
         return new rollback_bet_cancel
@@ -128,6 +158,20 @@ public static class PreconfiguredFeedMessages
             SentAt = UnixEpoch,
             ReceivedAt = UnixEpoch,
             SportId = SoccerId
+        };
+    }
+
+    private static oddsChangeMarketOutcome CreateOddsOutcome(string outcomeId, double odds, double probabilities)
+    {
+        return new oddsChangeMarketOutcome
+        {
+            id = outcomeId,
+            odds = odds,
+            oddsSpecified = true,
+            probabilities = probabilities,
+            probabilitiesSpecified = true,
+            active = 1,
+            activeSpecified = true
         };
     }
 

@@ -1,5 +1,6 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Serialization;
@@ -93,6 +94,13 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
         /// </summary>
         /// <value>The timestamp of the message</value>
         public abstract long ReceivedAt { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AMQP message headers delivered with this message.
+        /// This is set by the message receiver when processing the raw AMQP delivery.
+        /// </summary>
+        [XmlIgnore]
+        public IReadOnlyDictionary<string, string> MessageHeaders { get; set; }
 
         /// <summary>
         /// Returns a <see cref="string" /> that represents this instance.

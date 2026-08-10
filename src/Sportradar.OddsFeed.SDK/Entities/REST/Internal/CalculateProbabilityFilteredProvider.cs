@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
+using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
@@ -49,37 +50,46 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// <summary>
         /// Asynchronously gets a <see cref="FilteredCalculationDto"/> instance
         /// </summary>
-        /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be fetched</param>
+        /// <param name="request">The <see cref="CalculateRequest"/> containing the ordered legs for which the probability should be fetched</param>
         /// <returns>A <see cref="Task{FilteredCalculationDto}"/> representing the probability calculation</returns>
-        public async Task<FilteredCalculationDto> GetDataAsync(IEnumerable<ISelection> selections)
+        public async Task<FilteredCalculationDto> GetDataAsync(CalculateRequest request)
         {
-            var resultSelection = new FilterSelectionsType();
-            var selectionSelection = new List<FilterSelectionType>();
+            var selectionList = new List<FilterSelectionType>();
 
-            foreach (var selection in selections)
+            foreach (var item in request.Items)
             {
-                var filterSelectionMarketType = new FilterSelectionMarketType
+                if (item.IsOrGroup)
                 {
-                    market_id = selection.MarketId,
-                    outcome_id = selection.OutcomeId,
-                    specifiers = selection.Specifiers
-                };
+                    // OR group: all selections in the group share the same event id (first selection's event id is used as the container id)
+                    var markets = new List<FilterSelectionMarketType>();
+                    foreach (var selection in item.Selections)
+                    {
+                        markets.Add(BuildFilterSelectionMarketType(selection));
+                    }
 
-                if (selection.Odds != null)
-                {
-                    filterSelectionMarketType.odds = selection.Odds.Value;
-                    filterSelectionMarketType.oddsSpecified = true;
+                    var orSelections = new FilterOrSelectionsType { market = markets.ToArray() };
+                    // Use the event id from the first selection in the group
+                    var filterSelectionType = new FilterSelectionType
+                    {
+                        id = item.Selections[0].EventId.ToString(),
+                        Items = new object[] { orSelections }
+                    };
+                    selectionList.Add(filterSelectionType);
                 }
-                var filterSelectionType = new FilterSelectionType
+                else
                 {
-                    id = selection.EventId.ToString(),
-                    market = new[] { filterSelectionMarketType }
-                };
-                selectionSelection.Add(filterSelectionType);
+                    var selection = item.Selections[0];
+                    var filterSelectionMarketType = BuildFilterSelectionMarketType(selection);
+                    var filterSelectionType = new FilterSelectionType
+                    {
+                        id = selection.EventId.ToString(),
+                        Items = new object[] { filterSelectionMarketType }
+                    };
+                    selectionList.Add(filterSelectionType);
+                }
             }
 
-            resultSelection.selection = selectionSelection.ToArray();
-
+            var resultSelection = new FilterSelectionsType { selection = selectionList.ToArray() };
             var content = CalculateProbabilityProvider.GetContent(_serializer, resultSelection);
 
             var responseMessage = await _poster.PostDataAsync(new Uri(_uriFormat), content).ConfigureAwait(false);
@@ -95,6 +105,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 
             var stream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
             return _mapperFactory.CreateMapper(_deserializer.Deserialize(stream)).Map();
+        }
+
+        private static FilterSelectionMarketType BuildFilterSelectionMarketType(ISelection selection)
+        {
+            var market = new FilterSelectionMarketType
+            {
+                market_id = selection.MarketId,
+                outcome_id = selection.OutcomeId,
+                specifiers = selection.Specifiers
+            };
+
+            if (selection.Odds != null)
+            {
+                market.odds = selection.Odds.Value;
+                market.oddsSpecified = true;
+            }
+
+            return market;
         }
     }
 }

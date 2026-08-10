@@ -1,6 +1,5 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
-using System.Collections.Generic;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common.Extensions;
@@ -30,7 +29,6 @@ public class CompetitorBuilder
     private sport _sport;
     private category _category;
     private ReferencesBuilder _referencesBuilder;
-    private List<playerCompetitor> _players = [];
 
     public CompetitorBuilder WithId(Urn id)
     {

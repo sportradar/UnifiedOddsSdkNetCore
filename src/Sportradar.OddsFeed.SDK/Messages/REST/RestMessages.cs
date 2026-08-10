@@ -7948,11 +7948,11 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
     [System.Xml.Serialization.XmlRootAttribute("available_selections", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
     public partial class AvailableSelectionsType {
-
+        
         private EventType eventField;
-
+        
         private string generated_atField;
-
+        
         /// <remarks/>
         public EventType @event {
             get {
@@ -7962,7 +7962,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
                 this.eventField = value;
             }
         }
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string generated_at {
@@ -7974,7 +7974,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
             }
         }
     }
-
+    
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -7982,11 +7982,11 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
     public partial class EventType {
-
+        
         private MarketType[] marketsField;
-
+        
         private string idField;
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("market", IsNullable=false)]
         public MarketType[] markets {
@@ -7997,7 +7997,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
                 this.marketsField = value;
             }
         }
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string id {
@@ -8009,7 +8009,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
             }
         }
     }
-
+    
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -8017,13 +8017,13 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
     public partial class MarketType {
-
+        
         private OutcomeType[] outcomeField;
-
+        
         private int idField;
-
+        
         private string specifiersField;
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("outcome")]
         public OutcomeType[] outcome {
@@ -8034,7 +8034,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
                 this.outcomeField = value;
             }
         }
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int id {
@@ -8045,7 +8045,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
                 this.idField = value;
             }
         }
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string specifiers {
@@ -8057,7 +8057,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
             }
         }
     }
-
+    
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -8065,9 +8065,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
     public partial class OutcomeType {
-
+        
         private string idField;
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string id {
@@ -8079,778 +8079,17 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
             }
         }
     }
-
+    
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    [System.Xml.Serialization.XmlRootAttribute("calculation_response", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
-    public partial class CalculationResponseType {
-
-        private CalculationResultType calculationField;
-
-        private EventType[] available_selectionsField;
-
-        private string generated_atField;
-
-        /// <remarks/>
-        public CalculationResultType calculation {
-            get {
-                return this.calculationField;
-            }
-            set {
-                this.calculationField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("event", IsNullable=false)]
-        public EventType[] available_selections {
-            get {
-                return this.available_selectionsField;
-            }
-            set {
-                this.available_selectionsField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string generated_at {
-            get {
-                return this.generated_atField;
-            }
-            set {
-                this.generated_atField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    public partial class CalculationResultType {
-
-        private double oddsField;
-
-        private double probabilityField;
-
-        private bool harmonizationField;
-
-        private bool harmonizationFieldSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double odds {
-            get {
-                return this.oddsField;
-            }
-            set {
-                this.oddsField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double probability {
-            get {
-                return this.probabilityField;
-            }
-            set {
-                this.probabilityField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool harmonization {
-            get {
-                return this.harmonizationField;
-            }
-            set {
-                this.harmonizationField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool harmonizationSpecified {
-            get {
-                return this.harmonizationFieldSpecified;
-            }
-            set {
-                this.harmonizationFieldSpecified = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    [System.Xml.Serialization.XmlRootAttribute("response", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
-    public partial class ResponseType {
-
-        private string messageField;
-
-        private string errorsField;
-
-        private string response_codeField;
-
-        private string generated_atField;
-
-        /// <remarks/>
-        public string message {
-            get {
-                return this.messageField;
-            }
-            set {
-                this.messageField = value;
-            }
-        }
-
-        /// <remarks/>
-        public string errors {
-            get {
-                return this.errorsField;
-            }
-            set {
-                this.errorsField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string response_code {
-            get {
-                return this.response_codeField;
-            }
-            set {
-                this.response_codeField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string generated_at {
-            get {
-                return this.generated_atField;
-            }
-            set {
-                this.generated_atField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    [System.Xml.Serialization.XmlRootAttribute("filtered_calculation_response", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
-    public partial class FilteredCalculationResponseType {
-
-        private FilteredCalculationResultType calculationField;
-
-        private FilteredEventType[] available_selectionsField;
-
-        private string generated_atField;
-
-        /// <remarks/>
-        public FilteredCalculationResultType calculation {
-            get {
-                return this.calculationField;
-            }
-            set {
-                this.calculationField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("event", IsNullable=false)]
-        public FilteredEventType[] available_selections {
-            get {
-                return this.available_selectionsField;
-            }
-            set {
-                this.available_selectionsField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string generated_at {
-            get {
-                return this.generated_atField;
-            }
-            set {
-                this.generated_atField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    public partial class FilteredCalculationResultType {
-
-        private double oddsField;
-
-        private double probabilityField;
-
-        private bool harmonizationField;
-
-        private bool harmonizationFieldSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double odds {
-            get {
-                return this.oddsField;
-            }
-            set {
-                this.oddsField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double probability {
-            get {
-                return this.probabilityField;
-            }
-            set {
-                this.probabilityField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool harmonization {
-            get {
-                return this.harmonizationField;
-            }
-            set {
-                this.harmonizationField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool harmonizationSpecified {
-            get {
-                return this.harmonizationFieldSpecified;
-            }
-            set {
-                this.harmonizationFieldSpecified = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    public partial class FilteredEventType {
-
-        private FilteredMarketType[] marketsField;
-
-        private string idField;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("market", IsNullable=false)]
-        public FilteredMarketType[] markets {
-            get {
-                return this.marketsField;
-            }
-            set {
-                this.marketsField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    public partial class FilteredMarketType {
-
-        private FilteredOutcomeType[] outcomeField;
-
-        private int idField;
-
-        private string specifiersField;
-
-        private bool conflictField;
-
-        private bool conflictFieldSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("outcome")]
-        public FilteredOutcomeType[] outcome {
-            get {
-                return this.outcomeField;
-            }
-            set {
-                this.outcomeField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string specifiers {
-            get {
-                return this.specifiersField;
-            }
-            set {
-                this.specifiersField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool conflict {
-            get {
-                return this.conflictField;
-            }
-            set {
-                this.conflictField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool conflictSpecified {
-            get {
-                return this.conflictFieldSpecified;
-            }
-            set {
-                this.conflictFieldSpecified = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    public partial class FilteredOutcomeType {
-
-        private string idField;
-
-        private bool conflictField;
-
-        private bool conflictFieldSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool conflict {
-            get {
-                return this.conflictField;
-            }
-            set {
-                this.conflictField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool conflictSpecified {
-            get {
-                return this.conflictFieldSpecified;
-            }
-            set {
-                this.conflictFieldSpecified = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    [System.Xml.Serialization.XmlRootAttribute("filterSelections", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
-    public partial class FilterSelectionsType {
-
-        private FilterSelectionType[] selectionField;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("selection")]
-        public FilterSelectionType[] selection {
-            get {
-                return this.selectionField;
-            }
-            set {
-                this.selectionField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    public partial class FilterSelectionType {
-
-        private FilterSelectionMarketType[] marketField;
-
-        private string idField;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("market")]
-        public FilterSelectionMarketType[] market {
-            get {
-                return this.marketField;
-            }
-            set {
-                this.marketField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    public partial class FilterSelectionMarketType {
-
-        private int market_idField;
-
-        private string specifiersField;
-
-        private string outcome_idField;
-
-        private double oddsField;
-
-        private bool oddsFieldSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int market_id {
-            get {
-                return this.market_idField;
-            }
-            set {
-                this.market_idField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string specifiers {
-            get {
-                return this.specifiersField;
-            }
-            set {
-                this.specifiersField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string outcome_id {
-            get {
-                return this.outcome_idField;
-            }
-            set {
-                this.outcome_idField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double odds {
-            get {
-                return this.oddsField;
-            }
-            set {
-                this.oddsField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool oddsSpecified {
-            get {
-                return this.oddsFieldSpecified;
-            }
-            set {
-                this.oddsFieldSpecified = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    [System.Xml.Serialization.XmlRootAttribute("pre_built_bets", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
-    public partial class PreBuiltBetsType {
-
-        private EventRecommendationsType[] eventField;
-
-        private int requested_recommendationsField;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("event")]
-        public EventRecommendationsType[] @event {
-            get {
-                return this.eventField;
-            }
-            set {
-                this.eventField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int requested_recommendations {
-            get {
-                return this.requested_recommendationsField;
-            }
-            set {
-                this.requested_recommendationsField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    public partial class EventRecommendationsType {
-
-        private RecommendationsType[] recommendationsField;
-
-        private string idField;
-
-        private int provided_recommendationField;
-
-        private string sourceField;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("recommendations")]
-        public RecommendationsType[] recommendations {
-            get {
-                return this.recommendationsField;
-            }
-            set {
-                this.recommendationsField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int provided_recommendation {
-            get {
-                return this.provided_recommendationField;
-            }
-            set {
-                this.provided_recommendationField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string source {
-            get {
-                return this.sourceField;
-            }
-            set {
-                this.sourceField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    public partial class RecommendationsType {
-
-        private PreBuiltBetsSelectionType[] selectionField;
-
-        private decimal oddsField;
-
-        private decimal probabilityField;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("selection")]
-        public PreBuiltBetsSelectionType[] selection {
-            get {
-                return this.selectionField;
-            }
-            set {
-                this.selectionField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal odds {
-            get {
-                return this.oddsField;
-            }
-            set {
-                this.oddsField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal probability {
-            get {
-                return this.probabilityField;
-            }
-            set {
-                this.probabilityField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    public partial class PreBuiltBetsSelectionType {
-
-        private string market_idField;
-
-        private string outcome_idField;
-
-        private string specifiersField;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string market_id {
-            get {
-                return this.market_idField;
-            }
-            set {
-                this.market_idField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string outcome_id {
-            get {
-                return this.outcome_idField;
-            }
-            set {
-                this.outcome_idField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string specifiers {
-            get {
-                return this.specifiersField;
-            }
-            set {
-                this.specifiersField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
-    [System.Xml.Serialization.XmlRootAttribute("selections", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
-    public partial class SelectionsType {
-
+    public partial class OrSelectionType {
+        
         private SelectionType[] selectionField;
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("selection")]
         public SelectionType[] selection {
@@ -8862,7 +8101,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
             }
         }
     }
-
+    
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -8870,19 +8109,19 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
     public partial class SelectionType {
-
+        
         private string idField;
-
+        
         private int market_idField;
-
+        
         private string specifiersField;
-
+        
         private string outcome_idField;
-
+        
         private double oddsField;
-
+        
         private bool oddsFieldSpecified;
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string id {
@@ -8893,7 +8132,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
                 this.idField = value;
             }
         }
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int market_id {
@@ -8904,7 +8143,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
                 this.market_idField = value;
             }
         }
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string specifiers {
@@ -8915,7 +8154,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
                 this.specifiersField = value;
             }
         }
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string outcome_id {
@@ -8926,7 +8165,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
                 this.outcome_idField = value;
             }
         }
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double odds {
@@ -8937,7 +8176,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
                 this.oddsField = value;
             }
         }
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool oddsSpecified {
@@ -8946,6 +8185,826 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
             }
             set {
                 this.oddsFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    public partial class PreBuiltBetsSelectionType {
+        
+        private int market_idField;
+        
+        private string outcome_idField;
+        
+        private string specifiersField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int market_id {
+            get {
+                return this.market_idField;
+            }
+            set {
+                this.market_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string outcome_id {
+            get {
+                return this.outcome_idField;
+            }
+            set {
+                this.outcome_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string specifiers {
+            get {
+                return this.specifiersField;
+            }
+            set {
+                this.specifiersField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    public partial class RecommendationsType {
+        
+        private PreBuiltBetsSelectionType[] selectionField;
+        
+        private double oddsField;
+        
+        private double probabilityField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("selection")]
+        public PreBuiltBetsSelectionType[] selection {
+            get {
+                return this.selectionField;
+            }
+            set {
+                this.selectionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public double odds {
+            get {
+                return this.oddsField;
+            }
+            set {
+                this.oddsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public double probability {
+            get {
+                return this.probabilityField;
+            }
+            set {
+                this.probabilityField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    public partial class EventRecommendationsType {
+        
+        private RecommendationsType[] recommendationsField;
+        
+        private string idField;
+        
+        private int provided_recommendationField;
+        
+        private string sourceField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("recommendations")]
+        public RecommendationsType[] recommendations {
+            get {
+                return this.recommendationsField;
+            }
+            set {
+                this.recommendationsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int provided_recommendation {
+            get {
+                return this.provided_recommendationField;
+            }
+            set {
+                this.provided_recommendationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string source {
+            get {
+                return this.sourceField;
+            }
+            set {
+                this.sourceField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    public partial class FilteredOutcomeType {
+        
+        private string idField;
+        
+        private bool conflictField;
+        
+        private bool conflictFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool conflict {
+            get {
+                return this.conflictField;
+            }
+            set {
+                this.conflictField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool conflictSpecified {
+            get {
+                return this.conflictFieldSpecified;
+            }
+            set {
+                this.conflictFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    public partial class FilteredMarketType {
+        
+        private FilteredOutcomeType[] outcomeField;
+        
+        private int idField;
+        
+        private string specifiersField;
+        
+        private bool conflictField;
+        
+        private bool conflictFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("outcome")]
+        public FilteredOutcomeType[] outcome {
+            get {
+                return this.outcomeField;
+            }
+            set {
+                this.outcomeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string specifiers {
+            get {
+                return this.specifiersField;
+            }
+            set {
+                this.specifiersField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool conflict {
+            get {
+                return this.conflictField;
+            }
+            set {
+                this.conflictField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool conflictSpecified {
+            get {
+                return this.conflictFieldSpecified;
+            }
+            set {
+                this.conflictFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    public partial class FilteredEventType {
+        
+        private FilteredMarketType[] marketsField;
+        
+        private string idField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("market", IsNullable=false)]
+        public FilteredMarketType[] markets {
+            get {
+                return this.marketsField;
+            }
+            set {
+                this.marketsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    public partial class FilteredCalculationResultType {
+        
+        private double oddsField;
+        
+        private double probabilityField;
+        
+        private bool harmonizationField;
+        
+        private bool harmonizationFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public double odds {
+            get {
+                return this.oddsField;
+            }
+            set {
+                this.oddsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public double probability {
+            get {
+                return this.probabilityField;
+            }
+            set {
+                this.probabilityField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool harmonization {
+            get {
+                return this.harmonizationField;
+            }
+            set {
+                this.harmonizationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool harmonizationSpecified {
+            get {
+                return this.harmonizationFieldSpecified;
+            }
+            set {
+                this.harmonizationFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    public partial class FilterOrSelectionsType {
+        
+        private FilterSelectionMarketType[] marketField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("market")]
+        public FilterSelectionMarketType[] market {
+            get {
+                return this.marketField;
+            }
+            set {
+                this.marketField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    public partial class FilterSelectionMarketType {
+        
+        private int market_idField;
+        
+        private string specifiersField;
+        
+        private string outcome_idField;
+        
+        private double oddsField;
+        
+        private bool oddsFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int market_id {
+            get {
+                return this.market_idField;
+            }
+            set {
+                this.market_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string specifiers {
+            get {
+                return this.specifiersField;
+            }
+            set {
+                this.specifiersField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string outcome_id {
+            get {
+                return this.outcome_idField;
+            }
+            set {
+                this.outcome_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public double odds {
+            get {
+                return this.oddsField;
+            }
+            set {
+                this.oddsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool oddsSpecified {
+            get {
+                return this.oddsFieldSpecified;
+            }
+            set {
+                this.oddsFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    public partial class FilterSelectionType {
+        
+        private object[] itemsField;
+        
+        private string idField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("market", typeof(FilterSelectionMarketType))]
+        [System.Xml.Serialization.XmlElementAttribute("orSelections", typeof(FilterOrSelectionsType))]
+        public object[] Items {
+            get {
+                return this.itemsField;
+            }
+            set {
+                this.itemsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    public partial class CalculationResultType {
+        
+        private double oddsField;
+        
+        private double probabilityField;
+        
+        private bool harmonizationField;
+        
+        private bool harmonizationFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public double odds {
+            get {
+                return this.oddsField;
+            }
+            set {
+                this.oddsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public double probability {
+            get {
+                return this.probabilityField;
+            }
+            set {
+                this.probabilityField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool harmonization {
+            get {
+                return this.harmonizationField;
+            }
+            set {
+                this.harmonizationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool harmonizationSpecified {
+            get {
+                return this.harmonizationFieldSpecified;
+            }
+            set {
+                this.harmonizationFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    [System.Xml.Serialization.XmlRootAttribute("calculation_response", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
+    public partial class CalculationResponseType {
+        
+        private CalculationResultType calculationField;
+        
+        private EventType[] available_selectionsField;
+        
+        private string generated_atField;
+        
+        /// <remarks/>
+        public CalculationResultType calculation {
+            get {
+                return this.calculationField;
+            }
+            set {
+                this.calculationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("event", IsNullable=false)]
+        public EventType[] available_selections {
+            get {
+                return this.available_selectionsField;
+            }
+            set {
+                this.available_selectionsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string generated_at {
+            get {
+                return this.generated_atField;
+            }
+            set {
+                this.generated_atField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    [System.Xml.Serialization.XmlRootAttribute("response", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
+    public partial class ResponseType {
+        
+        private string messageField;
+        
+        private string errorsField;
+        
+        private string response_codeField;
+        
+        private string generated_atField;
+        
+        /// <remarks/>
+        public string message {
+            get {
+                return this.messageField;
+            }
+            set {
+                this.messageField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string errors {
+            get {
+                return this.errorsField;
+            }
+            set {
+                this.errorsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string response_code {
+            get {
+                return this.response_codeField;
+            }
+            set {
+                this.response_codeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string generated_at {
+            get {
+                return this.generated_atField;
+            }
+            set {
+                this.generated_atField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    [System.Xml.Serialization.XmlRootAttribute("filterSelections", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
+    public partial class FilterSelectionsType {
+        
+        private FilterSelectionType[] selectionField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("selection")]
+        public FilterSelectionType[] selection {
+            get {
+                return this.selectionField;
+            }
+            set {
+                this.selectionField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    [System.Xml.Serialization.XmlRootAttribute("filtered_calculation_response", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
+    public partial class FilteredCalculationResponseType {
+        
+        private FilteredCalculationResultType calculationField;
+        
+        private FilteredEventType[] available_selectionsField;
+        
+        private string generated_atField;
+        
+        /// <remarks/>
+        public FilteredCalculationResultType calculation {
+            get {
+                return this.calculationField;
+            }
+            set {
+                this.calculationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("event", IsNullable=false)]
+        public FilteredEventType[] available_selections {
+            get {
+                return this.available_selectionsField;
+            }
+            set {
+                this.available_selectionsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string generated_at {
+            get {
+                return this.generated_atField;
+            }
+            set {
+                this.generated_atField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    [System.Xml.Serialization.XmlRootAttribute("pre_built_bets", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
+    public partial class PreBuiltBetsType {
+        
+        private EventRecommendationsType[] eventField;
+        
+        private int requested_recommendationsField;
+        
+        private string generated_atField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("event")]
+        public EventRecommendationsType[] @event {
+            get {
+                return this.eventField;
+            }
+            set {
+                this.eventField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int requested_recommendations {
+            get {
+                return this.requested_recommendationsField;
+            }
+            set {
+                this.requested_recommendationsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string generated_at {
+            get {
+                return this.generated_atField;
+            }
+            set {
+                this.generated_atField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
+    [System.Xml.Serialization.XmlRootAttribute("selections", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
+    public partial class SelectionsType {
+        
+        private object[] itemsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("orSelections", typeof(OrSelectionType))]
+        [System.Xml.Serialization.XmlElementAttribute("selection", typeof(SelectionType))]
+        public object[] Items {
+            get {
+                return this.itemsField;
+            }
+            set {
+                this.itemsField = value;
             }
         }
     }

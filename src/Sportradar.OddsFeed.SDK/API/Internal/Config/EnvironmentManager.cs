@@ -31,18 +31,14 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         static EnvironmentManager()
         {
-            var basicRetryList = new List<SdkEnvironment>
-                                     {
-                                         SdkEnvironment.Integration,
-                                         SdkEnvironment.Production
-                                     };
             EnvironmentSettings = new List<EnvironmentSetting>
                                       {
                                           new EnvironmentSetting(SdkEnvironment.Production, "mq.betradar.com", "api.betradar.com", true, new List<SdkEnvironment> { SdkEnvironment.Integration }),
                                           new EnvironmentSetting(SdkEnvironment.Integration, "stgmq.betradar.com", "stgapi.betradar.com", true, new List<SdkEnvironment> { SdkEnvironment.Production }),
-                                          new EnvironmentSetting(SdkEnvironment.Replay, "replaymq.betradar.com", "stgapi.betradar.com", true, basicRetryList),
-                                          new EnvironmentSetting(SdkEnvironment.GlobalProduction, "global.mq.betradar.com", "global.api.betradar.com", true, basicRetryList),
-                                          new EnvironmentSetting(SdkEnvironment.GlobalIntegration, "global.stgmq.betradar.com", "global.stgapi.betradar.com", true, basicRetryList),
+                                          new EnvironmentSetting(SdkEnvironment.ReplayWithIntegrationCredentials, "replaymq.betradar.com", "stgapi.betradar.com", true),
+                                          new EnvironmentSetting(SdkEnvironment.ReplayWithProductionCredentials, "replaymq.betradar.com", "api.betradar.com", true),
+                                          new EnvironmentSetting(SdkEnvironment.GlobalProduction, "global.mq.betradar.com", "global.api.betradar.com", true, new List<SdkEnvironment> { SdkEnvironment.Integration, SdkEnvironment.Production }),
+                                          new EnvironmentSetting(SdkEnvironment.GlobalIntegration, "global.stgmq.betradar.com", "global.stgapi.betradar.com", true, new List<SdkEnvironment> { SdkEnvironment.Integration, SdkEnvironment.Production }),
                                       };
         }
 
@@ -96,7 +92,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <returns>The API host for specified <see cref="SdkEnvironment"/></returns>
         public static string GetUsageHost(SdkEnvironment environment)
         {
-            return environment == SdkEnvironment.Production || environment == SdkEnvironment.GlobalProduction
+            return environment == SdkEnvironment.Production
+                   || environment == SdkEnvironment.GlobalProduction
                        ? UsageHostForProduction
                        : UsageHostForIntegration;
         }
@@ -112,14 +109,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             {
                 case SdkEnvironment.Production:
                 case SdkEnvironment.GlobalProduction:
+                case SdkEnvironment.ReplayWithProductionCredentials:
                     return AuthenticationHostForProduction;
 
                 case SdkEnvironment.Integration:
                 case SdkEnvironment.GlobalIntegration:
+                case SdkEnvironment.ReplayWithIntegrationCredentials:
                     return AuthenticationHostForIntegration;
 
                 case SdkEnvironment.Custom:
-                case SdkEnvironment.Replay:
                 default:
                     throw new ArgumentOutOfRangeException(
                                                           nameof(environment),

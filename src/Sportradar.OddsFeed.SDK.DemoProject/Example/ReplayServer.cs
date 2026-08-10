@@ -13,6 +13,8 @@ using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 
+// ReSharper disable UnusedMember.Local
+
 namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
 
 /// <summary>
@@ -33,7 +35,7 @@ public class ReplayServer : ExampleBase
         var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
 
         var host = Host.CreateDefaultBuilder()
-                       .ConfigureLogging((context, logging) =>
+                       .ConfigureLogging((_, logging) =>
                                          {
                                              logging.ClearProviders();
                                              logging.AddLog4Net("log4net.config");
@@ -100,40 +102,6 @@ public class ReplayServer : ExampleBase
         uofSdkForReplay.ReplayManager.StartReplayScenario(1, 10, 1000);
         Task.Delay(1000).GetAwaiter().GetResult();
         WriteReplayQueueSize(uofSdkForReplay);
-    }
-
-    private void PlayMatches(IUofSdkForReplay uofSdkForReplay)
-    {
-        // Add events from sport data provider (uncomment selected option)
-        // Option 1:
-        //foreach (var urn in SelectEventsFromSportDataProvider(uofSdkForReplay))
-        //{
-        //    WriteReplayResponse(uofSdkForReplay.ReplayManager.AddMessagesToReplayQueue(urn));
-        //}
-
-        // Option 2:
-        // add example events
-        foreach (var urn in SelectExampleEvents())
-        {
-            WriteReplayResponse(uofSdkForReplay.ReplayManager.AddMessagesToReplayQueue(urn));
-        }
-
-        WriteReplayQueueSize(uofSdkForReplay);
-
-        WriteReplayResponse(uofSdkForReplay.ReplayManager.StartReplay(10, 1000));
-    }
-
-    private IEnumerable<Urn> SelectEventsFromSportDataProvider(IUofSdkForReplay uofSdkForReplay)
-    {
-        // Only matches older then 48 hours can be replayed
-        var events = uofSdkForReplay.SportDataProvider.GetSportEventsByDateAsync(DateTime.Now.AddDays(-5)).Result.ToList();
-        if (events.Count > 10)
-        {
-            for (var i = 0; i < 10; i++)
-            {
-                yield return events[i].Id;
-            }
-        }
     }
 
     private IEnumerable<Urn> SelectExampleEvents()

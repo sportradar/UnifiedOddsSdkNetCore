@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using Dawn;
-using Microsoft.Extensions.DependencyInjection;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
@@ -18,14 +19,16 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
     /// <typeparam name="T"></typeparam>
     internal abstract class ConfigurationBuilderBase<T> : IConfigurationBuilderBase<T> where T : class
     {
+        private const string CommonIamFailureMessage = "Configuration build failed: Common IAM token acquisition failed.";
+
         /// <summary>
         /// The <see cref="IUofConfigurationSectionProvider"/> containing data read from the config file
         /// </summary>
         internal readonly IUofConfigurationSectionProvider SectionProvider;
 
-        internal IBookmakerDetailsProvider BookmakerDetailsProvider;
+        private readonly Func<IUofConfiguration, IBookmakerDetailsProvider> _bookmakerDetailsProviderFactory;
 
-        internal IProducersProvider ProducersProvider;
+        private readonly Func<IUofConfiguration, IProducersProvider> _producersProviderFactory;
 
         internal readonly UofConfiguration UofConfiguration;
 
@@ -34,17 +37,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// </summary>
         /// <param name="configuration">Current <see cref="UofConfiguration"/></param>
         /// <param name="sectionProvider">A <see cref="IUofConfigurationSectionProvider"/> used to access <see cref="IUofConfigurationSection"/></param>
-        /// <param name="bookmakerDetailsProvider">Provider for bookmaker details (can be null)</param>
-        /// <param name="producersProvider">Provider for available producers</param>
+        /// <param name="bookmakerDetailsProviderFactory">Factory invoked to obtain a <see cref="IBookmakerDetailsProvider"/></param>
+        /// <param name="producersProviderFactory">Factory invoked to obtain a <see cref="IProducersProvider"/></param>
         private protected ConfigurationBuilderBase(UofConfiguration configuration,
                                                    IUofConfigurationSectionProvider sectionProvider,
-                                                   IBookmakerDetailsProvider bookmakerDetailsProvider,
-                                                   IProducersProvider producersProvider)
+                                                   Func<IUofConfiguration, IBookmakerDetailsProvider> bookmakerDetailsProviderFactory,
+                                                   Func<IUofConfiguration, IProducersProvider> producersProviderFactory)
         {
             UofConfiguration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             SectionProvider = sectionProvider ?? throw new ArgumentNullException(nameof(sectionProvider));
-            BookmakerDetailsProvider = bookmakerDetailsProvider;
-            ProducersProvider = producersProvider;
+            _bookmakerDetailsProviderFactory = bookmakerDetailsProviderFactory;
+            _producersProviderFactory = producersProviderFactory;
         }
 
         /// <summary>
@@ -143,29 +146,48 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         protected void FetchBookmakerDetails()
         {
-            if (BookmakerDetailsProvider == null)
+            try
             {
-                var services = new ServiceCollection();
-                services.AddUofSdkServices(UofConfiguration);
-                var serviceProvider = services.BuildServiceProvider();
-                BookmakerDetailsProvider = serviceProvider.GetRequiredService<IBookmakerDetailsProvider>();
+                var bookmakerDetailsProvider = _bookmakerDetailsProviderFactory(UofConfiguration);
+                bookmakerDetailsProvider.LoadBookmakerDetails(UofConfiguration);
             }
-
-            BookmakerDetailsProvider.LoadBookmakerDetails(UofConfiguration);
+            catch (CommunicationException ex) when (IsCommonIamTokenAcquisitionFailure(ex))
+            {
+                throw CreateCommonIamFailureException(ex);
+            }
+            catch (CommunicationException ex)
+            {
+                throw new CommunicationException("Fetching bookmaker details failed.", null, ex);
+            }
         }
 
         protected void FetchProducers()
         {
-            if (ProducersProvider == null)
+            try
             {
-                var services = new ServiceCollection();
-                services.AddUofSdkServices(UofConfiguration);
-                var serviceProvider = services.BuildServiceProvider();
-                ProducersProvider = serviceProvider.GetRequiredService<IProducersProvider>();
+                var producersProvider = _producersProviderFactory(UofConfiguration);
+                var producers = producersProvider.GetProducers();
+                ((UofProducerConfiguration)UofConfiguration.Producer).Producers = producers.ToList();
             }
+            catch (CommunicationException ex) when (IsCommonIamTokenAcquisitionFailure(ex))
+            {
+                throw CreateCommonIamFailureException(ex);
+            }
+            catch (CommunicationException ex)
+            {
+                throw new CommunicationException("Fetching producers data failed.", null, ex);
+            }
+        }
 
-            var producers = ProducersProvider.GetProducers();
-            ((UofProducerConfiguration)UofConfiguration.Producer).Producers = producers.ToList();
+        private static CommunicationException CreateCommonIamFailureException(CommunicationException commonIamException)
+        {
+            return new CommunicationException(CommonIamFailureMessage, commonIamException.Url, commonIamException.ResponseCode, commonIamException);
+        }
+
+        private static bool IsCommonIamTokenAcquisitionFailure(CommunicationException exception)
+        {
+            return exception.ResponseCode == HttpStatusCode.Unauthorized &&
+                   exception.Message.Equals("Authentication token is not available. Unable to authenticate the request.", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

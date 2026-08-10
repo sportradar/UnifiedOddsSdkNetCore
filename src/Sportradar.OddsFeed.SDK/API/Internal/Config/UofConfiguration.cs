@@ -194,17 +194,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             Rabbit = rabbitConfig;
         }
 
-        internal void UpdateBookmakerDetails(IBookmakerDetails bookmakerDetails, string apiHostName)
+        internal void UpdateBookmakerDetails(IBookmakerDetails bookmakerDetails)
         {
             BookmakerDetails = bookmakerDetails;
-
-            if (Environment != SdkEnvironment.Custom)
-            {
-                var apiConfig = (UofApiConfiguration)Api;
-                apiConfig.Host = apiHostName;
-                apiConfig.UseSsl = true;
-                Api = apiConfig;
-            }
 
             if (Environment != SdkEnvironment.Custom || Rabbit.VirtualHost.IsNullOrEmpty())
             {

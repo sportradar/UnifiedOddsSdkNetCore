@@ -16,6 +16,7 @@ using Sportradar.OddsFeed.SDK.Api.EventArguments;
 using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
@@ -147,12 +148,13 @@ internal class TestDataRouterManager : IDataRouterManager
     private static string GetFile(string template, CultureInfo culture)
     {
         var filePath = FileHelper.FindFile(template.Replace("{culture}", culture.TwoLetterISOLanguageName));
-        if (string.IsNullOrEmpty(filePath))
+        var fi = new FileInfo(filePath);
+        if (!fi.Exists)
         {
             filePath = FileHelper.FindFile(template.Replace("{culture}", TestData.Culture.TwoLetterISOLanguageName));
+            fi = new FileInfo(filePath);
         }
 
-        var fi = new FileInfo(filePath);
         if (fi.Exists)
         {
             return fi.FullName;
@@ -951,6 +953,11 @@ internal class TestDataRouterManager : IDataRouterManager
         return null;
     }
 
+    public Task<IPrebuiltBets> RequestCustomBetPrebuiltBets(IPrebuiltBetsRequest prebuiltBetsRequest)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
     {
         RecordMethodCall(EndpointCalculateProbability);
@@ -1017,6 +1024,16 @@ internal class TestDataRouterManager : IDataRouterManager
         }
 
         return null;
+    }
+
+    public Task<ICalculation> CalculateProbabilityAsync(CalculateRequest request)
+    {
+        return CalculateProbabilityAsync(request?.Items.SelectMany(i => i.Selections));
+    }
+
+    public Task<ICalculationFilter> CalculateProbabilityFilteredAsync(CalculateRequest request)
+    {
+        return CalculateProbabilityFilteredAsync(request?.Items.SelectMany(i => i.Selections));
     }
 
     /// <summary>

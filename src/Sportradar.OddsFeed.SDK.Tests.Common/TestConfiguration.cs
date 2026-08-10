@@ -14,7 +14,7 @@ internal static class TestConfiguration
 {
     public static IUofConfiguration GetConfig(BookmakerDetailsDto dto = null, ExceptionHandlingStrategy exceptionHandlingStrategy = ExceptionHandlingStrategy.Throw)
     {
-        var configBuilder = new TokenSetter(new TestSectionProvider(TestSection.GetDefaultSection()), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var configBuilder = new TokenSetter(new TestSectionProvider(TestSection.GetDefaultSection()), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                            .SetAccessTokenFromConfigFile()
                            .SelectCustom()
                            .SetApiHost("localhost")
@@ -30,7 +30,7 @@ internal static class TestConfiguration
 
         if (dto != null)
         {
-            ((UofConfiguration)config).UpdateBookmakerDetails(new BookmakerDetails(dto), config.Api.Host);
+            ((UofConfiguration)config).UpdateBookmakerDetails(new BookmakerDetails(dto));
         }
 
         return config;
@@ -46,7 +46,7 @@ internal static class TestConfiguration
                                                    .SetPrivateKey(testPrivateKey)
                                                    .Build();
 
-        var configBuilder = new TokenSetter(new TestSectionProvider(TestSection.GetDefaultSection()), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var configBuilder = new TokenSetter(new TestSectionProvider(TestSection.GetDefaultSection()), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                            .SetClientAuthentication(privateKeyJwt)
                            .SelectEnvironment(SdkEnvironment.Integration)
                            .SetInactivitySeconds(30)
@@ -59,7 +59,7 @@ internal static class TestConfiguration
 
         if (dto != null)
         {
-            ((UofConfiguration)config).UpdateBookmakerDetails(new BookmakerDetails(dto), config.Api.Host);
+            ((UofConfiguration)config).UpdateBookmakerDetails(new BookmakerDetails(dto));
         }
 
         return config;

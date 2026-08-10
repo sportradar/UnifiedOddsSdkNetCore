@@ -9,6 +9,7 @@ using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
 
@@ -50,9 +51,11 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalProduction)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentThenAuthenticationCredentialsAreSet(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -68,9 +71,11 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalProduction)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentThenAuthenticationHostIsSet(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -86,9 +91,11 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalProduction)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentAndSigningKeyIdIsNotProvidedThenThrowsException(SdkEnvironment environment)
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(UofClientAuthentication
                                                  .PrivateKeyJwt()
                                                  .SetPrivateKey(TestPrivateKey)
@@ -106,9 +113,11 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalProduction)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentAndClientIdIsNotProvidedThenThrowsException(SdkEnvironment environment)
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(UofClientAuthentication
                                                  .PrivateKeyJwt()
                                                  .SetSigningKeyId(TestSigningKeyId)
@@ -126,9 +135,11 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalProduction)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentAndPrivateKeyIsNotProvidedThenThrowsException(SdkEnvironment environment)
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(UofClientAuthentication
                                                  .PrivateKeyJwt()
                                                  .SetClientId(TestClientId)
@@ -147,7 +158,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(" ")]
     public void WhenBuiltForAnyEnvironmentThenThrowIfSigningKeyIdIsEmptyOrWhitespace(string invalidSigningKeyId)
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(UofClientAuthentication
                                                  .PrivateKeyJwt()
                                                  .SetSigningKeyId(invalidSigningKeyId)
@@ -167,7 +178,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(" ")]
     public void WhenBuiltForAnyEnvironmentThenThrowIfClientIdIsEmptyOrWhitespace(string invalidClientId)
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(UofClientAuthentication
                                                  .PrivateKeyJwt()
                                                  .SetSigningKeyId(TestSigningKeyId)
@@ -184,7 +195,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForAnyEnvironmentThenThrowIfPrivateKeyIsNull()
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(UofClientAuthentication
                                                  .PrivateKeyJwt()
                                                  .SetSigningKeyId(TestSigningKeyId)
@@ -201,7 +212,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForCustomAndSigningKeyIdIsNotProvidedThenThrowsException()
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(UofClientAuthentication
                                                  .PrivateKeyJwt()
                                                  .SetPrivateKey(TestPrivateKey)
@@ -220,7 +231,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForCustomEnvironmentAndClientIdIsNotProvidedThenThrowsException()
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(UofClientAuthentication
                                                  .PrivateKeyJwt()
                                                  .SetSigningKeyId(TestSigningKeyId)
@@ -239,7 +250,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForCustomEnvironmentAndPrivateKeyIsNotProvidedThenThrowsException()
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(UofClientAuthentication
                                                  .PrivateKeyJwt()
                                                  .SetClientId(TestClientId)
@@ -263,7 +274,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(IncorrectAuthenticationHostWithDefaultHttpsPort)]
     public void WhenBuiltForCustomEnvironmentAndAuthenticationHostIsIncorrectThenThrowsException(string incorrectHost)
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(DefaultPrivateKeyJwt)
                          .SelectCustom()
                          .SetClientAuthenticationHost(incorrectHost)
@@ -278,7 +289,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForCustomEnvironmentThenAuthenticationEndpointIncludesHostPortAndSsl()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectCustom()
                     .SetClientAuthenticationHost(AuthenticationHost)
@@ -301,7 +312,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(65536)]
     public void WhenBuiltForCustomEnvironmentThenThrowIfAuthenticationPortIsNonPositive(int invalidPort)
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(DefaultPrivateKeyJwt)
                          .SelectCustom()
                          .SetClientAuthenticationHost(AuthenticationHost)
@@ -319,7 +330,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(" ")]
     public void WhenBuiltForCustomEnvironmentThenThrowIfAuthenticationHostIsEmptyOrWhitespace(string invalidHost)
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(DefaultPrivateKeyJwt)
                          .SelectCustom()
                          .SetClientAuthenticationHost(invalidHost)
@@ -334,7 +345,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenClientAuthenticationIsSetToNullThenExceptionIsThrown()
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(null)
                          .SelectCustom()
                          .SetClientAuthenticationHost(AuthenticationHost)
@@ -347,33 +358,9 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     }
 
     [Fact]
-    public void WhenBuiltForReplayEnvironmentWithSelectReplayThenThrow()
-    {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                         .SetClientAuthentication(DefaultPrivateKeyJwt)
-                         .SelectReplay()
-                         .SetDefaultLanguage(TestConsts.CultureEn)
-                         .Build();
-
-        Should.Throw<InvalidOperationException>(() => build());
-    }
-
-    [Fact]
-    public void WhenBuiltForReplayEnvironmentWithSelectEnvironmentThenThrow()
-    {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                         .SetClientAuthentication(DefaultPrivateKeyJwt)
-                         .SelectEnvironment(SdkEnvironment.Replay)
-                         .SetDefaultLanguage(TestConsts.CultureEn)
-                         .Build();
-
-        Should.Throw<InvalidOperationException>(() => build());
-    }
-
-    [Fact]
     public void WhenClientAuthenticationIsNotConfiguredForCustomEnvironmentThenAuthenticationConfigurationIsNull()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(AnyAccessToken)
                     .SelectCustom()
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -388,9 +375,11 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalProduction)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenClientAuthenticationIsNotConfiguredForPredefinedEnvironmentThenAuthenticationConfigurationIsNull(SdkEnvironment sdkEnvironment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(AnyAccessToken)
                     .SelectEnvironment(sdkEnvironment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -404,7 +393,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [MemberData(nameof(NonRsaKeys))]
     public void WhenPrivateKeyIsNotRsaThenThrowsArgumentException(AsymmetricSecurityKey nonRsaKey)
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(UofClientAuthentication
                                                  .PrivateKeyJwt()
                                                  .SetSigningKeyId(TestSigningKeyId)
@@ -423,7 +412,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     {
         Should.Throw<ArgumentException>(() =>
                                         {
-                                            new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+                                            new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                                                .SetAccessToken(AnyAccessToken)
                                                .SelectCustom()
                                                .SetClientAuthenticationHost(AuthenticationHost)
@@ -437,7 +426,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     {
         Should.Throw<ArgumentException>(() =>
                                         {
-                                            new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+                                            new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                                                .SetAccessToken(AnyAccessToken)
                                                .SelectCustom()
                                                .SetClientAuthenticationPort(AuthenticationPort)
@@ -451,7 +440,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     {
         Should.Throw<ArgumentException>(() =>
                                         {
-                                            new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+                                            new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                                                .SetAccessToken(AnyAccessToken)
                                                .SelectCustom()
                                                .SetClientAuthenticationUseSsl(true)
@@ -463,13 +452,13 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenClientAuthenticationIsConfiguredForCustomEnvironmentThenDefaultAuthenticationHostIsIntegration()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectCustom()
                     .SetDefaultLanguage(TestConsts.CultureEn)
                     .Build();
 
-        var configForIntegration = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var configForIntegration = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                                   .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectEnvironment(SdkEnvironment.Integration)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -486,7 +475,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(" ")]
     public void WhenClientAuthenticationIsConfiguredForCustomEnvironmentAndTenantIsEmptyOrWhitespaceThenThrows(string invalidTenant)
     {
-        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(DefaultPrivateKeyJwt)
                          .SelectCustom()
                          .SetClientAuthenticationTenant(invalidTenant)
@@ -499,7 +488,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenClientAuthenticationIsConfiguredForCustomEnvironmentAndTenantIsConfiguredThenTenantUsesConfiguredValue()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectCustom()
                     .SetClientAuthenticationTenant("custom-tenant")
@@ -512,7 +501,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenClientAuthenticationIsConfiguredForCustomEnvironmentAndTenantIsNotConfiguredThenTenantIsNull()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectCustom()
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -524,7 +513,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenClientAuthenticationIsNotConfiguredForCustomEnvironmentAndTenantIsConfiguredThenExceptionIsThrown()
     {
-        var act = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var act = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(AnyAccessToken)
                     .SelectCustom()
                     .SetClientAuthenticationTenant("anyTenantValue")
@@ -539,6 +528,8 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalProduction)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenClientAuthenticationIsConfiguredAndRestIsLoadedFromConfigFileForNonCustomAndNonReplayEnvironmentThenAuthenticationShouldBeConfigured(SdkEnvironment nonCustomNonReplayEnvironment)
     {
         var configurationSectionMock = new Mock<IUofConfigurationSection>();
@@ -550,7 +541,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
         UofConfigurationSectionProviderMock.Setup(sectionProvider => sectionProvider.GetSection())
                                            .Returns(configurationSectionMock.Object);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectEnvironment(nonCustomNonReplayEnvironment)
                     .LoadFromConfigFile()
@@ -574,7 +565,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
         UofConfigurationSectionProviderMock.Setup(sectionProvider => sectionProvider.GetSection())
                                            .Returns(configurationSectionMock.Object);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectCustom()
                     .LoadFromConfigFile()
@@ -591,7 +582,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     {
         var build = () =>
                     {
-                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider);
+                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider);
                         tokenSetter
                            .SetClientAuthentication(DefaultPrivateKeyJwt);
                         tokenSetter.SetAccessToken(AnyAccessToken)
@@ -615,7 +606,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
 
         var build = () =>
                     {
-                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider);
+                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider);
                         tokenSetter
                            .SetClientAuthentication(DefaultPrivateKeyJwt);
                         tokenSetter.SetAccessTokenFromConfigFile()
@@ -633,7 +624,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     {
         var build = () =>
                     {
-                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider);
+                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider);
 
                         tokenSetter.SetAccessToken(AnyAccessToken);
                         tokenSetter
@@ -658,7 +649,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
 
         var build = () =>
                     {
-                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider);
+                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider);
 
                         tokenSetter.SetAccessTokenFromConfigFile();
                         tokenSetter
@@ -669,6 +660,29 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                            .Build();
                     };
 
-        Should.Throw<ArgumentException>(() => build()).Message.ShouldBe("Cannot set client authentication when access token is configured");
+        Should.Throw<ArgumentException>(build).Message.ShouldBe("Cannot set client authentication when access token is configured");
+    }
+
+    [Fact]
+    public void PrintingConfigurationIncludesSanitizedPrivateKeyJwt()
+    {
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
+                    .SetClientAuthentication(DefaultPrivateKeyJwt)
+                    .SelectEnvironment(SdkEnvironment.GlobalIntegration)
+                    .SetDefaultLanguage(TestConsts.CultureEn)
+                    .Build();
+        var sanitizedSigningKeyId = SdkInfo.ClearSensitiveData(TestSigningKeyId);
+        var sanitizedClientId = SdkInfo.ClearSensitiveData(TestClientId);
+
+        var configString = config.ToString();
+
+        configString.ShouldNotBeNullOrEmpty();
+        configString.Contains("Authentication{").ShouldBeTrue();
+        configString.Contains("SigningKeyId=").ShouldBeTrue();
+        configString.Contains("ClientId=").ShouldBeTrue();
+        configString.Contains($"SigningKeyId={TestSigningKeyId}").ShouldBeFalse();
+        configString.Contains($"ClientId={TestClientId}").ShouldBeFalse();
+        configString.Contains($"SigningKeyId={sanitizedSigningKeyId}").ShouldBeTrue();
+        configString.Contains($"ClientId={sanitizedClientId}").ShouldBeTrue();
     }
 }

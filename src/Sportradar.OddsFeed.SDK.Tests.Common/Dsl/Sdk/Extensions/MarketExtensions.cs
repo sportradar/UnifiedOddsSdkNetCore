@@ -11,7 +11,7 @@ public static class MarketExtensions
 {
     public static IMarketDescription ToUserMarketDescription(this desc_market market, CultureInfo language)
     {
-        return new MarketDescriptionBuilder()
+        return new MarketDescriptionForUserBuilder()
               .WithName(market.name, language)
               .BuildWith(market, language);
     }

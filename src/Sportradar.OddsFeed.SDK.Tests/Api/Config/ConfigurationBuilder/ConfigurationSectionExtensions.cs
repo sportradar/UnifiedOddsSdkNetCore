@@ -38,7 +38,7 @@ public static class ConfigurationSectionExtensions
         var section = new UofConfigurationSectionHelper();
         section.Deserialize(xmlReader);
 
-        var ufConfig = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider()).BuildFromConfigFile();
+        var ufConfig = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider()).BuildFromConfigFile();
 
         return ufConfig;
     }

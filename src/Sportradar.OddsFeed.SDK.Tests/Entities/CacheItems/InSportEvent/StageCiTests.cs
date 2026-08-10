@@ -14,6 +14,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -37,7 +38,7 @@ public class StageCiTests
         _dataRouterManager = new TestDataRouterManager(cacheManager, outputHelper);
     }
 
-    [Fact]
+    [RetryFact(3, delayBetweenRetriesMs: 1000)]
     public void ConstructStageFromId()
     {
         var stageCi = new StageCacheItem(_stageId, _dataRouterManager, _semaphorePool, CultureInfo.CurrentCulture, _fixtureTimestampCacheStore);

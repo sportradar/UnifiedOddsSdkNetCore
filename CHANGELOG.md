@@ -1,6 +1,15 @@
 # Change Log
 
-## 4.0.0-rc4
+## 4.0.0-rc5
+- Fixed Common IAM client authentication so the configured signing key id is sent as the JWT `kid` header, allowing Common IAM to select the registered public key.
+- Merged ICustomBetManagerV2 into CustomBetManager. Prebuilt bets and Or-selections probability calculations are now accessible directly via `uofSdk.CustomBetManager` without casting.
+  - Client previously casting `(ICustomBetManagerV2)uofSdk.CustomBetManager` must switch to `uofSdk.CustomBetManager` directly
+- Extended feed messages with `MessageHeaders` on `IMessage` (replacing the temporary `IMessageV2` interface used on the 3.x line).
+- Upgraded SDK dependencies to the latest stable versions.
+- ClientAuthentication is supported for Replay Server connections
+  - NOTE: ClientAuthentication for Replay Server is currently supported only for `SdkEnvironment.ReplayWithIntegrationCredentials`
+
+## 2026-03-24 4.0.0-rc4
 - Added support for In-Play bet settlements, see release notes for v.3.8.0 for more details.
 
 ## 2026-02-09 4.0.0-rc3
@@ -19,13 +28,23 @@
 - Added a dependency to System.IdentityModel.Tokens.Jwt
 - Added a dependency to ZiggyCreatures.FusionCache
 
+## 2026-06-01 3.11.0
+- Extended feed messages with IMessageV2 interface exposing MessageHeaders
+
+## 2026-05-20 3.10.0
+- Added support for OR selection groups in custom bet probability calculations via the new `ICalculateRequestBuilder` interface (accessible through `ICustomBetManagerV2`), allowing customers to build requests where any one of a set of selections satisfies a leg.
+- Fixed an issue with reloading variant market description on failure when `Throw` exception handling strategy is configured (e.g. when market outcomes cached in the SDK do not match outcomes coming in the feed message). SDK is now able to properly invalidate and re-fetch the market.
+
+## 2026-05-04 3.9.0
+- Added support for prebuilt bet recommendations via the new `ICustomBetManagerV2` interface, providing event-based bet suggestions without breaking existing `ICustomBetManager` usage.
+
 ## 2026-03-02 3.8.0
 - Added support for In-Play bet settlements
-    - added support for RollbackBetSettlement message with markets with outcomes (market needs to be casted to `IMarketRollbackSettlement`)
-      ```
-      var marketRollbackSettlement = rollbackBetSettlementMessage.Markets.First() as IMarketRollbackSettlement;
-      var outcome = marketRollbackSettlement.Outcomes.First();
-      ```
+  - added support for RollbackBetSettlement message with markets with outcomes (market needs to be casted to `IMarketRollbackSettlement`)
+    ```
+    var marketRollbackSettlement = rollbackBetSettlementMessage.Markets.First() as IMarketRollbackSettlement;
+    var outcome = marketRollbackSettlement.Outcomes.First();
+    ```
 
 ## 2025-10-31 3.7.1
 - Season object obtained from SportDataProvider properly returns sport information when `Season.GetSportAsync()` is called

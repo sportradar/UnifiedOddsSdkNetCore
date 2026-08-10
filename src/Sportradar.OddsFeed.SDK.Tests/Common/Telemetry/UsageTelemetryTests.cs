@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -21,6 +20,7 @@ using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Tests.Common.Helpers;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -30,7 +30,7 @@ using Xunit;
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Telemetry;
 
 [Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
-public class UsageTelemetryTests
+public class UsageTelemetryTests : IAsyncLifetime
 {
     private const string MetricNameForTestHistogram = UofSdkTelemetry.MetricNamePrefix + "test-histogram";
     private const int AnyRecordedValue = 1234;
@@ -39,8 +39,22 @@ public class UsageTelemetryTests
     private const string AccessToken = "my-access-token";
     private const string ResponseJwtToken = "any-jwt-token";
 
+    private WireMockServer _wireMockServer;
     private IServiceProvider _serviceProvider;
     private Mock<IAuthenticationTokenCache> _mockTokenCache;
+
+    public Task InitializeAsync()
+    {
+        _wireMockServer = WireMockServer.Start();
+        return Task.CompletedTask;
+    }
+
+    public Task DisposeAsync()
+    {
+        _wireMockServer?.Stop();
+        _wireMockServer?.Dispose();
+        return Task.CompletedTask;
+    }
 
     [Fact]
     public void WhenSetupIsNotRunThenMeterIsInitialized()
@@ -110,6 +124,32 @@ public class UsageTelemetryTests
         testHistogram.Record(AnyRecordedValue);
 
         meterProvider.ShouldBeNull();
+    }
+
+    [RetryFact(3, 5000)]
+    public void WhenSetupUsageExporterSendsUsagePayloadThenThePayloadCanBeParsedFromWireMock()
+    {
+        SetupWireMockServerWithEndpoint();
+        var meterProvider = PrepareMeterProviderWithProducerManager(_wireMockServer);
+
+        var flushSucceeded = meterProvider.ForceFlush();
+        flushSucceeded.ShouldBeTrue();
+
+        var otlpPayload = OtlpMetricsPayloadHelper.ParseExportedOtlpMetricsPayload(GetExportedOtlpPayload(_wireMockServer));
+
+        otlpPayload.ShouldContain(UofSdkTelemetry.ServiceName);
+        otlpPayload.ShouldContain(UofSdkTelemetry.MetricNameForProducerStatus);
+        otlpPayload.ShouldContain($"odds-feed-sdk_usage_{SdkEnvironment.Integration}".ToLowerInvariant());
+        otlpPayload.ShouldContain("Sportradar.OddsFeed.SDKCore");
+        otlpPayload.ShouldContain(BookmakerId.ToString());
+        otlpPayload.ShouldContain(NodeId.ToString());
+        otlpPayload.ShouldContain(UofSdkTelemetry.MetricsVersion);
+        otlpPayload.ShouldContain("service.name");
+        otlpPayload.ShouldContain("service.namespace");
+        otlpPayload.ShouldContain("bookmakerId");
+        otlpPayload.ShouldContain("nodeId");
+        otlpPayload.ShouldContain("environment");
+        otlpPayload.ShouldContain("metricsVersion");
     }
 
     [RetryFact(3, 5000)]
@@ -305,12 +345,11 @@ public class UsageTelemetryTests
         return meterProvider;
     }
 
-    private static WireMockServer SetupWireMockServerWithEndpoint(string endpoint = UsageTelemetry.EndpointUrl)
+    private WireMockServer SetupWireMockServerWithEndpoint(string endpoint = UsageTelemetry.EndpointUrl)
     {
-        var wireMockServer = WireMockServer.Start();
-        wireMockServer.Given(Request.Create().WithPath(endpoint).UsingPost())
+        _wireMockServer.Given(Request.Create().WithPath(endpoint).UsingPost())
             .RespondWith(Response.Create().WithBody("data-received").WithStatusCode(HttpStatusCode.Accepted));
-        return wireMockServer;
+        return _wireMockServer;
     }
 
     private static Mock<IUofConfiguration> MockUofConfigurationWithAccessToken(WireMockServer wireMockServer, bool enableUsageExport)
@@ -371,20 +410,21 @@ public class UsageTelemetryTests
 
     private static void EnsureAttributeInUsageRequestBody(string attributeName, WireMockServer wireMockServer)
     {
-        var logEntries = wireMockServer.LogEntries.ToList();
-        logEntries.ShouldHaveSingleItem();
-
-        var usageRequestBody = Encoding.UTF8.GetString(logEntries.First().RequestMessage.BodyAsBytes!);
-        usageRequestBody.ShouldContain(attributeName);
+        var otlpPayload = OtlpMetricsPayloadHelper.ParseExportedOtlpMetricsPayload(GetExportedOtlpPayload(wireMockServer));
+        otlpPayload.ShouldContain(attributeName);
     }
 
     private static void EnsureAttributeNotInUsageRequestBody(string attributeName, WireMockServer wireMockServer)
     {
+        var otlpPayload = OtlpMetricsPayloadHelper.ParseExportedOtlpMetricsPayload(GetExportedOtlpPayload(wireMockServer));
+        otlpPayload.ShouldNotContain(attributeName);
+    }
+
+    private static byte[] GetExportedOtlpPayload(WireMockServer wireMockServer)
+    {
         var logEntries = wireMockServer.LogEntries.ToList();
         logEntries.ShouldHaveSingleItem();
-
-        var usageRequestBody = Encoding.UTF8.GetString(logEntries.First().RequestMessage.BodyAsBytes!);
-        usageRequestBody.ShouldNotContain(attributeName);
+        return logEntries.First().RequestMessage.BodyAsBytes;
     }
 
     private void SetupServiceProvider(IUofConfiguration uofConfig)

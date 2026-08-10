@@ -1,6 +1,7 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
     /// <typeparam name="TIn">Specifies the type of data-transfer-object instance which will be mapped to returned instance</typeparam>
     /// <typeparam name="TOut">Specifies the type of instances provided</typeparam>
     /// <seealso cref="IDataProvider{T}" />
-    internal class DataProvider<TIn, TOut> : IDataProvider<TOut> where TIn : RestMessage where TOut : class
+    internal class DataProvider<TIn, TOut> : IDataProviderWithQuery<TOut> where TIn : RestMessage where TOut : class
     {
         /// <summary>
         /// A <see cref="ILogger" /> used for execution logging
@@ -108,6 +109,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             return await GetDataAsyncInternal(uri, requestedId, requestedLang).ConfigureAwait(false);
         }
 
+        public async Task<TOut> GetDataAsync(IReadOnlyDictionary<string, string> queryParameters, IReadOnlyDictionary<string, string> headers)
+        {
+            var uri = GetRequestUri();
+            return await GetDataAsyncInternal(uri, queryParameters, headers).ConfigureAwait(false);
+        }
+
         public TOut GetData(string languageCode)
         {
             var uri = GetRequestUri(languageCode);
@@ -149,6 +156,29 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             }
 
             DispatchReceivedRawApiData(uri, item, requestParams, TimeSpan.FromMilliseconds(stopWatch.ElapsedMilliseconds), culture);
+            return _mapperFactory.CreateMapper(item).Map();
+        }
+
+        private async Task<TOut> GetDataAsyncInternal(Uri uri, IReadOnlyDictionary<string, string> queryParameters, IReadOnlyDictionary<string, string> headers)
+        {
+            Guard.Argument(uri, nameof(uri)).NotNull();
+
+            TIn item;
+            var stopWatch = new Stopwatch();
+            try
+            {
+                stopWatch.Start();
+                using (var stream = await DataFetcher.GetDataAsync(uri, queryParameters, headers).ConfigureAwait(false))
+                {
+                    item = _deserializer.Deserialize(stream);
+                }
+            }
+            finally
+            {
+                stopWatch.Stop();
+            }
+
+            DispatchReceivedRawApiData(uri, item, null, TimeSpan.FromMilliseconds(stopWatch.ElapsedMilliseconds), null);
             return _mapperFactory.CreateMapper(item).Map();
         }
 

@@ -9,43 +9,43 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
 public class EnvironmentManagerTests
 {
-    [Fact]
-    public void GlobalAndNonGlobalApiSitUnderSameIpsButReplayShouldPointToNonGlobalAsItIsLongTermStrategy()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, "stgapi.betradar.com")]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, "api.betradar.com")]
+    public void ReplayShouldPointToCorrectApiHost(SdkEnvironment replayEnvironment, string expectedApiHost)
     {
-        const string nonGlobalApiHost = "stgapi.betradar.com";
-        Assert.Equal(nonGlobalApiHost, FindReplayEnvironmentSetting().ApiHost);
-        Assert.Equal(nonGlobalApiHost, EnvironmentManager.GetSetting(SdkEnvironment.Replay).ApiHost);
-        Assert.Equal(nonGlobalApiHost, EnvironmentManager.GetApiHost(SdkEnvironment.Replay));
+        Assert.Equal(expectedApiHost, GetReplayEnvironmentSetting(replayEnvironment).ApiHost);
+        Assert.Equal(expectedApiHost, EnvironmentManager.GetSetting(replayEnvironment).ApiHost);
+        Assert.Equal(expectedApiHost, EnvironmentManager.GetApiHost(replayEnvironment));
     }
 
-    [Fact]
-    public void ReplayShouldPointToNonGlobalMessagingEndpointAsItIsLongTermStrategy()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    public void ReplayEnvironmentSettingsShouldUseReplayMessagingEndpoint(SdkEnvironment replayEnvironment)
     {
         const string nonGlobalMessagingHost = "replaymq.betradar.com";
-        Assert.Equal(nonGlobalMessagingHost, FindReplayEnvironmentSetting().MqHost);
-        Assert.Equal(nonGlobalMessagingHost, EnvironmentManager.GetSetting(SdkEnvironment.Replay).MqHost);
-        Assert.Equal(nonGlobalMessagingHost, EnvironmentManager.GetMqHost(SdkEnvironment.Replay));
+        Assert.Equal(nonGlobalMessagingHost, GetReplayEnvironmentSetting(replayEnvironment).MqHost);
+        Assert.Equal(nonGlobalMessagingHost, EnvironmentManager.GetSetting(replayEnvironment).MqHost);
+        Assert.Equal(nonGlobalMessagingHost, EnvironmentManager.GetMqHost(replayEnvironment));
     }
 
-    [Fact]
-    public void ReplayShouldSupportSslOnlyConnections()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    public void ReplayShouldSupportSslOnlyConnections(SdkEnvironment replayEnvironment)
     {
-        Assert.True(FindReplayEnvironmentSetting().OnlySsl);
-        Assert.True(EnvironmentManager.GetSetting(SdkEnvironment.Replay).OnlySsl);
-    }
-
-    [Fact]
-    public void RetryListShouldBeDeprecatedAsItIsNotOnlyNeverUsedInReplayButItIsExposedThroughStaticContextToCustomerSusceptibleToBreakingChange()
-    {
-        Assert.NotNull(FindReplayEnvironmentSetting().EnvironmentRetryList);
-        Assert.NotNull(EnvironmentManager.GetSetting(SdkEnvironment.Replay).EnvironmentRetryList);
+        Assert.True(GetReplayEnvironmentSetting(replayEnvironment).OnlySsl);
+        Assert.True(EnvironmentManager.GetSetting(replayEnvironment).OnlySsl);
     }
 
     [Theory]
     [InlineData(SdkEnvironment.Production, "auth.sportradar.com")]
     [InlineData(SdkEnvironment.GlobalProduction, "auth.sportradar.com")]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, "auth.sportradar.com")]
     [InlineData(SdkEnvironment.Integration, "stg-auth.sportradar.com")]
     [InlineData(SdkEnvironment.GlobalIntegration, "stg-auth.sportradar.com")]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, "stg-auth.sportradar.com")]
     public void GetAuthenticationHostShouldReturnCorrectHostForValidEnvironments(SdkEnvironment environment, string expectedHost)
     {
         var result = EnvironmentManager.GetAuthenticationHost(environment);
@@ -54,15 +54,14 @@ public class EnvironmentManagerTests
 
     [Theory]
     [InlineData(SdkEnvironment.Custom)]
-    [InlineData(SdkEnvironment.Replay)]
     public void GetAuthenticationHostShouldThrowArgumentOutOfRangeExceptionForUnsupportedEnvironments(SdkEnvironment environment)
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => EnvironmentManager.GetAuthenticationHost(environment));
     }
 
-    private EnvironmentSetting FindReplayEnvironmentSetting()
+    private static EnvironmentSetting GetReplayEnvironmentSetting(SdkEnvironment replayEnvironment)
     {
-        var replaySettings = EnvironmentManager.EnvironmentSettings.Find(e => e.Environment == SdkEnvironment.Replay);
+        var replaySettings = EnvironmentManager.EnvironmentSettings.Find(e => e.Environment == replayEnvironment);
         Assert.NotNull(replaySettings);
         return replaySettings;
     }

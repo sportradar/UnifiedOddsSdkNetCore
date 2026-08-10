@@ -18,10 +18,11 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentThenProducerConfigurationHasDefaultValues(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -33,7 +34,7 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForCustomEnvironmentThenProducerConfigurationHasDefaultValues()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -49,12 +50,13 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentAndDisabledProducersContainsSingleValueThenItIsSet(SdkEnvironment environment)
     {
         List<int> disabledProducers = [1];
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -70,7 +72,7 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     {
         List<int> disabledProducers = [1];
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -88,12 +90,13 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentAndDisabledProducersHasMultipleValuesThenAllAreSet(SdkEnvironment environment)
     {
         List<int> disabledProducers = [1, 3, 5];
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -109,7 +112,7 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     {
         List<int> disabledProducers = [1, 3, 5];
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -127,12 +130,13 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentAndDisabledProducersContainsDuplicatesThenDuplicatesAreIgnored(SdkEnvironment environment)
     {
         List<int> disabledProducers = [1, 3, 5, 5, 3, 1, 1, 1, 3];
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -151,7 +155,7 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     {
         List<int> disabledProducers = [1, 3, 5, 5, 3, 1, 1, 1, 3];
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -180,14 +184,17 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.MaxRecoveryTimeMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.MaxRecoveryTimeDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.MaxRecoveryTimeMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.MaxRecoveryTimeMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.MaxRecoveryTimeDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.MaxRecoveryTimeMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.MaxRecoveryTimeMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.MaxRecoveryTimeMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.MaxRecoveryTimeDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.MaxRecoveryTimeDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.MaxRecoveryTimeMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.MaxRecoveryTimeMax)]
     public void WhenBuiltForPredefinedEnvironmentAndMaxRecoveryTimeIsSetThenProducerConfigurationReflectsThat(SdkEnvironment environment, int maxRecoveryTime)
     {
         var expected = TimeSpan.FromSeconds(maxRecoveryTime);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -205,7 +212,7 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(maxRecoveryTime);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -230,14 +237,17 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.MinIntervalBetweenRecoveryRequestMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.MinIntervalBetweenRecoveryRequestDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.MinIntervalBetweenRecoveryRequestMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.MinIntervalBetweenRecoveryRequestMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.MinIntervalBetweenRecoveryRequestDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.MinIntervalBetweenRecoveryRequestMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.MinIntervalBetweenRecoveryRequestMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.MinIntervalBetweenRecoveryRequestMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.MinIntervalBetweenRecoveryRequestDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.MinIntervalBetweenRecoveryRequestDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.MinIntervalBetweenRecoveryRequestMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.MinIntervalBetweenRecoveryRequestMax)]
     public void WhenBuiltForPredefinedEnvironmentAndMinIntervalBetweenRecoveryRequestsIsSetThenProducerConfigurationReflectsThat(SdkEnvironment environment, int timeoutSeconds)
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -255,7 +265,7 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -280,14 +290,17 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.InactivitySecondsMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.InactivitySecondsDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.InactivitySecondsMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.InactivitySecondsMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.InactivitySecondsDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.InactivitySecondsMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.InactivitySecondsMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.InactivitySecondsMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.InactivitySecondsDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.InactivitySecondsDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.InactivitySecondsMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.InactivitySecondsMax)]
     public void WhenBuiltForPredefinedEnvironmentAndInactivitySecondsIsSetThenProducerConfigurationReflectsThat(SdkEnvironment environment, int timeoutSeconds)
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -305,7 +318,7 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -330,14 +343,17 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.InactivitySecondsPrematchMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.InactivitySecondsPrematchDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.InactivitySecondsPrematchMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.InactivitySecondsPrematchMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.InactivitySecondsPrematchDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.InactivitySecondsPrematchMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.InactivitySecondsPrematchMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.InactivitySecondsPrematchMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.InactivitySecondsPrematchDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.InactivitySecondsPrematchDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.InactivitySecondsPrematchMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.InactivitySecondsPrematchMax)]
     public void WhenBuiltForPredefinedEnvironmentAndInactivitySecondsPrematchIsSetThenProducerConfigurationReflectsThat(SdkEnvironment environment, int timeoutSeconds)
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -355,7 +371,7 @@ public class BuilderProducerConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)

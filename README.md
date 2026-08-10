@@ -11,21 +11,21 @@ The SDK uses the following 3rd party libraries:
 - RabbitMQ.Client 6.8.1
 - Dawn.Guard 1.12.0
 - Humanizer 2.14.1
-- Microsoft.Bcl.AsyncInterfaces 10.0.2
-- Microsoft.Bcl.TimeProvider 10.0.2
-- Microsoft.Extensions.Caching.Memory 10.0.2
-- Microsoft.Extensions.Configuration 10.0.2
-- Microsoft.Extensions.DependencyInjection 10.0.2
-- Microsoft.Extensions.Diagnostics.HealthChecks 10.0.2
-- Microsoft.Extensions.Http 10.0.2
-- System.Configuration.ConfigurationManager 10.0.2
-- OpenTelemetry 1.15.0
-- OpenTelemetry.Extensions.Hosting 1.15.0
-- OpenTelemetry.Instrumentation.Runtime 1.15.0
-- OpenTelemetry.Exporter.OpenTelemetryProtocol 1.15.0
-- Polly 8.6.5
-- System.IdentityModel.Tokens.Jwt 8.15.0
-- ZiggyCreatures.FusionCache 2.5.0
+- Microsoft.Bcl.AsyncInterfaces 10.0.9
+- Microsoft.Bcl.TimeProvider 10.0.9
+- Microsoft.Extensions.Caching.Memory 10.0.9
+- Microsoft.Extensions.Configuration 10.0.9
+- Microsoft.Extensions.DependencyInjection 10.0.9
+- Microsoft.Extensions.Diagnostics.HealthChecks 10.0.9
+- Microsoft.Extensions.Http 10.0.9
+- System.Configuration.ConfigurationManager 10.0.9
+- OpenTelemetry 1.16.0
+- OpenTelemetry.Extensions.Hosting 1.16.0
+- OpenTelemetry.Instrumentation.Runtime 1.15.1
+- OpenTelemetry.Exporter.OpenTelemetryProtocol 1.16.0
+- Polly 8.7.0
+- System.IdentityModel.Tokens.Jwt 8.19.1
+- ZiggyCreatures.FusionCache 2.6.0
 
 The package contains:
 - DemoProject: solution containing a demo project showing the basic usage of the SDK

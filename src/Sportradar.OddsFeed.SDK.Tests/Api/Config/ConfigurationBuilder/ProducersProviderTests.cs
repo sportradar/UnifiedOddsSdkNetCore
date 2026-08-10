@@ -20,13 +20,13 @@ public class ProducersProviderTests : ConfigurationBuilderWithSectionSetup
 
     public ProducersProviderTests()
     {
-        var configIntegration = new TokenSetter(new TestSectionProvider(TestSection.GetDefaultSection()), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var configIntegration = new TokenSetter(new TestSectionProvider(TestSection.GetDefaultSection()), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                                .SetAccessToken("some-access-token")
                                .SelectEnvironment(SdkEnvironment.Integration)
                                .SetDesiredLanguages(TestData.Cultures1)
                                .Build();
 
-        _configCustom = new TokenSetter(new TestSectionProvider(TestSection.GetCustomSection()), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        _configCustom = new TokenSetter(new TestSectionProvider(TestSection.GetCustomSection()), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                        .SetAccessToken("some-access-token")
                        .SelectCustom()
                        .SetDesiredLanguages(TestData.Cultures1)
@@ -86,7 +86,7 @@ public class ProducersProviderTests : ConfigurationBuilderWithSectionSetup
     [Fact]
     public void CustomConfigurationWhenSetNoApiSslThenProducerApiUrlUsesHttp()
     {
-        _configCustom = new TokenSetter(new TestSectionProvider(TestSection.GetCustomSection()), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        _configCustom = new TokenSetter(new TestSectionProvider(TestSection.GetCustomSection()), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                        .SetAccessToken("some-access-token")
                        .SelectCustom()
                        .SetDesiredLanguages(TestData.Cultures1)
@@ -105,7 +105,7 @@ public class ProducersProviderTests : ConfigurationBuilderWithSectionSetup
     [Fact]
     public void CustomConfigurationWhenOnlySetNoApiSslThenProducerApiUrlUsesHttp()
     {
-        _configCustom = new TokenSetter(new TestSectionProvider(TestSection.GetCustomSection()), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        _configCustom = new TokenSetter(new TestSectionProvider(TestSection.GetCustomSection()), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                        .SetAccessToken("some-access-token")
                        .SelectCustom()
                        .SetDesiredLanguages(TestData.Cultures1)

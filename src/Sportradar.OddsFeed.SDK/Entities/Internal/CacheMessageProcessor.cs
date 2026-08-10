@@ -47,7 +47,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <summary>
         /// The sport event cache
         /// </summary>
-        private readonly SportEventCache _sportEventCache;
+        private readonly ISportEventCache _sportEventCache;
 
         /// <summary>
         /// The cache manager
@@ -84,7 +84,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             ProcessorId = "CMP" + Guid.NewGuid().ToString().Substring(0, 4);
 
             _mapperFactory = mapperFactory;
-            _sportEventCache = (SportEventCache)sportEventCache;
+            _sportEventCache = sportEventCache;
             _cacheManager = cacheManager;
             _feedMessageHandler = feedMessageHandler;
             _sportEventStatusCache = sportEventStatusCache;

@@ -48,11 +48,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
                              };
 
             return new JwtSecurityToken(_privateKeyJwt.ClientId,
-                                        _audienceForLocalToken, // based on configuration always full authentication server url
-                                        claims,
-                                        issuedAt.UtcDateTime,
-                                        expiresAt.UtcDateTime,
-                                        signingCredentials);
+                                                _audienceForLocalToken, // based on configuration always full authentication server url
+                                                claims,
+                                                issuedAt.UtcDateTime,
+                                                expiresAt.UtcDateTime,
+                                                signingCredentials)
+            {
+                Header =
+                   {
+                       [JwtHeaderParameterNames.Kid] = _privateKeyJwt.SigningKeyId
+                   }
+            };
+
         }
     }
 }

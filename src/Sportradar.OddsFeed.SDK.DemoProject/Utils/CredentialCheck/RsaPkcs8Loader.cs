@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Sportradar.OddsFeed.SDK.DemoProject.Utils;
+namespace Sportradar.OddsFeed.SDK.DemoProject.Utils.CredentialCheck;
 
 public static class RsaPkcs8Loader
 {
@@ -19,7 +19,7 @@ public static class RsaPkcs8Loader
         return ParsePkcs8RsaKey(pem, keyId);
     }
 
-    public static AsymmetricSecurityKey ParsePkcs8RsaKey(string pemContent, string keyId = null)
+    private static AsymmetricSecurityKey ParsePkcs8RsaKey(string pemContent, string keyId = null)
     {
         if (string.IsNullOrWhiteSpace(pemContent))
         {

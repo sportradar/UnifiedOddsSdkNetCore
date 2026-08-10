@@ -143,7 +143,7 @@ public class WireMockMappingBuilder
 
     public void SetCommonIAmStubbedWithToken(string commonIAmJwtToken, int tokenExpiryInSeconds, string audience, string title, HttpStatusCode statusCode)
     {
-        var wildCardAudience = $"*audience={audience}*";
+        var wildCardAudience = $"*audience={Uri.EscapeDataString(audience)}*";
         var commonIamResponse = GetCommonIamResponseForToken(commonIAmJwtToken, tokenExpiryInSeconds);
         var commonIamResponseBody = JsonSerializer.Serialize(commonIamResponse);
 

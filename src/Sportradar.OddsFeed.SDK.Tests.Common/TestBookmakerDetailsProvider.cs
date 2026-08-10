@@ -26,13 +26,13 @@ internal class TestBookmakerDetailsProvider : IBookmakerDetailsProvider
     public void LoadBookmakerDetails(UofConfiguration config)
     {
         var bookmakerDetails = new BookmakerDetails(GetBookmakerDetails(_expiredAt));
-        config.UpdateBookmakerDetails(bookmakerDetails, EnvironmentManager.GetApiHost(config.Environment));
+        config.UpdateBookmakerDetails(bookmakerDetails);
     }
 
     public static void LoadBookmakerDetails(UofConfiguration config, BookmakerDetailsDto dto)
     {
         var bookmakerDetails = new BookmakerDetails(dto);
-        config.UpdateBookmakerDetails(bookmakerDetails, EnvironmentManager.GetApiHost(config.Environment));
+        config.UpdateBookmakerDetails(bookmakerDetails);
     }
 
     private static BookmakerDetailsDto GetBookmakerDetails(DateTime expiredAt)

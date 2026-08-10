@@ -8,25 +8,25 @@ This guide offers practical advice to ensure your transition is not only efficie
 
 The following new dependencies have been added/updated:
 
-* **System.IdentityModel.Tokens.Jwt 8.15.0** - required for the new client authentication feature
-* **Polly 8.6.5** - standardizes transient-error handling via retries, circuit breakers, and additional resilience patterns
-* **Microsoft.Bcl.TimeProvider 10.0.2** - provides TimeProvider abstraction for time-based operations, enabling better testability and time control
-* Microsoft.Extensions.Caching.Memory 10.0.2
-* Microsoft.Extensions.Configuration 10.0.2
-* Microsoft.Extensions.DependencyInjection 10.0.2
-* Microsoft.Extensions.Diagnostics.HealthChecks 10.0.2
-* Microsoft.Extensions.Http 10.0.2
-* System.Configuration.ConfigurationManager 10.0.2
-* OpenTelemetry 1.15.0
-* OpenTelemetry.Exporter.OpenTelemetryProtocol 1.15.0
-* OpenTelemetry.Extensions.Hosting 1.15.0
-* OpenTelemetry.Instrumentation.Runtime 1.15.0
+* **System.IdentityModel.Tokens.Jwt 8.19.1** - required for the new client authentication feature
+* **Polly 8.7.0** - standardizes transient-error handling via retries, circuit breakers, and additional resilience patterns
+* **Microsoft.Bcl.TimeProvider 10.0.9** - provides TimeProvider abstraction for time-based operations, enabling better testability and time control
+* Microsoft.Extensions.Caching.Memory 10.0.9
+* Microsoft.Extensions.Configuration 10.0.9
+* Microsoft.Extensions.DependencyInjection 10.0.9
+* Microsoft.Extensions.Diagnostics.HealthChecks 10.0.9
+* Microsoft.Extensions.Http 10.0.9
+* System.Configuration.ConfigurationManager 10.0.9
+* OpenTelemetry 1.16.0
+* OpenTelemetry.Exporter.OpenTelemetryProtocol 1.16.0
+* OpenTelemetry.Extensions.Hosting 1.16.0
+* OpenTelemetry.Instrumentation.Runtime 1.15.1
 
 Make sure to update your project's dependency management to include these new libraries.
 
 ## 2. New Features
 
-#### Client Authentication with Private Key JWT
+### Client Authentication with Private Key JWT
 
 Version 4.0.0 introduces a new client authentication feature that supports **Private Key JWT** authentication method. This feature implements OAuth 2.0 Client Credentials Grant with JWT assertion, providing enhanced security for API communications.
 
@@ -92,13 +92,60 @@ Configuration via configuration files is not supported for client authentication
 - **Key Registration** - The corresponding public key must be registered with Sportradar authentication service
 - **SSL Recommended** - Use HTTPS for secure transmission of authentication credentials
 
+### Interface changes
+- _ICustomBetManagerV2_ is removed 
+  - Client previously casting `(ICustomBetManagerV2)uofSdk.CustomBetManager` must switch to `uofSdk.CustomBetManager` directly
+
+### Replay changes
+
+Removed `IEnvironmentSelector.SelectReplay()` and `SdkEnvironment.Replay`. Use `SelectEnvironment(env)` instead.
+
+Be specific about credentials and select either `SdkEnvironment.ReplayWithIntegrationCredentials` or `SdkEnvironment.ReplayWithProductionCredentials` depending on your use case.
+
+When connecting to the Replay server, you must explicitly choose which credential environment your access token or Client Authentication configuration belongs to:
+
+- **`ReplayWithIntegrationCredentials`** — for integration (staging) access tokens or CIAM credentials.
+- **`ReplayWithProductionCredentials`** — for production access tokens or CIAM credentials.
+
+Previously, `SelectReplay()` and `SdkEnvironment.Replay` attempted to auto-detect whether the access token was integration or production. This behavior is removed — you must now select the appropriate replay environment explicitly.
+
+```csharp
+// Before (v3)
+var config = UofSdk.GetConfigurationBuilder()
+    .SetAccessToken("your access token")
+    .SelectReplay()
+    .SetDefaultLanguage(CultureInfo.GetCultureInfo("en"))
+    .Build();
+
+// After (v4) — integration token
+var config = UofSdk.GetConfigurationBuilder()
+    .SetAccessToken("your integration access token")
+    .SelectEnvironment(SdkEnvironment.ReplayWithIntegrationCredentials)
+    .SetDefaultLanguage(CultureInfo.GetCultureInfo("en"))
+    .Build();
+
+// After (v4) — production token
+var config = UofSdk.GetConfigurationBuilder()
+    .SetAccessToken("your production access token")
+    .SelectEnvironment(SdkEnvironment.ReplayWithProductionCredentials)
+    .SetDefaultLanguage(CultureInfo.GetCultureInfo("en"))
+    .Build();
+```
+
+If using configuration files, update the `environment` setting from `Replay` to `ReplayWithIntegrationCredentials` or `ReplayWithProductionCredentials`.
+
+#### Removed Methods
+
+- `IEnvironmentSelector.SelectReplay()`
+- enum value `SdkEnvironment.Replay`
+
 ## 3. Release Candidate Constraints
 
 - Access token is mandatory to be configured along with optional client authentication configuration.
 - SetClientAuthentication must be set before SetAccessToken when configuring SDK.
 - Rabbit credentials cannot be overridden when using Client Authentication.
 - SDK integrations via SSL-terminating proxies is not supported. This is because custom Client Authentication server fields (e.g.`.SetClientAuthenticationHost()`) works correctly only for staging and production URLs.
-- Replay does not support Client Authentication.
+- When using Client Authentication with Replay, select the replay environment that matches your CIAM credentials (`ReplayWithIntegrationCredentials` or `ReplayWithProductionCredentials`).
 
 ## 4. Test Your Project
 

@@ -452,11 +452,13 @@ public class RabbitMqMessageReceiverTests
         execLogger.Messages.Count(m => m.Contains("A message for producer which is not defined was received.")).ShouldBe(1);
     }
 
-    [Fact]
-    public void WhenOddsChangeComeForUnavailableProducerAndEnvironmentIsReplayThenIsDispatched()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    public void WhenOddsChangeComeForUnavailableProducerAndEnvironmentIsAnyReplayThenIsDispatched(SdkEnvironment environment)
     {
         var mockConfig = new Mock<IUofConfiguration>();
-        mockConfig.Setup(c => c.Environment).Returns(SdkEnvironment.Replay);
+        mockConfig.Setup(c => c.Environment).Returns(environment);
         FeedMessage receivedMessage = null;
         var oddsChange = GetOddsChangeWithSingleMarket();
         oddsChange.product = TestProducerManager.Create().Producers.First(f => !f.IsAvailable).Id;
@@ -477,7 +479,7 @@ public class RabbitMqMessageReceiverTests
     public void WhenOddsChangeComeForUnknownProducerIsReceivedAndEnvironmentIsReplayThenIsNotDispatched()
     {
         var mockConfig = new Mock<IUofConfiguration>();
-        mockConfig.Setup(c => c.Environment).Returns(SdkEnvironment.Replay);
+        mockConfig.Setup(c => c.Environment).Returns(SdkEnvironment.ReplayWithIntegrationCredentials);
         FeedMessage receivedMessage = null;
         var oddsChange = GetOddsChangeWithSingleMarket();
         oddsChange.product = UnknownProducerId;

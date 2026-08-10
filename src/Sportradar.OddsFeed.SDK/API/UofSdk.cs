@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -18,6 +19,7 @@ using Sportradar.OddsFeed.SDK.Api.EventArguments;
 using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
+using Sportradar.OddsFeed.SDK.Api.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
 using Sportradar.OddsFeed.SDK.Api.Internal.Recovery;
@@ -184,11 +186,6 @@ namespace Sportradar.OddsFeed.SDK.Api
             var tmpConfig = ServiceProvider.GetRequiredService<IUofConfiguration>();
             UofConfig = tmpConfig as UofConfiguration ?? GetUofConfigFromCustomConfig(tmpConfig);
 
-            if (isReplay || UofConfig.Environment == SdkEnvironment.Replay)
-            {
-                UofConfig.UpdateSdkEnvironment(SdkEnvironment.Replay);
-            }
-
             // check if ILoggerFactory is configured
             var loggerFactory = ServiceProvider.GetService<ILoggerFactory>();
             SdkLoggerFactory.SetLoggerFactory(loggerFactory ?? new NullLoggerFactory());
@@ -199,7 +196,7 @@ namespace Sportradar.OddsFeed.SDK.Api
             EventRecoveryRequestIssuer = ServiceProvider.GetRequiredService<IEventRecoveryRequestIssuer>();
             SportDataProvider = ServiceProvider.GetRequiredService<ISportDataProvider>();
             var producerManager = ServiceProvider.GetRequiredService<IProducerManager>();
-            if (UofConfig.Environment == SdkEnvironment.Replay)
+            if (UofConfig.Environment.IsReplayEnvironment())
             {
                 ((ProducerManager)producerManager).SetIgnoreRecovery(0);
             }
@@ -342,9 +339,23 @@ namespace Sportradar.OddsFeed.SDK.Api
         /// Constructs a <see cref="IUofConfiguration"/> instance from provided information
         /// </summary>
         /// <returns>A <see cref="IUofConfiguration"/> instance created from provided information</returns>
+        [ExcludeFromCodeCoverage]
         public static ITokenSetter GetConfigurationBuilder()
         {
-            return new TokenSetter(new UofConfigurationSectionProvider(), null, null);
+            return new TokenSetter(
+                new UofConfigurationSectionProvider(),
+                config =>
+                {
+                    var services = new ServiceCollection();
+                    services.AddUofSdkServices(config);
+                    return services.BuildServiceProvider().GetRequiredService<IBookmakerDetailsProvider>();
+                },
+                config =>
+                {
+                    var services = new ServiceCollection();
+                    services.AddUofSdkServices(config);
+                    return services.BuildServiceProvider().GetRequiredService<IProducersProvider>();
+                });
         }
 
         /// <summary>

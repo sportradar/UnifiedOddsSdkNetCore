@@ -13,10 +13,26 @@ internal static class CommonIAmJwtHelper
         var handler = new JwtSecurityTokenHandler();
         var token = handler.ReadJwtToken(jwtToken);
         var audiences = token.Audiences.ToArray();
-        if (audiences.Length != 1)
+        if (audiences.Length == 1)
         {
-            throw new ArgumentException("JWT token does not contain exactly one audience", nameof(jwtToken));
+            return audiences[0];
         }
-        return audiences[0];
+
+        throw new ArgumentException("JWT token does not contain exactly one audience", nameof(jwtToken));
+    }
+
+    public static string GetIssuer(string jwtToken)
+    {
+        return new JwtSecurityTokenHandler().ReadJwtToken(jwtToken).Issuer;
+    }
+
+    public static string GetSubject(string jwtToken)
+    {
+        return new JwtSecurityTokenHandler().ReadJwtToken(jwtToken).Subject;
+    }
+
+    public static string GetSigningKeyId(string jwtToken)
+    {
+        return new JwtSecurityTokenHandler().ReadJwtToken(jwtToken).Header.Kid;
     }
 }

@@ -10,7 +10,6 @@ using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Sdk.Config;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.API.Config.ConfigurationBuilder;
@@ -19,6 +18,15 @@ public class ConfigurationBuilderWithSectionSetup
 {
     protected const string CustomApiHost = "custom_api_host";
     protected const string CustomRabbitHost = "custom_mq_host";
+    protected const string TestAccessToken = "myTestToken";
+    internal readonly TestSection BaseSection;
+    internal readonly TestSection CustomSection;
+
+    protected ConfigurationBuilderWithSectionSetup()
+    {
+        BaseSection = (TestSection)TestSection.GetDefaultSection();
+        CustomSection = (TestSection)TestSection.GetCustomSection();
+    }
 
     internal static List<int> GetIntList(string value)
     {
@@ -32,22 +40,27 @@ public class ConfigurationBuilderWithSectionSetup
 
     internal static ITokenSetter GetTokenSetter()
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWithoutSection(), new TestBookmakerDetailsProvider(), new TestProducersProvider());
+        return new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider());
     }
 
     internal static ITokenSetter GetTokenSetter(IUofConfigurationSection section)
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWith(section), new TestBookmakerDetailsProvider(), new TestProducersProvider());
+        return new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider());
     }
 
     internal static IEnvironmentSelector GetEnvironmentSelector()
     {
-        return GetTokenSetter().SetAccessToken(TestConsts.AnyAccessToken);
+        return GetTokenSetter().SetAccessToken(TestAccessToken);
+    }
+
+    internal static IEnvironmentSelector GetEnvironmentSelector(IUofConfigurationSection section)
+    {
+        return GetTokenSetter(section).SetAccessToken(TestAccessToken);
     }
 
     internal static IConfigurationBuilder IntegrationBuilder(IUofConfigurationSection section)
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWith(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessTokenFromConfigFile()
               .SelectEnvironment(SdkEnvironment.Integration)
               .LoadFromConfigFile();
@@ -55,14 +68,14 @@ public class ConfigurationBuilderWithSectionSetup
 
     internal static IConfigurationBuilder IntegrationBuilder(string token)
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWithoutSection(), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessToken(token)
               .SelectEnvironment(SdkEnvironment.Integration);
     }
 
     internal static IConfigurationBuilder ProductionBuilder(IUofConfigurationSection section)
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWith(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessTokenFromConfigFile()
               .SelectEnvironment(SdkEnvironment.Production)
               .LoadFromConfigFile();
@@ -70,55 +83,71 @@ public class ConfigurationBuilderWithSectionSetup
 
     internal static IConfigurationBuilder ProductionBuilder(string token)
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWithoutSection(), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessToken(token)
               .SelectEnvironment(SdkEnvironment.Production);
     }
 
     internal static IConfigurationBuilder ReplayBuilder(IUofConfigurationSection section)
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWith(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessTokenFromConfigFile()
-              .SelectReplay()
+              .SelectEnvironment(SdkEnvironment.ReplayWithIntegrationCredentials)
               .LoadFromConfigFile();
     }
 
     internal static IConfigurationBuilder ReplayBuilder(string token)
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWithoutSection(), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessToken(token)
-              .SelectReplay();
+              .SelectEnvironment(SdkEnvironment.ReplayWithIntegrationCredentials);
     }
 
     internal static ICustomConfigurationBuilder CustomBuilder(IUofConfigurationSection section)
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWith(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        return new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessTokenFromConfigFile()
               .SelectCustom()
               .LoadFromConfigFile();
+    }
+
+    internal static ICustomConfigurationBuilder CustomBuilder(string token)
+    {
+        return new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
+              .SetAccessToken(token)
+              .SelectCustom()
+              .SetApiHost(CustomApiHost)
+              .SetMessagingHost(CustomRabbitHost);
     }
 
     protected static IConfigurationBuilder BuildConfig(string builderType)
     {
         return builderType switch
         {
-            "p" => ProductionBuilder(TestConsts.AnyAccessToken).SetDefaultLanguage(ScheduleData.CultureEn),
-            "r" => ReplayBuilder(TestConsts.AnyAccessToken).SetDefaultLanguage(ScheduleData.CultureEn),
-            _ => IntegrationBuilder(TestConsts.AnyAccessToken).SetDefaultLanguage(ScheduleData.CultureEn)
+            "p" => ProductionBuilder(TestData.AccessToken).SetDefaultLanguage(ScheduleData.CultureEn),
+            "r" => ReplayBuilder(TestData.AccessToken).SetDefaultLanguage(ScheduleData.CultureEn),
+            _ => IntegrationBuilder(TestData.AccessToken).SetDefaultLanguage(ScheduleData.CultureEn)
         };
     }
 
     protected static ICustomConfigurationBuilder BuildCustomConfig()
     {
-        return new TokenSetter(UofConfigurationSectionProviderBuilder.CreateWithoutSection(), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-              .SetAccessToken(TestConsts.AnyAccessToken)
-              .SelectCustom()
-              .SetDefaultLanguage(ScheduleData.CultureEn);
+        return CustomBuilder(TestData.AccessToken).SetDefaultLanguage(ScheduleData.CultureEn);
+    }
+
+    protected static void ConfigHasDefaultValuesSet(IUofConfiguration config)
+    {
+        ValidateDefaultProducerConfig(config.Producer);
+        ValidateDefaultCacheConfig(config.Cache);
+        ValidateApiConfigForEnvironment(config.Api, config.Environment);
+        ValidateRabbitConfigForEnvironment(config, config.Environment);
+        ValidateDefaultAdditionalConfig(config.Additional);
+        ValidateDefaultUsageConfig(config);
     }
 
     internal static void ValidateDefaultConfig(IUofConfiguration config, SdkEnvironment environment)
     {
-        Assert.Equal(TestConsts.AnyAccessToken, config.AccessToken);
+        Assert.Equal(TestData.AccessToken, config.AccessToken);
         Assert.Equal(environment, config.Environment);
         Assert.Equal(TestConsts.CultureEn, config.DefaultLanguage);
         Assert.Single(config.Languages);

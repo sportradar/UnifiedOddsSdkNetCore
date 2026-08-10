@@ -46,13 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
 
         private static string GetRequestBearerToken(HttpRequestMessage requestMessage)
         {
-            var bearerToken = string.Empty;
-            if (requestMessage.Headers.Authorization.Scheme.Equals("Bearer", StringComparison.OrdinalIgnoreCase))
-            {
-                bearerToken = requestMessage.Headers.Authorization.Parameter;
-            }
-
-            return bearerToken;
+            return requestMessage.Headers.Authorization.Parameter;
         }
     }
 }

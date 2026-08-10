@@ -30,6 +30,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
+using CalculateRequest = Sportradar.OddsFeed.SDK.Api.Internal.Managers.CalculateRequest;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 {
@@ -138,6 +139,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// </summary>
         private readonly IDataProvider<AvailableSelectionsDto> _availableSelectionsProvider;
         /// <summary>
+        /// The prebuilt bets provider
+        /// </summary>
+        private readonly IDataProviderWithQuery<PrebuiltBetsDto> _prebuiltBetsProvider;
+        /// <summary>
         /// The calculate probability provider
         /// </summary>
         private readonly ICalculateProbabilityProvider _calculateProbabilityProvider;
@@ -231,6 +236,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// <param name="sportEventFixtureChangeFixtureForTournamentProvider">The sport event fixture provider without cache for when tournamentInfo is returned</param>
         /// <param name="stagePeriodSummaryProvider">Stage period summary provider</param>
         /// <param name="sportEventsForRaceTournamentProvider">The sport events for race schedule tournament provider</param>
+        /// <param name="prebuiltBetsProvider">Prebuilt bets provider</param>
         /// <remarks>Ignored _availableSelectionsProvider.RawApiDataReceived += OnRawApiDataReceived; _calculateProbabilityProvider.RawApiDataReceived += OnRawApiDataReceived;</remarks>
         [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
         public DataRouterManager(ICacheManager cacheManager,
@@ -266,7 +272,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                                  IDataProvider<TournamentInfoDto> sportEventFixtureForTournamentProvider,
                                  IDataProvider<TournamentInfoDto> sportEventFixtureChangeFixtureForTournamentProvider,
                                  IDataProvider<PeriodSummaryDto> stagePeriodSummaryProvider,
-                                 IDataProvider<EntityList<SportEventSummaryDto>> sportEventsForRaceTournamentProvider)
+                                 IDataProvider<EntityList<SportEventSummaryDto>> sportEventsForRaceTournamentProvider,
+                                 IDataProviderWithQuery<PrebuiltBetsDto> prebuiltBetsProvider)
         {
             Guard.Argument(cacheManager, nameof(cacheManager)).NotNull();
             Guard.Argument(producerManager, nameof(producerManager)).NotNull();
@@ -302,6 +309,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             Guard.Argument(sportEventFixtureChangeFixtureForTournamentProvider, nameof(sportEventFixtureChangeFixtureForTournamentProvider)).NotNull();
             Guard.Argument(stagePeriodSummaryProvider, nameof(stagePeriodSummaryProvider)).NotNull();
             Guard.Argument(sportEventsForRaceTournamentProvider, nameof(sportEventsForRaceTournamentProvider)).NotNull();
+            Guard.Argument(prebuiltBetsProvider, nameof(prebuiltBetsProvider)).NotNull();
 
             _cacheManager = cacheManager;
             var wnsProducer = producerManager.GetProducer(7);
@@ -339,6 +347,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             _sportEventFixtureChangeFixtureForTournamentProvider = sportEventFixtureChangeFixtureForTournamentProvider;
             _stagePeriodSummaryProvider = stagePeriodSummaryProvider;
             _sportEventsForRaceTournamentProvider = sportEventsForRaceTournamentProvider;
+            _prebuiltBetsProvider = prebuiltBetsProvider;
 
             _sportEventSummaryProvider.RawApiDataReceived += OnRawApiDataReceived;
             _sportEventFixtureProvider.RawApiDataReceived += OnRawApiDataReceived;
@@ -1452,9 +1461,41 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             }
         }
 
-        public async Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
+        public async Task<IPrebuiltBets> RequestCustomBetPrebuiltBets(IPrebuiltBetsRequest prebuiltBetsRequest)
         {
-            var selectionList = selections.ToList();
+            using (new TelemetryTracker(UofSdkTelemetry.DataRouterManager, "endpoint", "CustomBetPrebuilt"))
+            {
+                try
+                {
+                    var queryParameters = GetPrebuiltBetsRequestQueryParameters(prebuiltBetsRequest);
+                    var headers = GetPrebuiltBetsRequestHeaders(prebuiltBetsRequest);
+
+                    var prebuiltBetsDto = await _prebuiltBetsProvider.GetDataAsync(queryParameters, headers).ConfigureAwait(false);
+
+                    IPrebuiltBets prebuiltBets = null;
+                    if (prebuiltBetsDto != null)
+                    {
+                        prebuiltBets = new PrebuiltBets(prebuiltBetsDto);
+                    }
+
+                    return prebuiltBets;
+                }
+                catch (CommunicationException e)
+                {
+                    var filteredResponse = SdkInfo.ExtractHttpResponseMessage(e.Message);
+                    _executionLog.LogError("Error getting prebuilt bets. Message={HttpResponseMessage}", filteredResponse);
+                    throw new CommunicationException(filteredResponse, e.Url, e.ResponseCode, null);
+                }
+                catch (Exception e)
+                {
+                    _executionLog.LogError(e.InnerException ?? e, "Error getting prebuilt bets. Message={ErrorMessage}", e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public async Task<ICalculation> CalculateProbabilityAsync(CalculateRequest request)
+        {
             using (var t = new TelemetryTracker(UofSdkTelemetry.DataRouterManager, "endpoint", "CalculateProbability"))
             {
                 WriteLog("Executing CalculateProbability.", true);
@@ -1463,7 +1504,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 int restCallTime;
                 try
                 {
-                    result = await _calculateProbabilityProvider.GetDataAsync(selectionList).ConfigureAwait(false);
+                    result = await _calculateProbabilityProvider.GetDataAsync(request).ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (CommunicationException e)
@@ -1502,9 +1543,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             }
         }
 
-        public async Task<ICalculationFilter> CalculateProbabilityFilteredAsync(IEnumerable<ISelection> selections)
+        public async Task<ICalculationFilter> CalculateProbabilityFilteredAsync(CalculateRequest request)
         {
-            var selectionList = selections.ToList();
             using (var t = new TelemetryTracker(UofSdkTelemetry.DataRouterManager, "endpoint", "CalculateProbabilityFiltered"))
             {
                 WriteLog("Executing CalculateProbabilityFiltered.", true);
@@ -1513,7 +1553,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 int restCallTime;
                 try
                 {
-                    result = await _calculateProbabilityFilteredProvider.GetDataAsync(selectionList).ConfigureAwait(false);
+                    result = await _calculateProbabilityFilteredProvider.GetDataAsync(request).ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (CommunicationException e)
@@ -1897,6 +1937,39 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 return $" Saving took {difference.ToString(CultureInfo.InvariantCulture)} ms";
             }
             return string.Empty;
+        }
+
+        private static Dictionary<string, string> GetPrebuiltBetsRequestHeaders(IPrebuiltBetsRequest prebuiltBetsRequest)
+        {
+            var headers = new Dictionary<string, string>
+                              {
+                                  { "x-sub-bookmaker", prebuiltBetsRequest.SubBookmakerId.ToString(CultureInfo.InvariantCulture) }
+                              };
+            return headers;
+        }
+
+        private static Dictionary<string, string> GetPrebuiltBetsRequestQueryParameters(IPrebuiltBetsRequest prebuiltBetsRequest)
+        {
+            var queryParameters = new Dictionary<string, string>();
+
+            if (prebuiltBetsRequest.EventId != null)
+            {
+                queryParameters["event_urn"] = prebuiltBetsRequest.EventId.ToString();
+            }
+            if (prebuiltBetsRequest.Count.HasValue)
+            {
+                queryParameters["count"] = prebuiltBetsRequest.Count.Value.ToString(CultureInfo.InvariantCulture);
+            }
+            if (prebuiltBetsRequest.Length.HasValue)
+            {
+                queryParameters["length"] = prebuiltBetsRequest.Length.Value.ToString(CultureInfo.InvariantCulture);
+            }
+            if (!string.IsNullOrEmpty(prebuiltBetsRequest.User))
+            {
+                queryParameters["user"] = prebuiltBetsRequest.User;
+            }
+
+            return queryParameters;
         }
     }
 }

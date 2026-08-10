@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
+using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
@@ -25,6 +26,19 @@ public static class DeserializerHelper
     }
 
     public static Stream SerializeToMemoryStream<T>(T restMessage) where T : RestMessage
+    {
+        var serializer = new XmlSerializer(typeof(T));
+
+        var memoryStream = new MemoryStream();
+        using var writer = new StreamWriter(memoryStream, new UTF8Encoding(false), leaveOpen: true);
+        serializer.Serialize(writer, restMessage);
+        writer.Flush();
+        memoryStream.Position = 0;
+
+        return memoryStream;
+    }
+
+    public static Stream SerializeFeedMessageToStream<T>(T restMessage) where T : FeedMessage
     {
         var serializer = new XmlSerializer(typeof(T));
 

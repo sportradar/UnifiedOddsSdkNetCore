@@ -127,7 +127,7 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
 
         Assert.Equal(SdkEnvironment.Integration, IntegrationBuilder(baseSection).Build().Environment);
         Assert.Equal(SdkEnvironment.Production, ProductionBuilder(baseSection).Build().Environment);
-        Assert.Equal(SdkEnvironment.Replay, ReplayBuilder(baseSection).Build().Environment);
+        Assert.Equal(SdkEnvironment.ReplayWithIntegrationCredentials, ReplayBuilder(baseSection).Build().Environment);
     }
 
     [Fact]
@@ -155,7 +155,7 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
 
         Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.Integration), IntegrationBuilder(baseSection).Build().Rabbit.Host);
         Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.Production), ProductionBuilder(baseSection).Build().Rabbit.Host);
-        Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.Replay), ReplayBuilder(baseSection).Build().Rabbit.Host);
+        Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.ReplayWithIntegrationCredentials), ReplayBuilder(baseSection).Build().Rabbit.Host);
     }
 
     [Fact]
@@ -232,11 +232,11 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
 
         Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), IntegrationBuilder(baseSection).Build().Api.Host);
         Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Production), ProductionBuilder(baseSection).Build().Api.Host);
-        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Replay), ReplayBuilder(baseSection).Build().Api.Host);
+        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.ReplayWithIntegrationCredentials), ReplayBuilder(baseSection).Build().Api.Host);
 
         Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Api.Host);
         Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Production), ProductionBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Api.Host);
-        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Replay), ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Api.Host);
+        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.ReplayWithIntegrationCredentials), ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Api.Host);
     }
 
     [Fact]
@@ -274,7 +274,7 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
         const string accessToken = "AccessToken";
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' />".ToSection();
 
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
                     .SelectEnvironment(SdkEnvironment.GlobalProduction)
                     .LoadFromConfigFile()
@@ -315,7 +315,7 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
         const string accessToken = "AccessToken";
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' />".ToSection();
 
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
                     .SelectEnvironment(SdkEnvironment.GlobalIntegration)
                     .LoadFromConfigFile()
@@ -356,9 +356,9 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
         const string accessToken = "AccessToken";
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' />".ToSection();
 
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+        var config = new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                     .SetAccessTokenFromConfigFile()
-                    .SelectEnvironment(SdkEnvironment.Replay)
+                    .SelectEnvironment(SdkEnvironment.ReplayWithIntegrationCredentials)
                     .LoadFromConfigFile()
                     .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Throw)
                     .SetHttpClientTimeout(45)
@@ -368,15 +368,15 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
                     .SetHttpClientRecoveryTimeout(45)
                     .Build();
 
-        Assert.Equal(SdkEnvironment.Replay, config.Environment);
+        Assert.Equal(SdkEnvironment.ReplayWithIntegrationCredentials, config.Environment);
         Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), config.Api.Host);
         ValidateConfiguration(config,
                               accessToken,
-                              SdkEnvironment.Replay,
+                              SdkEnvironment.ReplayWithIntegrationCredentials,
                               "en",
                               2,
-                              EnvironmentManager.GetMqHost(SdkEnvironment.Replay),
-                              EnvironmentManager.GetApiHost(SdkEnvironment.Replay),
+                              EnvironmentManager.GetMqHost(SdkEnvironment.ReplayWithIntegrationCredentials),
+                              EnvironmentManager.GetApiHost(SdkEnvironment.ReplayWithIntegrationCredentials),
                               EnvironmentManager.DefaultMqHostPort,
                               accessToken,
                               null,

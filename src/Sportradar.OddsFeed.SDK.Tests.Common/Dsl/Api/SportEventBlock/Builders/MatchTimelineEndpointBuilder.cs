@@ -139,15 +139,15 @@ public sealed class MatchTimelineEndpointBuilder
             timeline = _timeline?.ToArray() ?? []
         };
 
+        endpoint.generated_atSpecified = _generatedAtSpecified ?? false;
+
         if (_generatedAt.HasValue)
         {
             endpoint.generated_at = _generatedAt.Value;
-            endpoint.generated_atSpecified = true;
         }
         else
         {
             endpoint.generated_at = default;
-            endpoint.generated_atSpecified = false;
         }
 
         return endpoint;

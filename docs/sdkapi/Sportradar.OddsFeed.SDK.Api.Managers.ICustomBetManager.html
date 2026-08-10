@@ -154,8 +154,81 @@ Interface ICustomBetManager
 
 
 
+  <a id="Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_PrebuiltBetsRequestBuilder_" data-uid="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.PrebuiltBetsRequestBuilder*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_PrebuiltBetsRequestBuilder" data-uid="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.PrebuiltBetsRequestBuilder">
+  PrebuiltBetsRequestBuilder
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns an <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.html">IPrebuiltBetsRequestBuilder</a> instance used to build request for prebuilt bets</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPrebuiltBetsRequestBuilder PrebuiltBetsRequestBuilder { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.html">IPrebuiltBetsRequestBuilder</a></dt>
+    <dd><p>An <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.html">IPrebuiltBetsRequestBuilder</a> instance used to build request for  prebuilt bets</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_CalculateProbabilityAsync_" data-uid="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.CalculateProbabilityAsync*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_CalculateProbabilityAsync_Sportradar_OddsFeed_SDK_Api_Managers_ICalculateRequestBuilder_" data-uid="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.CalculateProbabilityAsync(Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder)">
+  CalculateProbabilityAsync(ICalculateRequestBuilder)
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns an <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.html">ICalculation</a> instance providing the probability for the request built
+via <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_GetCalculateRequestBuilder">GetCalculateRequestBuilder()</a>. Supports both AND selections and OR selection groups.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;ICalculation&gt; CalculateProbabilityAsync(ICalculateRequestBuilder request)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>request</code> <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.html">ICalculateRequestBuilder</a></dt>
+    <dd><p>The <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.html">ICalculateRequestBuilder</a> containing the legs of the bet</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.html">ICalculation</a>&gt;</dt>
+    <dd><p>An <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.html">ICalculation</a> providing the probability for the specified request</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
 
 
   <a id="Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_CalculateProbabilityAsync_" data-uid="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.CalculateProbabilityAsync*"></a>
@@ -184,6 +257,47 @@ Interface ICustomBetManager
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.html">ICalculation</a>&gt;</dt>
     <dd><p>An <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.html">ICalculation</a> providing the probability for the specified selections</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_CalculateProbabilityFilterAsync_" data-uid="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.CalculateProbabilityFilterAsync*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_CalculateProbabilityFilterAsync_Sportradar_OddsFeed_SDK_Api_Managers_ICalculateRequestBuilder_" data-uid="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.CalculateProbabilityFilterAsync(Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder)">
+  CalculateProbabilityFilterAsync(ICalculateRequestBuilder)
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns an <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.html">ICalculationFilter</a> instance providing the probability for the request built
+via <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_GetCalculateRequestBuilder">GetCalculateRequestBuilder()</a>, filtering out conflicting outcomes.
+Supports both AND selections and OR selection groups.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;ICalculationFilter&gt; CalculateProbabilityFilterAsync(ICalculateRequestBuilder request)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>request</code> <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.html">ICalculateRequestBuilder</a></dt>
+    <dd><p>The <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.html">ICalculateRequestBuilder</a> containing the legs of the bet</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.html">ICalculationFilter</a>&gt;</dt>
+    <dd><p>An <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.html">ICalculationFilter</a> providing the probability for the specified request</p>
 </dd>
   </dl>
 
@@ -262,6 +376,79 @@ Interface ICustomBetManager
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.html">IAvailableSelections</a>&gt;</dt>
     <dd><p>An <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.html">IAvailableSelections</a> providing the available selections of the associated event</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_GetCalculateRequestBuilder_" data-uid="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.GetCalculateRequestBuilder*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_GetCalculateRequestBuilder" data-uid="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.GetCalculateRequestBuilder">
+  GetCalculateRequestBuilder()
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a new <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.html">ICalculateRequestBuilder</a> instance used to build a probability
+calculation request that may contain both AND selections and OR selection groups.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ICalculateRequestBuilder GetCalculateRequestBuilder()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.html">ICalculateRequestBuilder</a></dt>
+    <dd><p>A new <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder.html">ICalculateRequestBuilder</a> instance</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_GetPrebuiltBets_" data-uid="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.GetPrebuiltBets*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetManager_GetPrebuiltBets_Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_IPrebuiltBetsRequest_" data-uid="Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.GetPrebuiltBets(Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest)">
+  GetPrebuiltBets(IPrebuiltBetsRequest)
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns prebuilt bet recommendations for the specified request.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IPrebuiltBets&gt; GetPrebuiltBets(IPrebuiltBetsRequest prebuiltBetsRequest)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prebuiltBetsRequest</code> <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest.html">IPrebuiltBetsRequest</a></dt>
+    <dd><p>The <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest.html">IPrebuiltBetsRequest</a> containing the event identifier and optional parameters.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets.html">IPrebuiltBets</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets.html">IPrebuiltBets</a> object for the given request</p>
 </dd>
   </dl>
 

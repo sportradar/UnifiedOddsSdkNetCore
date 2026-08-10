@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using Shouldly;
-using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
@@ -17,7 +16,6 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Extensions;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl;
 using Sportradar.OddsFeed.SDK.Tests.Common.Extensions;
 using Xunit;
 
@@ -32,13 +30,6 @@ public class SportDataProviderRequestOptionsTests
     private static readonly Urn TournamentWithFewEvents = Urn.Parse("sr:tournament:42");
     private static readonly CultureInfo[] TwoLanguages = [new("en"), new("es")];
     private static readonly RequestOptions NonTimeCriticalRequestOptions = new(ExecutionPath.NonTimeCritical);
-
-    private readonly IUofConfiguration _uofConfiguration;
-
-    public SportDataProviderRequestOptionsTests()
-    {
-        _uofConfiguration = UofConfigurations.SingleLanguage;
-    }
 
     public static IEnumerable<object[]> ConfiguredLanguages =>
         new List<object[]>

@@ -8,6 +8,8 @@ using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Configuration;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Extensions;
 using Sportradar.OddsFeed.SDK.Tests.Common.Extensions;
 using Xunit;
 
@@ -20,10 +22,11 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenMissingLanguageForPredefinedEnvironmentThenBuildThrows(SdkEnvironment environment)
     {
-        var tokenSetterBuilder = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var tokenSetterBuilder = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                                 .SetAccessToken(TestConsts.AnyAccessToken)
                                 .SelectEnvironment(environment);
         Should.Throw<InvalidOperationException>(() => tokenSetterBuilder.Build());
@@ -32,7 +35,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenMissingLanguageForCustomEnvironmentThenBuildThrows()
     {
-        var customBuilder = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var customBuilder = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                            .SetAccessToken(TestConsts.AnyAccessToken)
                            .SelectCustom()
                            .SetApiHost(TestConsts.AnyApiHost)
@@ -46,10 +49,11 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenDefaultLanguageSetForPredefinedEnvironmentThenConfigurationHasCorrectLanguage(SdkEnvironment environment)
     {
-        var builder = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var builder = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                      .SetAccessToken(TestConsts.AnyAccessToken)
                      .SelectEnvironment(environment)
                      .SetDefaultLanguage(TestConsts.CultureEn);
@@ -64,7 +68,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenDefaultLanguageSetForCustomEnvironmentThenConfigurationHasCorrectLanguage()
     {
-        var builder = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var builder = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                      .SetAccessToken(TestConsts.AnyAccessToken)
                      .SelectCustom()
                      .SetApiHost(TestConsts.AnyApiHost)
@@ -83,10 +87,11 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenDesiredLanguagesSetForPredefinedEnvironmentThenConfigurationHasCorrectLanguages(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDesiredLanguages(TestConsts.Cultures3)
@@ -100,7 +105,9 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenDesiredLanguagesSetForCustomEnvironmentThenConfigurationHasCorrectLanguages()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = ConfigurationUnitBuilders.StubbingOutDataProviders()
+                    .WithOneProducerAndAnyBookmakerDetails()
+                    .BuildTokenSetter()
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -118,12 +125,13 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenDesiredLanguagesContainDuplicatesForPredefinedEnvironmentThenOnlyUniqueLanguagesAreConfigured(SdkEnvironment environment)
     {
         IReadOnlyCollection<CultureInfo> theSameLanguageRepeated3Times = [TestConsts.CultureEn, TestConsts.CultureEn, TestConsts.CultureEn];
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDesiredLanguages(theSameLanguageRepeated3Times)
@@ -139,7 +147,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     {
         IReadOnlyCollection<CultureInfo> theSameLanguageRepeated3Times = [TestConsts.CultureEn, TestConsts.CultureEn, TestConsts.CultureEn];
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -157,10 +165,11 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenDefaultLanguageAndDesiredLanguagesSetForPredefinedEnvironmentThenDefaultIsFirstAndAllLanguagesPresent(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureHu)
@@ -177,7 +186,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenDefaultLanguageAndDesiredLanguagesSetForCustomEnvironmentThenDefaultIsFirstAndAllLanguagesPresent()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -198,10 +207,11 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenDefaultLanguageIncludedInDesiredLanguagesForPredefinedEnvironmentThenLanguagesAreUniqueAndDefaultLanguageIsPreserved(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -218,7 +228,7 @@ public class BuilderLanguagesTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenDefaultLanguageIncludedInDesiredLanguagesForCustomEnvironmentThenLanguagesAreUniqueAndDefaultLanguageIsPreserved()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)

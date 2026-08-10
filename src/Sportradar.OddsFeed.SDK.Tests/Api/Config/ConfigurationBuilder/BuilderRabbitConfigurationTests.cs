@@ -33,10 +33,11 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentThenRabbitHasDefaultValuesAndVirtualHostMatchesBookmaker(SdkEnvironment environment)
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -49,7 +50,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenBuiltForCustomEnvironmentThenRabbitHasDefaultValues()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -69,13 +70,15 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration, ConfigLimit.RabbitConnectionTimeoutMax)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.RabbitConnectionTimeoutMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.RabbitConnectionTimeoutMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.RabbitConnectionTimeoutMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.RabbitConnectionTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.RabbitConnectionTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.RabbitConnectionTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.RabbitConnectionTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.RabbitConnectionTimeoutMax)]
     public void WhenRabbitConnectionTimeoutSetForPredefinedEnvironmentThenRabbitHasExpectedConnectionTimeout(SdkEnvironment environment, int timeoutSeconds)
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -92,7 +95,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -113,13 +116,15 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration, ConfigLimit.RabbitHeartbeatMax)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.RabbitHeartbeatMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.RabbitHeartbeatMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.RabbitHeartbeatMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.RabbitHeartbeatMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.RabbitHeartbeatMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.RabbitHeartbeatMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.RabbitHeartbeatMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.RabbitHeartbeatMax)]
     public void WhenRabbitHeartbeatSetForPredefinedEnvironmentThenRabbitHasExpectedHeartbeat(SdkEnvironment environment, int timeoutSeconds)
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -136,7 +141,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetAccessToken(TestConsts.AnyAccessToken)
                     .SelectCustom()
                     .SetApiHost(TestConsts.AnyApiHost)
@@ -151,7 +156,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenRabbitUsernameSetForCustomEnvironmentWithClientAuthenticationThenRabbitHasExpectedValue()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(DefaultPrivateKeyJwt)
                          .SelectCustom()
                          .SetDefaultLanguage(TestConsts.CultureEn)
@@ -171,7 +176,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
         configurationSectionMock.Setup(sectionMock => sectionMock.RabbitPassword).Returns("any-password");
         UofConfigurationSectionProviderMock.Setup(sectionProvider => sectionProvider.GetSection()).Returns(configurationSectionMock.Object);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                          .SetClientAuthentication(DefaultPrivateKeyJwt)
                          .SelectCustom()
                          .LoadFromConfigFile()
@@ -183,7 +188,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenRabbitPasswordSetForCustomEnvironmentWithClientAuthenticationThenRabbitHasExpectedValue()
     {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectCustom()
                     .SetDefaultLanguage(TestConsts.CultureEn)
@@ -203,7 +208,7 @@ public class BuilderRabbitConfigurationTests : ConfigurationBuilderSetup
         configurationSectionMock.Setup(sectionMock => sectionMock.RabbitPassword).Returns("any-password");
         UofConfigurationSectionProviderMock.Setup(sectionProvider => sectionProvider.GetSection()).Returns(configurationSectionMock.Object);
 
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
                     .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectCustom()
                     .LoadFromConfigFile()

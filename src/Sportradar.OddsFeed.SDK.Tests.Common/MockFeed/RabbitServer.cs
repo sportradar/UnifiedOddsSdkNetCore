@@ -21,7 +21,6 @@ using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Feed;
 using Xunit.Abstractions;
 
@@ -81,7 +80,7 @@ internal class RabbitServer
         var rabbitUsers = ManagementClient.GetUsers();
         if (!rabbitUsers.Any(a => a.Name.Equals(SdkRabbitUsername)))
         {
-            ManagementClient.CreateUser(UserInfo.ByPassword(SdkRabbitUsername, SdkRabbitPassword).AddTag("administrator"));
+            ManagementClient.CreateUser(SdkRabbitUsername, UserInfo.ByPassword(SdkRabbitPassword).AddTag("administrator"));
         }
 
         var testUser = ManagementClient.GetUser(SdkRabbitUsername);
@@ -93,8 +92,13 @@ internal class RabbitServer
         }
 
         var virtualHost = ManagementClient.GetVhost(VirtualHostName);
-        ManagementClient.CreatePermission(virtualHost, new PermissionInfo(testUser.Name));
-        ManagementClient.CreatePermission(virtualHost, new PermissionInfo(DefaultRabbitUserName));
+        var allowAll = new PermissionInfo()
+                      .SetConfigure(".*")
+                      .SetWrite(".*")
+                      .SetRead(".*");
+
+        ManagementClient.CreatePermission(virtualHost, testUser.Name, allowAll);
+        ManagementClient.CreatePermission(virtualHost, DefaultRabbitUserName, allowAll);
     }
 
     public static string GetRabbitIp()
@@ -112,7 +116,7 @@ internal class RabbitServer
         var activeConnections = ManagementClient.GetConnections();
         foreach (var connection in activeConnections)
         {
-            ManagementClient.CloseConnection(connection);
+            ManagementClient.CloseConnection(connection.Name);
         }
 
         _outputHelper.WriteLine($"Starting connection with HostName={GetRabbitIp()}");
@@ -276,11 +280,7 @@ internal class RabbitServer
         var httpResponseMessage = httpClient.PutAsync($"http://{GetRabbitIp()}:15672/api/users/{username}", content).GetAwaiter().GetResult();
         if (httpResponseMessage != null)
         {
-            var responseContent = string.Empty;
-            if (httpResponseMessage.Content != null)
-            {
-                responseContent = httpResponseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            }
+            var responseContent = httpResponseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
             _outputHelper.WriteLine(
                 $"Rabbit ApiCall -> change user password: StatusCode={httpResponseMessage.StatusCode}, RequestContent={content.ReadAsStringAsync().GetAwaiter().GetResult()}, ResponseContent={responseContent}");

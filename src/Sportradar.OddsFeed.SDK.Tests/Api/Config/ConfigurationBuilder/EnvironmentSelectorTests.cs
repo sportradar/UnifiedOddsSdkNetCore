@@ -7,7 +7,6 @@ using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Sdk.Config;
 using Xunit;
 
 // ReSharper disable TooManyChainedReferences
@@ -16,34 +15,32 @@ namespace Sportradar.OddsFeed.SDK.Tests.API.Config.ConfigurationBuilder;
 
 public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
 {
-    private readonly UofConfiguration _configuration = new UofConfiguration(UofConfigurationSectionProviderBuilder.CreateWithoutSection());
-    private readonly IBookmakerDetailsProvider _bookmakerDetailsProvider = new TestBookmakerDetailsProvider();
-    private readonly IProducersProvider _producersProvider = new TestProducersProvider();
+    private readonly UofConfiguration _configuration = new(new TestSectionProvider(null));
 
     [Fact]
     public void EnvironmentSelectorConstructWithMissingConfiguration()
     {
-        Assert.Throws<ArgumentNullException>(() => new EnvironmentSelector(null, UofConfigurationSectionProviderBuilder.CreateWithBase(), _bookmakerDetailsProvider, _producersProvider));
+        Assert.Throws<ArgumentNullException>(() => new EnvironmentSelector(null, new TestSectionProvider(BaseSection), _ => null, _ => null));
     }
 
     [Fact]
     public void EnvironmentSelectorConstructWithMissingSectionProvider()
     {
-        Assert.Throws<ArgumentNullException>(() => new EnvironmentSelector(_configuration, null, _bookmakerDetailsProvider, _producersProvider));
+        Assert.Throws<ArgumentNullException>(() => new EnvironmentSelector(_configuration, null, _ => null, _ => null));
     }
 
     [Fact]
-    public void EnvironmentSelectorConstructWithMissingBookmakerDetailsProvider()
+    public void EnvironmentSelectorConstructWithNullBookmakerDetailsProviderFactory()
     {
-        var selector = new EnvironmentSelector(_configuration, UofConfigurationSectionProviderBuilder.CreateWithBase(), null, _producersProvider);
+        var selector = new EnvironmentSelector(_configuration, new TestSectionProvider(BaseSection), _ => null, _ => null);
 
         Assert.NotNull(selector);
     }
 
     [Fact]
-    public void EnvironmentSelectorConstructWithMissingProducersProvider()
+    public void EnvironmentSelectorConstructWithNullProducersProviderFactory()
     {
-        var selector = new EnvironmentSelector(_configuration, UofConfigurationSectionProviderBuilder.CreateWithBase(), _bookmakerDetailsProvider, null);
+        var selector = new EnvironmentSelector(_configuration, new TestSectionProvider(BaseSection), _ => null, _ => null);
 
         Assert.NotNull(selector);
     }
@@ -51,7 +48,7 @@ public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
     [Fact]
     public void SettingEnvironmentFromSectionWhenNonePresentThrows()
     {
-        Assert.Throws<InvalidOperationException>(() => new EnvironmentSelector(_configuration, new TestSectionProvider(null), _bookmakerDetailsProvider, _producersProvider).SelectEnvironmentFromConfigFile());
+        Assert.Throws<InvalidOperationException>(() => new EnvironmentSelector(_configuration, new TestSectionProvider(null), _ => null, _ => null).SelectEnvironmentFromConfigFile());
     }
 
     [Fact]
@@ -79,7 +76,15 @@ public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
     [Fact]
     public void SelectReplayEnvironmentReturnTest()
     {
-        var configurationBuilder = GetEnvironmentSelector().SelectReplay();
+        var configurationBuilder = GetEnvironmentSelector().SelectEnvironment(SdkEnvironment.ReplayWithIntegrationCredentials);
+
+        Assert.NotNull(configurationBuilder);
+    }
+
+    [Fact]
+    public void SelectReplayProductionEnvironmentReturnTest()
+    {
+        var configurationBuilder = GetEnvironmentSelector().SelectEnvironment(SdkEnvironment.ReplayWithProductionCredentials);
 
         Assert.NotNull(configurationBuilder);
     }
@@ -119,17 +124,19 @@ public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
         VerifyConfig(cfg, SdkEnvironment.Production, ScheduleData.CultureDe);
     }
 
-    [Fact]
-    public void ReplayEnvironmentResultValidation()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    public void ReplayEnvironmentResultValidation(SdkEnvironment expectedEnvironment)
     {
         var cfg = GetEnvironmentSelector()
-                 .SelectReplay()
-                 .SetDesiredLanguages(new List<CultureInfo> { ScheduleData.CultureDe })
+                 .SelectEnvironment(expectedEnvironment)
+                 .SetDesiredLanguages([ScheduleData.CultureDe])
                  .Build();
 
         Assert.NotNull(cfg);
-        Assert.Equal(SdkEnvironment.Replay, cfg.Environment);
-        VerifyConfig(cfg, SdkEnvironment.Replay, ScheduleData.CultureDe);
+        Assert.Equal(expectedEnvironment, cfg.Environment);
+        VerifyConfig(cfg, expectedEnvironment, ScheduleData.CultureDe);
     }
 
     [Fact]
@@ -146,33 +153,27 @@ public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
     }
 
     [Fact]
-    public void ReplayShouldTargetIntegrationApiBecauseReplayButWeNeedAnExplanationWhy()
+    public void ReplayWithProductionCredentialsShouldTargetProductionApi()
     {
-        var cfg = GetEnvironmentSelector().SelectReplay().SetDefaultLanguage(ScheduleData.CultureEn).Build();
+        var cfg = GetEnvironmentSelector().SelectEnvironment(SdkEnvironment.ReplayWithProductionCredentials).SetDefaultLanguage(ScheduleData.CultureEn).Build();
 
-        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), cfg.Api.Host);
+        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Production), cfg.Api.Host);
     }
 
-    [Fact]
-    public void ReplayShouldPointToNonGlobalMessagingHostAsItIsLongTermStrategy()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    public void ReplayConfigurationShouldBeCreatedForReplayEnvironment(SdkEnvironment replayEnvironment)
     {
-        var cfg = GetEnvironmentSelector().SelectReplay().SetDefaultLanguage(ScheduleData.CultureEn).Build();
+        var cfg = GetEnvironmentSelector().SelectEnvironment(replayEnvironment).SetDefaultLanguage(ScheduleData.CultureEn).Build();
 
-        Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.Replay), cfg.Rabbit.Host);
-    }
-
-    [Fact]
-    public void ReplayConfigurationShouldBeCreatedForReplayEnvironment()
-    {
-        var cfg = GetEnvironmentSelector().SelectReplay().SetDefaultLanguage(ScheduleData.CultureEn).Build();
-
-        Assert.Equal(SdkEnvironment.Replay, cfg.Environment);
+        Assert.Equal(replayEnvironment, cfg.Environment);
     }
 
     // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
     private static void VerifyConfig(IUofConfiguration config, SdkEnvironment environment, CultureInfo baseLanguage)
     {
-        Assert.Equal(TestConsts.AnyAccessToken, config.AccessToken);
+        Assert.Equal(TestAccessToken, config.AccessToken);
         Assert.Equal(baseLanguage, config.DefaultLanguage);
         Assert.Single(config.Languages);
         Assert.Equal(baseLanguage, config.Languages[0]);
