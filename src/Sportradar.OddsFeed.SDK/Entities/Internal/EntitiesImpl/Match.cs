@@ -1,10 +1,5 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
@@ -16,6 +11,11 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
@@ -111,7 +111,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{ITeamCompetitor}"/> representing the retrieval operation</returns>
         public async Task<ITeamCompetitor> GetHomeCompetitorAsync()
         {
-            return await GetMatchCompetitorAsync(0, Cultures).ConfigureAwait(false);
+            var competitor = await GetMatchCompetitorAsync(0, Cultures).ConfigureAwait(false);
+
+            await competitor.LoadAsync();
+
+            return competitor;
+
         }
 
         /// <summary>
@@ -131,7 +136,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{ITeamCompetitor}"/> representing the retrieval operation</returns>
         public async Task<ITeamCompetitor> GetAwayCompetitorAsync()
         {
-            return await GetMatchCompetitorAsync(1, Cultures).ConfigureAwait(false);
+            var competitor = await GetMatchCompetitorAsync(1, Cultures).ConfigureAwait(false);
+            
+            await competitor.LoadAsync();
+            
+            return competitor;
         }
 
         /// <summary>

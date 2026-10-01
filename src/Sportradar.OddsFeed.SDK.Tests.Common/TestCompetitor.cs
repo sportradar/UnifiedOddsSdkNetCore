@@ -168,6 +168,11 @@ public class TestCompetitor : ICompetitor
         throw new NotImplementedException();
     }
 
+    public Task LoadAsync()
+    {
+        throw new NotImplementedException();
+    }
+
     public string ShortName { get; }
 
     public IDivision Division { get; set; }

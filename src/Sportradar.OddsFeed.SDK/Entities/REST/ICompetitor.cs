@@ -1,5 +1,6 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -117,6 +118,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest
         Task<ICategorySummary> GetCategoryAsync();
 
         /// <summary>
+        /// Load cache item for the competitor
+        /// </summary>
+        /// <returns></returns>
+        Task LoadAsync();
+
+        /// <summary>
         /// Gets the short name
         /// </summary>
         /// <value>The short name</value>
@@ -126,5 +133,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest
         /// Gets the division
         /// </summary>
         IDivision Division { get; }
+
     }
 }
