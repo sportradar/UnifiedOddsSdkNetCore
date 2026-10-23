@@ -2,12 +2,29 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using RabbitMQ.Client;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.FeedAccess;
 
 internal class StubConnectionFactory : IConnectionFactory
 {
+    private readonly Func<IConnection> _createConnection;
+
+    private int _createConnectionCalls;
+
+    public int CreateConnectionCalls => _createConnectionCalls;
+
+    public StubConnectionFactory()
+        : this(() => new StubConnection())
+    {
+    }
+
+    public StubConnectionFactory(Func<IConnection> createConnection)
+    {
+        _createConnection = createConnection;
+    }
+
     public IAuthMechanismFactory AuthMechanismFactory(IList<string> mechanismNames)
     {
         throw new NotImplementedException();
@@ -15,7 +32,8 @@ internal class StubConnectionFactory : IConnectionFactory
 
     public IConnection CreateConnection()
     {
-        return new StubConnection();
+        Interlocked.Increment(ref _createConnectionCalls);
+        return _createConnection();
     }
 
     public IConnection CreateConnection(string clientProvidedName)

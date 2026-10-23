@@ -1,6 +1,10 @@
 # Change Log
 
-## 3.12.0
+## 3.13.0
+- Fixed an issue where a closed RabbitMQ connection was reused after the broker closed it, so the feed stayed disconnected until the application was restarted.
+- Usage metrics export stops when the SDK is disposed, so creating another SDK instance in the same process no longer stacks background exporters.
+
+## 2026-09-23 3.12.0
 - Added each-way settlement details on bet settlement outcomes via the new `IOutcomeSettlementV2` interface (cast the settled outcome to this interface), exposing `EachWayResult`, `EachWayPlaceFactor`, and `DeadHeatFactorPlace`. Each-way result values the SDK does not recognize are reported as `EachWayResult.UnsupportedBySdk`.
 - Fixed an issue where feed messages failed to process when AMQP headers were marked present but the header collection was null or empty.
 

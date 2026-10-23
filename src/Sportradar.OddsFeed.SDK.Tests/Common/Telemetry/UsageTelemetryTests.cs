@@ -3,6 +3,7 @@
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using Moq;
 using OpenTelemetry.Metrics;
 using Shouldly;
@@ -71,6 +72,49 @@ public class UsageTelemetryTests
         var logEntries = wireMockServer.LogEntries.ToList();
         logEntries.ShouldHaveSingleItem();
         logEntries.First().ResponseMessage.StatusCode.ShouldBe(404);
+    }
+
+    [RetryFact(3, 5000)]
+    public async Task WhenExportFailsThenDoesNotRetry()
+    {
+        var wireMockServer = SetupWireMockServerWithEndpointReturning(HttpStatusCode.TooManyRequests);
+
+        var mockConfig = MockUofConfigurationWithStatisticsInterval(wireMockServer, true, exportIntervalInSec: 30);
+
+        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object);
+        var testHistogram = UofSdkTelemetry.DefaultMeter.CreateHistogram<long>(MetricNameForTestHistogram);
+        testHistogram.Record(AnyRecordedValue);
+
+        var flushSucceeded = meterProvider.ForceFlush();
+        flushSucceeded.ShouldBeFalse();
+
+        wireMockServer.LogEntries.Count.ShouldBe(1);
+
+        await Task.Delay(3000);
+
+        wireMockServer.LogEntries.Count.ShouldBe(1);
+
+        meterProvider.Dispose();
+    }
+
+    [RetryFact(3, 5000)]
+    public async Task DisposeWhenExportEnabledThenFlushesOnceAndDoesNotExportOnNextInterval()
+    {
+        var wireMockServer = SetupWireMockServerWithEndpoint();
+        var mockConfig = MockUofConfigurationWithStatisticsInterval(wireMockServer, true, exportIntervalInSec: 2);
+
+        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object);
+        var testHistogram = UofSdkTelemetry.DefaultMeter.CreateHistogram<long>(MetricNameForTestHistogram);
+        testHistogram.Record(AnyRecordedValue);
+
+        meterProvider.Dispose();
+
+        var requestCountAfterDispose = wireMockServer.LogEntries.Count;
+        requestCountAfterDispose.ShouldBeGreaterThanOrEqualTo(1);
+
+        await Task.Delay(3000);
+
+        wireMockServer.LogEntries.Count.ShouldBe(requestCountAfterDispose);
     }
 
     [Fact]
@@ -238,7 +282,18 @@ public class UsageTelemetryTests
         return wireMockServer;
     }
 
-    private static Mock<IUofConfiguration> MockUofConfigurationWithStatisticsInterval(WireMockServer wireMockServer, bool enableUsageExport)
+    private static WireMockServer SetupWireMockServerWithEndpointReturning(HttpStatusCode httpStatusCode)
+    {
+        var wireMockServer = WireMockServer.Start();
+        wireMockServer.Given(Request.Create().WithPath(UsageTelemetry.EndpointUrl).UsingPost())
+                      .RespondWith(Response.Create().WithStatusCode(httpStatusCode));
+        return wireMockServer;
+    }
+
+    private static Mock<IUofConfiguration> MockUofConfigurationWithStatisticsInterval(
+        WireMockServer wireMockServer,
+        bool enableUsageExport,
+        int exportIntervalInSec = 10)
     {
         var mockApiConfig = new Mock<IUofApiConfiguration>();
         mockApiConfig.Setup(s => s.Host).Returns(wireMockServer.Urls[0]);
@@ -246,7 +301,7 @@ public class UsageTelemetryTests
         var mockUsageConfig = new Mock<IUofUsageConfiguration>();
         mockUsageConfig.Setup(s => s.IsExportEnabled).Returns(enableUsageExport);
         mockUsageConfig.Setup(s => s.Host).Returns(wireMockServer.Urls[0]);
-        mockUsageConfig.Setup(s => s.ExportIntervalInSec).Returns(10);
+        mockUsageConfig.Setup(s => s.ExportIntervalInSec).Returns(exportIntervalInSec);
         mockUsageConfig.Setup(s => s.ExportTimeoutInSec).Returns(5);
 
         var mockBookmakerDetails = new Mock<IBookmakerDetails>();

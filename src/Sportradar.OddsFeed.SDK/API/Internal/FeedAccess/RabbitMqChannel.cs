@@ -63,7 +63,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
 
         private readonly string _accessToken;
 
-        private readonly SemaphoreSlim _timerSemaphoreSlim = new SemaphoreSlim(1);
+        private SemaphoreSlim _timerSemaphoreSlim;
 
         public RabbitMqChannel(IChannelFactory channelFactory, ISdkTimer timer, TimeSpan maxTimeBetweenMessages, string accessToken, ILogger<RabbitMqChannel> logger)
         {
@@ -95,6 +95,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
                 throw new InvalidOperationException("The instance is already opened");
             }
 
+            _timerSemaphoreSlim = new SemaphoreSlim(1);
             _messageInterest = interest;
             _routingKeys = routingKeys.ToList();
             if (_routingKeys.IsNullOrEmpty())
@@ -113,7 +114,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
         {
             if (Interlocked.CompareExchange(ref _isOpened, 0, 1) != 1)
             {
-                _logger.LogError("Cannot close the channel on channelNumber: {ChannelNumber}, because this channel is already closed", Channel?.ChannelNumber);
+                _logger.LogError("Cannot close the channel on channelNumber: {ChannelNumber}, because this channel is already closed", TryReadChannelNumber());
                 throw new InvalidOperationException("The instance is already closed");
             }
 
@@ -215,27 +216,60 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
         /// </summary>
         private async Task OnTimerElapsedAsync()
         {
-            await _timerSemaphoreSlim.WaitAsync().ConfigureAwait(false);
-
-            if (IsOpened)
+            var semaphore = _timerSemaphoreSlim;
+            if (semaphore == null)
             {
-                try
-                {
-                    RecreateChannelIfNoMessagesArrivedWithinInterval();
-
-                    RecreateChannelIfNoMessagesArrivedWithinIntervalFromChannelStart();
-
-                    RecreateChannelIfConnectionIsNewer();
-
-                    CreateChannelIfDoesNotExist();
-                }
-                catch (Exception e)
-                {
-                    _logger.LogWarning(e, "Error checking connection for channelNumber: {ChannelNumber}", Channel?.ChannelNumber.ToString(CultureInfo.InvariantCulture));
-                }
+                _logger.LogDebug("Connection check skipped because the channel is not opened");
+                return;
             }
 
-            _timerSemaphoreSlim.ReleaseSafe();
+            try
+            {
+                await semaphore.WaitAsync().ConfigureAwait(false);
+            }
+            catch (ObjectDisposedException)
+            {
+                _logger.LogDebug("Connection check skipped because the channel is closed");
+                return;
+            }
+
+            try
+            {
+                if (IsOpened)
+                {
+                    try
+                    {
+                        RecreateChannelIfNoMessagesArrivedWithinInterval();
+
+                        RecreateChannelIfNoMessagesArrivedWithinIntervalFromChannelStart();
+
+                        RecreateChannelIfConnectionIsNewer();
+
+                        CreateChannelIfDoesNotExist();
+                    }
+                    catch (Exception e)
+                    {
+                        var channelNumber = TryReadChannelNumber();
+                        _logger.LogWarning(e, "Error checking connection for channelNumber: {ChannelNumber}", channelNumber);
+                    }
+                }
+            }
+            finally
+            {
+                semaphore.ReleaseSafe();
+            }
+        }
+
+        private string TryReadChannelNumber()
+        {
+            try
+            {
+                return Channel?.ChannelNumber.ToString(CultureInfo.InvariantCulture);
+            }
+            catch (ObjectDisposedException)
+            {
+                return null;
+            }
         }
 
         private void CreateChannelIfDoesNotExist()

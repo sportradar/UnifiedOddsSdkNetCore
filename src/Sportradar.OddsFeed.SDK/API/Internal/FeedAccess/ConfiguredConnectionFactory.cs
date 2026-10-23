@@ -63,9 +63,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
         {
             lock (_syncLock)
             {
-                if (_connectionSingleton != null)
+                if (_connectionSingleton != null && _connectionSingleton.IsOpen)
                 {
                     return _connectionSingleton;
+                }
+
+                if (_connectionSingleton != null)
+                {
+                    ReleaseConnectionEvents(_connectionSingleton);
+                    _connectionSingleton.Dispose();
+                    _connectionSingleton = null;
+                    ConnectionCreated = DateTime.MinValue;
                 }
 
                 ConnectionFactory.ClientProperties["SrUfSdkInit"] = SdkInfo.UtcNowString();
@@ -189,12 +197,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             connectionFactory.Password = config.Rabbit.Password ?? string.Empty;
         }
 
+        private void ReleaseConnectionEvents(IConnection connection)
+        {
+            connection.ConnectionBlocked -= OnConnectionBlocked;
+            connection.ConnectionUnblocked -= OnConnectionUnblocked;
+            connection.CallbackException -= OnCallbackException;
+            connection.ConnectionShutdown -= OnConnectionShutdown;
+        }
+
         private void ReleaseConnectionEventsAndClose()
         {
-            _connectionSingleton.ConnectionBlocked -= OnConnectionBlocked;
-            _connectionSingleton.ConnectionUnblocked -= OnConnectionUnblocked;
-            _connectionSingleton.CallbackException -= OnCallbackException;
-            _connectionSingleton.ConnectionShutdown -= OnConnectionShutdown;
+            ReleaseConnectionEvents(_connectionSingleton);
             _connectionSingleton.Close(TimeSpan.FromSeconds(10));
         }
 

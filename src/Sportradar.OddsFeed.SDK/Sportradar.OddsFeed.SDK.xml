@@ -10224,6 +10224,11 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ConnectionValidator"/> used to detect potential connectivity issues
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Api.UofSdk._usageMeterProvider">
+            <summary>
+            The usage metrics <see cref="T:OpenTelemetry.Metrics.MeterProvider"/> when export is enabled; otherwise null
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.UofSdk.#ctor(System.IServiceProvider,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.UofSdk"/> class

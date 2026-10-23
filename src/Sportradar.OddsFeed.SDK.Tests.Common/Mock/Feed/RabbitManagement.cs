@@ -192,6 +192,21 @@ public class RabbitManagement
     }
 
     /// <summary>
+    /// Publishes an arbitrary body. Unlike <see cref="Send(string, string, long, IReadOnlyDictionary{string, string})"/>, this does not add a timestamp header.
+    /// </summary>
+    public void SendRaw(byte[] body, string routingKey, IDictionary<string, object> headers = null)
+    {
+        var basicProperties = _channel.CreateBasicProperties();
+        if (headers != null)
+        {
+            basicProperties.Headers = new Dictionary<string, object>(headers);
+        }
+
+        _channel.BasicPublish(_projConfig.UfExchange, routingKey, basicProperties, body);
+        _outputHelper.WriteLine($"MQ raw sent: {routingKey} ({body?.Length ?? 0} bytes)");
+    }
+
+    /// <summary>
     ///     Adds the producerId for periodically send alive messages. And start immediately.
     /// </summary>
     /// <param name="producerId">The producer id</param>
