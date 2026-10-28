@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Xml.Serialization;
 using Moq;
@@ -49,6 +50,53 @@ internal static class DataFetcherMockHelper
         var dataFetcherMock = new Mock<IDataFetcher>();
         dataFetcherMock.Setup(fetcher => fetcher.GetDataAsync(It.IsAny<Uri>(), It.IsAny<IReadOnlyDictionary<string, string>>(), It.IsAny<IReadOnlyDictionary<string, string>>()))
                        .ThrowsAsync(new CommunicationException());
+
+        return dataFetcherMock.Object;
+    }
+
+    public static IDataFetcher GetDataFetcherThrowingCommunicationExceptionIfHostMatches(string urlHost)
+    {
+        var dataFetcherMock = new Mock<IDataFetcher>();
+        dataFetcherMock.Setup(fetcher => fetcher.GetData(It.Is<Uri>(actualUrl => actualUrl.Host.Equals(urlHost, StringComparison.OrdinalIgnoreCase))))
+                       .Throws(new CommunicationException());
+
+        return dataFetcherMock.Object;
+    }
+
+    public static IDataFetcher GetDataFetcherThrowingCommunicationExceptionOnGetData()
+    {
+        var dataFetcherMock = new Mock<IDataFetcher>();
+        dataFetcherMock.Setup(fetcher => fetcher.GetData(It.IsAny<Uri>()))
+                       .Throws(new CommunicationException("Failed to execute http get", "https://api.betradar.com/v1/users/whoami.xml", HttpStatusCode.InternalServerError, null));
+
+        return dataFetcherMock.Object;
+    }
+
+    public static IDataFetcher GetDataFetcherThrowingCommonIamTokenFailureOnGetData()
+    {
+        var dataFetcherMock = new Mock<IDataFetcher>();
+        dataFetcherMock.Setup(fetcher => fetcher.GetData(It.IsAny<Uri>()))
+                       .Throws(new CommunicationException("Authentication token is not available. Unable to authenticate the request.", "https://api.betradar.com/v1/users/whoami.xml", HttpStatusCode.Unauthorized, null));
+
+        return dataFetcherMock.Object;
+    }
+
+    public static IDataFetcher GetDataFetcherThrowingCommonIamTokenFailureOnGetDataForProducers()
+    {
+        var dataFetcherMock = new Mock<IDataFetcher>();
+        dataFetcherMock.Setup(fetcher => fetcher.GetData(It.IsAny<Uri>()))
+                       .Throws(new CommunicationException("Authentication token is not available. Unable to authenticate the request.", "https://api.betradar.com/v1/descriptions/producers.xml", HttpStatusCode.Unauthorized, null));
+
+        return dataFetcherMock.Object;
+    }
+
+    public static IDataFetcher GetDataFetcherThrowingExceptionThenProvidingData(bookmaker_details message)
+    {
+        var dataFetcherMock = new Mock<IDataFetcher>();
+        dataFetcherMock.SetupSequence(fetcher => fetcher.GetData(
+                                                                 It.IsAny<Uri>()))
+                       .Throws(new CommunicationException())
+                       .Returns(DeserializerHelper.SerializeToMemoryStream(message));
 
         return dataFetcherMock.Object;
     }

@@ -18,9 +18,14 @@ namespace Sportradar.OddsFeed.SDK.Common.Enums
         Custom,
 
         /// <summary>
-        /// The replay
+        /// The replay with integration credentials
         /// </summary>
-        Replay,
+        ReplayWithIntegrationCredentials,
+
+        /// <summary>
+        /// The replay with production credentials
+        /// </summary>
+        ReplayWithProductionCredentials,
 
         /// <summary>
         /// The integration

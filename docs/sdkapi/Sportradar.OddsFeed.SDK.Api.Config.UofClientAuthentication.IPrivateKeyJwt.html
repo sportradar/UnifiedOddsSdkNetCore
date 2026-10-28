@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Interface IMessageV2 | Sportradar.OddsFeed.SDK </title>
+      <title>Interface UofClientAuthentication.IPrivateKeyJwt | Sportradar.OddsFeed.SDK </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Interface IMessageV2 | Sportradar.OddsFeed.SDK ">
+      <meta name="title" content="Interface UofClientAuthentication.IPrivateKeyJwt | Sportradar.OddsFeed.SDK ">
       
-      <meta name="description" content="Extends  with AMQP message header information. This V2 interface exists to avoid breaking changes for customers who implement  directly. Access the new properties via an explicit cast: if (oddsChange is IMessageV2 v2) {     var headers = v2.MessageHeaders; }">
+      <meta name="description" content="Authentication configuration for the UOF SDK using the Private Key JWT method. This corresponds to OAuth 2.0 Client Credentials with a JWT assertion signed by a private key.">
       <link rel="icon" href="../images/favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -84,31 +84,26 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="Sportradar.OddsFeed.SDK.Entities.IMessageV2">
+        <article data-uid="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt">
 
 
 
-  <h1 id="Sportradar_OddsFeed_SDK_Entities_IMessageV2" data-uid="Sportradar.OddsFeed.SDK.Entities.IMessageV2" class="text-break">
-Interface IMessageV2  
+  <h1 id="Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt" data-uid="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt" class="text-break">
+Interface UofClientAuthentication.IPrivateKeyJwt  
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="Sportradar.html">Sportradar</a>.<a class="xref" href="Sportradar.OddsFeed.html">OddsFeed</a>.<a class="xref" href="Sportradar.OddsFeed.SDK.html">SDK</a>.<a class="xref" href="Sportradar.OddsFeed.SDK.Entities.html">Entities</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Sportradar.html">Sportradar</a>.<a class="xref" href="Sportradar.OddsFeed.html">OddsFeed</a>.<a class="xref" href="Sportradar.OddsFeed.SDK.html">SDK</a>.<a class="xref" href="Sportradar.OddsFeed.SDK.Api.html">Api</a>.<a class="xref" href="Sportradar.OddsFeed.SDK.Api.Config.html">Config</a></dd></dl>
   <dl><dt>Assembly</dt><dd>Sportradar.OddsFeed.SDK.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Extends <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.IMessage.html">IMessage</a> with AMQP message header information.
-This V2 interface exists to avoid breaking changes for customers who implement <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.IMessage.html">IMessage</a> directly.
-Access the new properties via an explicit cast:</p>
-<pre><code class="lang-csharp">if (oddsChange is IMessageV2 v2)
-{
-    var headers = v2.MessageHeaders;
-}</code></pre>
+  <div class="markdown summary"><p>Authentication configuration for the UOF SDK using the Private Key JWT method.
+This corresponds to OAuth 2.0 Client Credentials with a JWT assertion signed by a private key.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IMessageV2 : IMessage</code></pre>
+    <pre><code class="lang-csharp hljs">public interface UofClientAuthentication.IPrivateKeyJwt : UofClientAuthentication.IPrivateKeyJwtData</code></pre>
   </div>
 
 
@@ -121,10 +116,13 @@ Access the new properties via an explicit cast:</p>
     <dt>Inherited Members</dt>
     <dd>
     <div>
-      <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.IMessage.html#Sportradar_OddsFeed_SDK_Entities_IMessage_Producer">IMessage.Producer</a>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.html#Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwtData_SigningKeyId">UofClientAuthentication.IPrivateKeyJwtData.SigningKeyId</a>
     </div>
     <div>
-      <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.IMessage.html#Sportradar_OddsFeed_SDK_Entities_IMessage_Timestamps">IMessage.Timestamps</a>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.html#Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwtData_ClientId">UofClientAuthentication.IPrivateKeyJwtData.ClientId</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.html#Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwtData_PrivateKey">UofClientAuthentication.IPrivateKeyJwtData.PrivateKey</a>
     </div>
   </dd></dl>
 
@@ -137,20 +135,19 @@ Access the new properties via an explicit cast:</p>
 </h2>
 
 
-  <a id="Sportradar_OddsFeed_SDK_Entities_IMessageV2_MessageHeaders_" data-uid="Sportradar.OddsFeed.SDK.Entities.IMessageV2.MessageHeaders*"></a>
+  <a id="Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt_Host_" data-uid="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Host*"></a>
 
-  <h3 id="Sportradar_OddsFeed_SDK_Entities_IMessageV2_MessageHeaders" data-uid="Sportradar.OddsFeed.SDK.Entities.IMessageV2.MessageHeaders">
-  MessageHeaders
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt_Host" data-uid="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Host">
+  Host
   
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets all AMQP headers delivered with the message as a read-only string dictionary.
-The returned dictionary is never null.</p>
+  <div class="markdown level1 summary"><p>The host name of the authentication server.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IReadOnlyDictionary&lt;string, string&gt; MessageHeaders { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">string Host { get; }</code></pre>
   </div>
 
 
@@ -159,7 +156,103 @@ The returned dictionary is never null.</p>
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt_Port_" data-uid="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Port*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt_Port" data-uid="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Port">
+  Port
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>The port number of the authentication server.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int Port { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt_Tenant_" data-uid="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Tenant*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt_Tenant" data-uid="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Tenant">
+  Tenant
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Custom tenant value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string Tenant { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt_UseSsl_" data-uid="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.UseSsl*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt_UseSsl" data-uid="Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.UseSsl">
+  UseSsl
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicates whether SSL (HTTPS) is used to communicate with the authentication server.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool UseSsl { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
     <dd></dd>
   </dl>
 

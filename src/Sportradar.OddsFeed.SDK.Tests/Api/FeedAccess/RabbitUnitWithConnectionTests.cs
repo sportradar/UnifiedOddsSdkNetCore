@@ -49,7 +49,7 @@ public class RabbitUnitWithConnectionTests : RabbitFeedTestBase, IClassFixture<R
 
         feed.Receiver.Close();
         timer.Elapse();
-        await WaitUntilLogged(ChannelLogger, "Connection check skipped because the channel is closed");
+        await WaitUntilLogged(ChannelLogger, "Connection check skipped because the channel is not opened", 2);
 
         PublishOddsChange(matchId: 2);
         var arrived = await TestExecutionHelper.WaitToCompleteAsync(() => feed.ReceivedEvent("sr:match:2"), 50, 500);
@@ -220,6 +220,19 @@ public class RabbitUnitWithConnectionTests : RabbitFeedTestBase, IClassFixture<R
         var exception = Should.Throw<ArgumentNullException>(() => feed.Receiver.Open(MessageInterest.AllMessages, Array.Empty<string>()));
 
         exception.Message.ShouldContain("Missing routing keys");
+        feed.Receiver.IsChannelOpened.ShouldBeFalse();
+        Should.Throw<ArgumentNullException>(() => feed.Receiver.Open(MessageInterest.AllMessages, Array.Empty<string>()));
+    }
+
+    [Fact]
+    public void WhenOpenedWithNullRoutingKeysThenThrowsAndStaysClosed()
+    {
+        using var feed = CreateFeed(CreateConfiguration());
+
+        var exception = Should.Throw<ArgumentNullException>(() => feed.Receiver.Open(MessageInterest.AllMessages, null));
+
+        exception.Message.ShouldContain("Missing routing keys");
+        feed.Receiver.IsChannelOpened.ShouldBeFalse();
     }
 
     [Fact]
@@ -230,6 +243,18 @@ public class RabbitUnitWithConnectionTests : RabbitFeedTestBase, IClassFixture<R
         var exception = Should.Throw<InvalidOperationException>(() => feed.Receiver.Close());
 
         exception.Message.ShouldBe("The instance is already closed");
+    }
+
+    [Fact]
+    public async Task WhenTheChannelOpensAndClosesThenTheReceiverReportsIt()
+    {
+        using var feed = await OpenFeedAsync(CreateConfiguration(), MessageInterest.AllMessages);
+
+        feed.Receiver.IsChannelOpened.ShouldBeTrue();
+
+        feed.Receiver.Close();
+
+        feed.Receiver.IsChannelOpened.ShouldBeFalse();
     }
 
     [Fact]
@@ -260,6 +285,20 @@ public class RabbitUnitWithConnectionTests : RabbitFeedTestBase, IClassFixture<R
         exception.GetType().ShouldBe(typeof(InvalidOperationException));
         exception.Message.ShouldBe("The instance is already closed");
         ChannelLogger.Messages.ShouldContain(message => message.Contains("this channel is already closed"));
+    }
+
+    [Fact]
+    public async Task WhenClosedAgainThenTheLogIncludesTheCurrentChannelNumber()
+    {
+        using var feed = await OpenFeedAsync(CreateConfiguration(), MessageInterest.AllMessages);
+        feed.Receiver.Close();
+        var model = feed.Connection.CreateConnection().CreateModel();
+        var channelNumber = model.ChannelNumber;
+        feed.Channel.Channel = model;
+
+        Should.Throw<InvalidOperationException>(() => feed.Receiver.Close());
+
+        ChannelLogger.Messages.ShouldContain(message => message.Contains($"Cannot close the channel on channelNumber: {channelNumber}"));
     }
 
     [Fact]
@@ -325,7 +364,7 @@ public class RabbitUnitWithConnectionTests : RabbitFeedTestBase, IClassFixture<R
 
         await PublishAndAwaitOddsChange(feed, 1);
         feed.Connection.ConnectionFactory.ClientProperties["SrUfSdkBId"].ShouldBeNull();
-        feed.Connection.ConnectionFactory.UserName.ShouldBe(Project.SdkRabbitUsername);
+        AssertSsoCredentials(feed.Connection.ConnectionFactory, Project.SdkRabbitUsername, Project.SdkRabbitPassword);
     }
 
     [Fact]

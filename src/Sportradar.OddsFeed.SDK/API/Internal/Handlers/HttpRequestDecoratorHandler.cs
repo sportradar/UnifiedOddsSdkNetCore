@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Handlers
         {
             _requestDecorator.Decorate(request);
 
-            return await base.SendAsync(request, cancellationToken);
+            return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
     }
 }

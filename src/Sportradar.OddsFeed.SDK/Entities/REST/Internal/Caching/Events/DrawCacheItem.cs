@@ -55,8 +55,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// Initializes a new instance of the <see cref="DrawCacheItem"/> class
         /// </summary>
         /// <param name="id">A <see cref="Urn" /> specifying the id of the sport event associated with the current instance</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
-        /// <param name="semaphorePool">A <see cref="ISemaphorePool" /> instance used to obtain sync objects</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to get summary and fixture</param>
+        /// <param name="semaphorePool">A <see cref="ISemaphorePool" /> instance used to get sync objects</param>
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCacheStore">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public DrawCacheItem(Urn id,
@@ -275,14 +275,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
 
         protected override async Task<T> CreateExportableBaseAsync<T>()
         {
-            var exportable = await base.CreateExportableBaseAsync<T>();
+            var exportable = await base.CreateExportableBaseAsync<T>().ConfigureAwait(false);
             if (exportable is ExportableDraw draw)
             {
                 draw.LotteryId = _lotteryId?.ToString();
                 draw.DrawStatus = _drawStatus;
                 draw.ResultsChronological = _resultsChronological;
                 var resultTasks = _results?.Select(async r => await r.ExportAsync().ConfigureAwait(false));
-                draw.Results = resultTasks != null ? await Task.WhenAll(resultTasks) : null;
+                draw.Results = resultTasks != null ? await Task.WhenAll(resultTasks).ConfigureAwait(false) : null;
                 draw.DisplayId = _displayId;
             }
             return exportable;

@@ -119,7 +119,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 var requestMessage = CreateGetRequestMessageWith(uri, queryParameters, headers);
                 responseMessage = await SendRequestAsync(requestMessage).ConfigureAwait(false);
 
-                return await GetResponseStreamAsync(uri, responseMessage);
+                return await GetResponseStreamAsync(uri, responseMessage).ConfigureAwait(false);
             }
             catch (CommunicationException)
             {
@@ -147,11 +147,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 var responseContent = string.Empty;
                 try
                 {
-                    using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
+                    using (var contentStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
                     {
                         var contentStreamReader = new StreamReader(contentStream);
-                        responseContent = await contentStreamReader.ReadToEndAsync();
-                        responseContent = await DeserializeResponseContent(responseContent);
+                        responseContent = await contentStreamReader.ReadToEndAsync().ConfigureAwait(false);
+                        responseContent = await DeserializeResponseContent(responseContent).ConfigureAwait(false);
                     }
                 }
                 catch (Exception ex)
@@ -184,8 +184,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             using (var memoryStream = new MemoryStream())
             {
                 var writer = new StreamWriter(memoryStream);
-                await writer.WriteAsync(responseContent);
-                await writer.FlushAsync();
+                await writer.WriteAsync(responseContent).ConfigureAwait(false);
+                await writer.FlushAsync().ConfigureAwait(false);
                 memoryStream.Position = 0;
                 var response = _responseDeserializer.Deserialize(memoryStream);
                 return response.action;
@@ -205,7 +205,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             {
                 Content = content ?? new StringContent(string.Empty)
             };
-            return await PostHttpRequestAsync(httpRequestmessage);
+            return await PostHttpRequestAsync(httpRequestmessage).ConfigureAwait(false);
         }
 
         protected async Task<HttpResponseMessage> PostHttpRequestAsync(HttpRequestMessage httpRequestMessage)
@@ -215,7 +215,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             HttpResponseMessage responseMessage = null;
             try
             {
-                responseMessage = await SendRequestAsync(httpRequestMessage);
+                responseMessage = await SendRequestAsync(httpRequestMessage).ConfigureAwait(false);
 
                 RecordSuccess();
                 if (_saveResponseHeaders)

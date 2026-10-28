@@ -96,17 +96,13 @@ public class FixtureChangeHeadersTests
         stubRabbitChannel.SendMessage(fixtureChange, amqpHeaders);
 
         receivedFixtureChange.ShouldNotBeNull();
-
-        var v2 = receivedFixtureChange as IMessageV2;
-        v2.ShouldNotBeNull();
-
-        v2.MessageHeaders.ShouldNotBeNull();
-        v2.MessageHeaders.ContainsKey("Product").ShouldBeTrue();
-        v2.MessageHeaders["Product"].ShouldBe("ODDS_THIRD_PARTIES_PROVIDER|nvenue");
-        v2.MessageHeaders.ContainsKey("NULL_HEADER").ShouldBeTrue();
-        v2.MessageHeaders["NULL_HEADER"].ShouldBeNull();
-        v2.MessageHeaders.ContainsKey("custom_header").ShouldBeTrue();
-        v2.MessageHeaders["custom_header"].ShouldBe(5.ToString());
+        receivedFixtureChange.MessageHeaders.ShouldNotBeNull();
+        receivedFixtureChange.MessageHeaders.ContainsKey("Product").ShouldBeTrue();
+        receivedFixtureChange.MessageHeaders["Product"].ShouldBe("ODDS_THIRD_PARTIES_PROVIDER|nvenue");
+        receivedFixtureChange.MessageHeaders.ContainsKey("NULL_HEADER").ShouldBeTrue();
+        receivedFixtureChange.MessageHeaders["NULL_HEADER"].ShouldBeNull();
+        receivedFixtureChange.MessageHeaders.ContainsKey("custom_header").ShouldBeTrue();
+        receivedFixtureChange.MessageHeaders["custom_header"].ShouldBe(5.ToString());
 
         feedUnit.Close();
     }

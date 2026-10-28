@@ -9,7 +9,9 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
+using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Api.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Handlers;
 using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
@@ -33,6 +35,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 {
@@ -44,6 +47,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         internal const string HttpClientNameForFastFailing = "HttpClientFastFailing";
         internal const string HttpClientNameForRecovery = "HttpClientRecovery";
         internal const string HttpClientNameForNormal = "HttpClientNormal";
+        internal const string HttpClientNameForAuthentication = "HttpClientAuthentication";
+        internal const string HttpClientNameForUsageExporter = "HttpClientUsageExporter";
 
         internal const string CacheStoreNameForInvariantMarketDescriptionsCache = "MemoryCacheForInvariantMarketDescriptionsCache";
         internal const string CacheStoreNameForVariantMarketDescriptionCache = "MemoryCacheForVariantMarketDescriptionCache";
@@ -91,8 +96,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         private const string BookmakerDetailsProviderUrl = "{0}/v1/users/whoami.xml";
 
-        private const string NonTimeCriticalDataProviderServiceKey = "NonTimeCriticalDataProvider";
-        private const string TimeCriticalDataProviderServiceKey = "TimeCriticalDataProvider";
+        internal const string NonTimeCriticalDataProviderServiceKey = "NonTimeCriticalDataProvider";
+        internal const string TimeCriticalDataProviderServiceKey = "TimeCriticalDataProvider";
 
         public static void AddUofSdkServices(this IServiceCollection services, IUofConfiguration configuration)
         {
@@ -112,6 +117,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         private static void RegisterServices(IServiceCollection services, IUofConfiguration configuration)
         {
             RegisterBaseTypes(services, configuration);
+            RegisterAuthentication(services);
             RegisterHttpClients(services, configuration);
             RegisterBookmakerDetailsProvider(services);
             RegisterCacheStores(services, configuration);
@@ -147,6 +153,38 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                       serviceProvider.GetRequiredService<ISportEventStatusCache>(),
                                                                                                       serviceProvider.GetLocalizedNamedValueCache(NamedValueCacheNameForMatchStatus),
                                                                                                       serviceProvider.GetRequiredService<IProfileCache>()));
+            services.AddSingleton(TimeProvider.System);
+            services.AddSingleton<IRequestCircuitBreaker, RequestCircuitBreaker>();
+            services.AddSingleton<ICircuitTimeTracker>(sp =>
+                                                        new CircuitTimeTracker(
+                                                                            shortOpenDuration: TimeSpan.FromSeconds(5),
+                                                                            longOpenDuration: TimeSpan.FromMinutes(5),
+                                                                            longThreshold: 10));
+        }
+
+        private static void RegisterAuthentication(IServiceCollection services)
+        {
+            var cacheEntryOptions = new FusionCacheEntryOptions
+            {
+                // Stampede protection is built-in; LockTimeout controls how long others wait for the single-flight refresh.
+                LockTimeout = TimeSpan.FromMinutes(1),
+                IsFailSafeEnabled = false
+            };
+
+            services.AddFusionCache(AuthenticationTokenCache.FusionCacheInstanceName)
+                    .WithDefaultEntryOptions(cacheEntryOptions)
+                    .AsKeyedServiceByCacheName();
+            services.AddSingleton<IJsonWebTokenFactory, JsonWebTokenFactory>();
+            services.AddSingleton<IAuthenticationClient, AuthenticationClient>(serviceProvider =>
+                                                                                   new AuthenticationClient(serviceProvider.GetRequiredService<IHttpClientFactory>(),
+                                                                                                            HttpClientNameForAuthentication,
+                                                                                                            serviceProvider.GetRequiredService<ILoggerFactory>()));
+            services.AddSingleton<IAuthenticationTokenCache, AuthenticationTokenCache>();
+            services.AddTransient<AuthenticationDelegatingHandler>();
+            services.AddTransient<RetryUnauthorizedDelegatingHandler>();
+            services.AddTransient<RequestCircuitHandler>();
+            services.AddTransient<IUsageAuthenticationTokenProvider, UsageAuthenticationTokenProvider>();
+            services.AddTransient<UsageDelegatingHandler>();
         }
 
         private static void RegisterHttpClients(IServiceCollection services, IUofConfiguration configuration)
@@ -157,40 +195,64 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     .ConfigureHttpClient(configureClient =>
                                          {
                                              configureClient.Timeout = configuration.Api.HttpClientTimeout;
-                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
                                              configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
                                          })
-                    .ConfigurePrimaryHttpMessageHandler((serviceProvider) =>
+                    .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
                                                             new HttpRequestDecoratorHandler(serviceProvider.GetRequiredService<IRequestDecorator>(),
                                                                                             new HttpClientHandler
                                                                                             {
                                                                                                 MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer,
                                                                                                 AllowAutoRedirect = true
                                                                                             }))
-                    .SetHandlerLifetime(TimeSpan.FromMinutes(10));
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(10))
+                    .AddHttpMessageHandlerIf<RetryUnauthorizedDelegatingHandler>(configuration.AuthenticationIsConfigured)
+                    .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
+
             services.AddHttpClient(HttpClientNameForRecovery)
                     .ConfigureHttpClient(configureClient =>
                                          {
                                              configureClient.Timeout = configuration.Api.HttpClientRecoveryTimeout;
-                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
                                              configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
                                          })
-                    .ConfigurePrimaryHttpMessageHandler((serviceProvider) =>
+                    .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
                                                             new HttpRequestDecoratorHandler(serviceProvider.GetRequiredService<IRequestDecorator>(),
                                                                                             new HttpClientHandler
                                                                                             {
                                                                                                 MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer,
                                                                                                 AllowAutoRedirect = true
                                                                                             }))
-                    .SetHandlerLifetime(TimeSpan.FromMinutes(10));
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(10))
+                    .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
+
             services.AddHttpClient(HttpClientNameForFastFailing)
                     .ConfigureHttpClient(configureClient =>
                                          {
                                              configureClient.Timeout = configuration.Api.HttpClientFastFailingTimeout;
-                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
                                              configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
                                          })
-                    .ConfigurePrimaryHttpMessageHandler((serviceProvider) =>
+                    .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
+                                                            new HttpRequestDecoratorHandler(serviceProvider.GetRequiredService<IRequestDecorator>(),
+                                                                                            new HttpClientHandler
+                                                                                            {
+                                                                                                MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer,
+                                                                                                AllowAutoRedirect = true
+                                                                                            }))
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(10))
+                    .AddHttpMessageHandlerIf<RetryUnauthorizedDelegatingHandler>(configuration.AuthenticationIsConfigured)
+                    .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
+
+            services.AddHttpClient(HttpClientNameForAuthentication)
+                    .ConfigureHttpClient(configureClient =>
+                                         {
+                                             configureClient.Timeout = configuration.Api.HttpClientFastFailingTimeout;
+                                             if (configuration.Authentication != null)
+                                             {
+                                                 configureClient.BaseAddress = new Uri(configuration.Authentication.GetCommonIAmUri());
+                                             }
+                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
+                                         })
+                    .AddHttpMessageHandler<RequestCircuitHandler>()
+                    .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
                                                             new HttpRequestDecoratorHandler(serviceProvider.GetRequiredService<IRequestDecorator>(),
                                                                                             new HttpClientHandler
                                                                                             {
@@ -198,6 +260,25 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                 AllowAutoRedirect = true
                                                                                             }))
                     .SetHandlerLifetime(TimeSpan.FromMinutes(10));
+
+            services.AddHttpClient(HttpClientNameForUsageExporter)
+                    .ConfigureHttpClient(configureClient =>
+                                         {
+                                             configureClient.Timeout = configuration.Api.HttpClientFastFailingTimeout;
+                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
+                                             configureClient.DefaultRequestHeaders.Add("x-environment", configuration.Environment.ToString().ToLowerInvariant());
+                                             configureClient.DefaultRequestHeaders.Add("x-node-id", configuration.NodeId.ToString());
+                                             configureClient.DefaultRequestHeaders.Add("x-sdk-version", SdkInfo.GetVersion());
+                                         })
+                    .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
+                                                            new HttpRequestDecoratorHandler(serviceProvider.GetRequiredService<IRequestDecorator>(),
+                                                                                            new HttpClientHandler
+                                                                                            {
+                                                                                                MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer,
+                                                                                                AllowAutoRedirect = true
+                                                                                            }))
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(10))
+                    .AddHttpMessageHandler<UsageDelegatingHandler>();
 
             services.AddTransient<ISdkHttpClient, SdkHttpClient>(serviceProvider => new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientNameForNormal));
             services.AddTransient<ISdkHttpClientRecovery, SdkHttpClientRecovery>(serviceProvider => new SdkHttpClientRecovery(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientNameForRecovery));
@@ -273,10 +354,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             services.AddSdkTimer(TimerForSportDataCache, TimeSpan.FromSeconds(10), TimeSpan.FromHours(12));
             services.AddSdkTimer(TimerForInvariantMarketDescriptionsCache, TimeSpan.FromSeconds(5), TimeSpan.FromHours(6));
             services.AddSdkTimer(TimerForVariantMarketDescriptionListCache, TimeSpan.FromSeconds(5), TimeSpan.FromHours(6));
-            services.AddSdkTimer(TimerForNamedValueCache, TimeSpan.FromSeconds(1), TimeSpan.Zero);
-            services.AddSdkTimer(TimerForLocalizedNamedValueCache, TimeSpan.FromSeconds(1), TimeSpan.Zero);
+            services.AddSdkTimer(TimerForNamedValueCache, TimeSpan.FromSeconds(3), TimeSpan.Zero);
+            services.AddSdkTimer(TimerForLocalizedNamedValueCache, TimeSpan.FromSeconds(3), TimeSpan.Zero);
             services.AddSdkTimer(TimerForFeedRecoveryManager, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(60));
-            services.AddSdkTimer(TimerForRabbitChannel, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(60));
+            services.AddSdkTimer(TimerForRabbitChannel, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(60));
         }
 
         private static void RegisterSdkCaches(IServiceCollection services, IUofConfiguration configuration)
@@ -345,7 +426,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         private static void RegisterBaseRabbitClasses(IServiceCollection services)
         {
-            services.AddSingleton<IConnectionFactory>(serviceProvider => ConfiguredConnectionFactory.CreateConnectionFactoryWithImmutableFields(serviceProvider.GetRequiredService<IUofConfiguration>()));
+            services.AddSingleton<IConnectionFactory>(serviceProvider =>
+                                                          ConfiguredConnectionFactory.CreateConnectionFactoryWithImmutableFields(serviceProvider.GetRequiredService<IUofConfiguration>(),
+                                                                                                                                 serviceProvider.GetRequiredService<IAuthenticationTokenCache>(),
+                                                                                                                                 serviceProvider.GetRequiredService<ILogger<ConfiguredConnectionFactory>>()));
             services.AddSingleton<ConfiguredConnectionFactory>();
             services.AddSingleton<IChannelFactory, ChannelFactory>();
             services.AddSingleton<ConnectionValidator, ConnectionValidator>();
@@ -471,7 +555,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             // sport event summary provider
             services.AddSingleton<IDeserializer<RestMessage>, Deserializer<RestMessage>>();
             services.AddSingleton<ISingleTypeMapperFactory<RestMessage, SportEventSummaryDto>, SportEventSummaryMapperFactory>();
-            var summaryEndpoint = configuration.Environment == SdkEnvironment.Replay
+            var summaryEndpoint = configuration.Environment.IsReplayEnvironment()
                                       ? configuration.Api.ReplayBaseUrl + "/sports/{1}/sport_events/{0}/summary.xml" + nodeIdStr
                                       : configuration.Api.BaseUrl + "/v1/sports/{1}/sport_events/{0}/summary.xml";
             services.AddSingleton<IDataProvider<SportEventSummaryDto>, DataProvider<RestMessage, SportEventSummaryDto>>(serviceProvider =>
@@ -513,7 +597,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             // sport event fixture provider
             services.AddSingleton<IDeserializer<fixturesEndpoint>, Deserializer<fixturesEndpoint>>();
             services.AddSingleton<ISingleTypeMapperFactory<fixturesEndpoint, FixtureDto>, FixtureMapperFactory>();
-            var fixtureEndpoint = configuration.Environment == SdkEnvironment.Replay
+            var fixtureEndpoint = configuration.Environment.IsReplayEnvironment()
                                       ? configuration.Api.ReplayBaseUrl + "/sports/{1}/sport_events/{0}/fixture.xml" + nodeIdStr
                                       : configuration.Api.BaseUrl + "/v1/sports/{1}/sport_events/{0}/fixture.xml";
             services.AddSingleton<IDataProvider<FixtureDto>, DataProvider<fixturesEndpoint, FixtureDto>>(serviceProvider =>
@@ -524,7 +608,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                                                                                .GetRequiredService<ISingleTypeMapperFactory<fixturesEndpoint, FixtureDto>>()));
 
             // fixtureChangeFixture endpoint provider
-            var fixtureChangeFixtureEndpoint = configuration.Environment == SdkEnvironment.Replay
+            var fixtureChangeFixtureEndpoint = configuration.Environment.IsReplayEnvironment()
                                                    ? configuration.Api.ReplayBaseUrl + "/sports/{1}/sport_events/{0}/fixture.xml" + nodeIdStr
                                                    : configuration.Api.BaseUrl + "/v1/sports/{1}/sport_events/{0}/fixture_change_fixture.xml";
             services.AddSingleton<IDataProviderNamed<FixtureDto>, DataProviderNamed<fixturesEndpoint, FixtureDto>>(serviceProvider =>
@@ -709,7 +793,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                                                                                                                                         SimpleTeamProfileDto>>()));
 
             // provider for getting info about ongoing sport event (match timeline)
-            var timelineEndpoint = configuration.Environment == SdkEnvironment.Replay
+            var timelineEndpoint = configuration.Environment.IsReplayEnvironment()
                                        ? configuration.Api.ReplayBaseUrl + "/sports/{1}/sport_events/{0}/timeline.xml" + nodeIdStr
                                        : configuration.Api.BaseUrl + "/v1/sports/{1}/sport_events/{0}/timeline.xml";
             services.AddSingleton<IDeserializer<matchTimelineEndpoint>, Deserializer<matchTimelineEndpoint>>();

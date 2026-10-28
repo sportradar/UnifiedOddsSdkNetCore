@@ -220,9 +220,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 References = References?.References?.ToDictionary(r => r.Key, r => r.Value),
                 NextLiveTime = NextLiveTime,
                 StartTimeConfirmed = StartTimeConfirmed,
-                ScheduledStartTimeChanges = scheduledTasks != null ? await Task.WhenAll(scheduledTasks) : null,
+                ScheduledStartTimeChanges = scheduledTasks != null ? await Task.WhenAll(scheduledTasks).ConfigureAwait(false) : null,
                 StartTime = StartTime,
-                TvChannels = channelTasks != null ? await Task.WhenAll(channelTasks) : null,
+                TvChannels = channelTasks != null ? await Task.WhenAll(channelTasks).ConfigureAwait(false) : null,
                 StartTimeTbd = StartTimeTbd,
                 ParentStageId = ParentStageId?.ToString(),
                 AdditionalParentsIds = AdditionalParentsIds?.Select(s => s.ToString()).ToList()

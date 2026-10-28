@@ -14,6 +14,7 @@ public class XUnitLogger : ILogger
     private LogLevel LoggerLevel { get; }
     private readonly ITestOutputHelper _output;
     internal ConcurrentBag<string> Messages { get; }
+    private readonly DateTimeOffset _created = DateTimeOffset.UtcNow;
 
     public XUnitLogger(string loggerName, ITestOutputHelper output, LogLevel level = LogLevel.Trace)
     {
@@ -43,7 +44,7 @@ public class XUnitLogger : ILogger
 
     public int CountByLevel(LogLevel logLevel)
     {
-        return Messages.Count(w => w.StartsWith($"({logLevel})", StringComparison.InvariantCultureIgnoreCase));
+        return Messages.Count(w => w.Contains($"({logLevel})", StringComparison.InvariantCultureIgnoreCase));
     }
 
     public int CountBySearchTerm(string searchTerm)
@@ -53,7 +54,8 @@ public class XUnitLogger : ILogger
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
     {
-        var msg = $"({logLevel}) {LoggerName}: {formatter(state, exception)}";
+        var elapsedTime = DateTimeOffset.UtcNow - _created;
+        var msg = $"{elapsedTime} ({logLevel}) {LoggerName}: {formatter(state, exception)}";
         Messages.Add(msg);
         try
         {

@@ -64,7 +64,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         {
             Guard.Argument(uri, nameof(uri)).NotNull();
 
-            using (var stream = await DataFetcher.GetDataAsync(uri))
+            using (var stream = await DataFetcher.GetDataAsync(uri).ConfigureAwait(false))
             {
                 return _deserializer.Deserialize(stream);
             }

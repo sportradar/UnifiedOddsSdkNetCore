@@ -102,17 +102,11 @@
             <param name="port">The port used to connect to the AMQP server</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingUsername(System.String)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingCredentials(System.String,System.String)">
             <summary>
-            Sets the username used to authenticate with the messaging server
+            Sets the credentials used to authenticate with the messaging server
             </summary>
             <param name="username">The username used to authenticate with the messaging server</param>
-            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingPassword(System.String)">
-            <summary>
-            Sets the password used to authenticate with the messaging server
-            </summary>
             <param name="password">The password used to authenticate with the messaging server</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
         </member>
@@ -130,16 +124,38 @@
             <param name="useMessagingSsl">The value specifying whether SSL should be used to communicate with the messaging server</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationHost(System.String)">
+            <summary>
+            Sets the host name of the authentication server.
+            </summary>
+            <param name="authenticationHost">The host name of the authentication server.</param>
+            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationPort(System.Int32)">
+            <summary>
+            Sets the port used to connect to the authentication server.
+            </summary>
+            <param name="port">The port used to connect to the authentication server.</param>
+            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationUseSsl(System.Boolean)">
+            <summary>
+            Sets the value specifying whether SSL should be used to communicate with the authentication server.
+            </summary>
+            <param name="useSsl">The value specifying whether SSL should be used to communicate with the authentication server.</param>
+            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationTenant(System.String)">
+            <summary>
+            Sets the tenant to be used in client authentication.
+            </summary>
+            <param name="tenant">The tenant to be used in client authentication.</param>
+            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector">
             <summary>
             Defines a contract implemented by classes taking care of the 2nd step when building configuration - selecting the environment.
             </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector.SelectReplay">
-            <summary>
-            Returns a <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IConfigurationBuilder"/> with properties set to values needed to access replay server
-            </summary>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IConfigurationBuilder"/> with properties set to values needed to access replay server</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector.SelectCustom">
             <summary>
@@ -151,7 +167,7 @@
             <summary>
             Returns a <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IConfigurationBuilder"/> with properties set to values needed to access specified environment
             </summary>
-            <remarks>For accessing replay or custom server use SelectReplay or SelectCustom</remarks>
+            <remarks>For accessing custom server use SelectCustom</remarks>
             <param name="ufEnvironment">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment"/> specifying to which environment to connect</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IConfigurationBuilder"/> with properties set to values needed to access production environment</returns>
         </member>
@@ -159,7 +175,7 @@
             <summary>
             Returns a <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IConfigurationBuilder"/> with properties set to values needed to access specified environment
             </summary>
-            <remarks>For accessing replay or custom server use SelectReplay or SelectCustom</remarks>
+            <remarks>For accessing custom server use SelectCustom</remarks>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IConfigurationBuilder"/> with properties set to values needed to access predefined environment</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1">
@@ -317,6 +333,15 @@
             </summary>
             <param name="accessToken">The access token used to access feed resources</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector"/> instance allowing the selection of target environment</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ITokenSetter.SetClientAuthentication(Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData)">
+            <summary>
+            Sets the authentication configuration used to access feed resources.
+            </summary>
+            <param name="privateKeyJwtData">The authentication configuration containing credentials.</param>
+            <returns>
+            The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector"/>instance allowing the selection of target environment.
+            </returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ITokenSetter.SetAccessTokenFromConfigFile">
             <summary>
@@ -514,6 +539,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.Usage">
             <summary>
             Gets the settings for usage exporter
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.Authentication">
+            <summary>
+            Provides the authentication configuration
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration">
@@ -744,6 +774,94 @@
             </summary>
             <param name="interests"></param>
             <returns>True if the provided combination is valid. Otherwise false</returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication">
+            <summary>
+            Static factory and contracts for UOF client authentication.
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.PrivateKeyJwt">
+            <summary>
+            Returns a builder for <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt" />
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData">
+            <summary>
+            Authentication configuration for the UOF SDK using the Private Key JWT method.
+            This corresponds to OAuth 2.0 Client Credentials with a JWT assertion signed by a private key.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.SigningKeyId">
+            <summary>
+            The key ID (KID) used to sign the JWT.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.ClientId">
+            <summary>
+            The client identifier used for authentication (also used in JWT "iss" and "sub" claims).
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.PrivateKey">
+            <summary>
+            The private key used to sign the JWT.
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt">
+            <summary>
+            Authentication configuration for the UOF SDK using the Private Key JWT method.
+            This corresponds to OAuth 2.0 Client Credentials with a JWT assertion signed by a private key.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Host">
+            <summary>
+            The host name of the authentication server.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Port">
+            <summary>
+            The port number of the authentication server.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.UseSsl">
+            <summary>
+            Indicates whether SSL (HTTPS) is used to communicate with the authentication server.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Tenant">
+            <summary>
+            Custom tenant value.
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder">
+            <summary>
+            Builder for creating <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt" /> instances.
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder.SetSigningKeyId(System.String)">
+            <summary>
+            Sets the signing key identifier (KID).
+            </summary>
+            <param name="signingKeyId">The signing key ID.</param>
+            <returns>The same builder instance.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder.SetClientId(System.String)">
+            <summary>
+            Sets the client identifier.
+            </summary>
+            <param name="clientId">The client ID.</param>
+            <returns>The same builder instance.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder.SetPrivateKey(Microsoft.IdentityModel.Tokens.AsymmetricSecurityKey)">
+            <summary>
+            Sets the private key used to sign the JWT.
+            </summary>
+            <param name="privateKey">The private key.</param>
+            <returns>The same builder instance.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder.Build">
+            <summary>
+            Builds the configured <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt" /> instance.
+            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.EntityDispatcherBase">
             <summary>
@@ -2647,6 +2765,33 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.SdkHttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent)">
             <inheritdoc />
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Authentication.AuthenticationClient">
+            <summary>
+            Requests an OAuth access token using a client-assertion JWT token.
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Authentication.AuthenticationClient.RequestAccessTokenAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Performs the OAuth token request using a client-assertion JWT token.
+            Returns the access_token string from the JSON response.
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Authentication.AuthenticationDelegatingHandler">
+            <summary>
+            Ensures each request carries an access token from IAuthenticationCache
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Authentication.IJsonWebTokenFactory.CreateJsonWebToken">
+            <summary>
+            Creates a JSON Web Token (JWT) using the provided authentication configuration.
+            </summary>
+            <returns>JSON Web Token (JWT) as a string</returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Authentication.UsageDelegatingHandler">
+            <summary>
+            Ensures each request carries an access token
+            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.BookmakerDetailsFetcher">
             <summary>
@@ -4823,17 +4968,11 @@
             <param name="port">The port used to connect to the AMQP server</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.SetMessagingUsername(System.String)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.SetMessagingCredentials(System.String,System.String)">
             <summary>
-            Sets the username used to authenticate with the messaging server
+            Sets the credentials used to authenticate with the messaging server
             </summary>
             <param name="username">The username used to authenticate with the messaging server</param>
-            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.SetMessagingPassword(System.String)">
-            <summary>
-            Sets the password used to authenticate with the messaging server
-            </summary>
             <param name="password">The password used to authenticate with the messaging server</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         </member>
@@ -4850,6 +4989,30 @@
             </summary>
             <param name="useMessagingSsl">The value specifying whether SSL should be used to communicate with the messaging server</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.SetClientAuthenticationHost(System.String)">
+            <summary>
+            Sets the host name of the authentication server.
+            </summary>
+            <param name="authenticationHost">Host name of the authentication server.</param>
+            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
+            <exception cref="T:System.ArgumentException">Thrown when client authentication is not configured</exception>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.SetClientAuthenticationPort(System.Int32)">
+            <summary>
+            Sets the port used to connect to the authentication server.
+            </summary>
+            <param name="port">Port used to connect to the authentication server.</param>
+            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
+            <exception cref="T:System.ArgumentException">Thrown when client authentication is not configured</exception>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.SetClientAuthenticationUseSsl(System.Boolean)">
+            <summary>
+            Sets the value specifying whether SSL should be used to communicate with the authentication server
+            </summary>
+            <param name="useSsl">The value specifying whether SSL should be used to communicate with the authentication server</param>
+            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
+            <exception cref="T:System.ArgumentException">Thrown when client authentication is not configured</exception>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.SetApiHost(System.String)">
             <summary>
@@ -4929,13 +5092,20 @@
             <param name="environment">The environment</param>
             <returns>The API host for specified <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment"/></returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentManager.GetAuthenticationHost(Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment)">
+            <summary>
+            Gets the Authentication API host for specified <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment"/>
+            </summary>
+            <param name="environment">The environment</param>
+            <returns>The Authentication API host for specified <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment"/></returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentSelector">
             <summary>
             Class EnvironmentSelector
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector" />
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentSelector.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider},System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider})">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentSelector.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider,System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IBookmakerDetailsProvider},System.Func{Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Api.Internal.Config.IProducersProvider},Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData)">
             <summary>
             Constructs a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentSelector"/> class
             </summary>
@@ -4943,6 +5113,7 @@
             <param name="sectionProvider">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSectionProvider"/> used to access <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSection"/></param>
             <param name="bookmakerDetailsProviderFactory">Factory to create the bookmaker details provider</param>
             <param name="producersProviderFactory">Factory to create the producers provider</param>
+            <param name="privateKeyJwtData">JWT private key data.</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentSetting">
             <summary>
@@ -5098,6 +5269,88 @@
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSection"/></returns>
             <exception cref="T:System.InvalidOperationException">The configuration could not be loaded or the configuration does not contain the requested section</exception>
             <exception cref="T:System.Configuration.ConfigurationErrorsException">The section in the configuration file is not valid</exception>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt">
+            <summary>
+            Concrete implementation of Private Key JWT authentication configuration.
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.#ctor(System.String,System.String,Microsoft.IdentityModel.Tokens.AsymmetricSecurityKey)">
+            <summary>
+            Internal constructor; use the builder to create instances.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.SigningKeyId">
+            <inheritdoc />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.ClientId">
+            <inheritdoc />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.PrivateKey">
+            <inheritdoc />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.Host">
+            <inheritdoc />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.Port">
+            <inheritdoc />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.UseSsl">
+            <inheritdoc />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.Tenant">
+            <inheritdoc />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.SetHost(System.String)">
+            <summary>
+            Sets the authentication server host.
+            Intended to be called by your custom configuration builder.
+            </summary>
+            <param name="host">The host name.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.SetPort(System.Int32)">
+            <summary>
+            Sets the authentication server port.
+            Intended to be called by your custom configuration builder.
+            </summary>
+            <param name="port">Port in range 1..65535.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.SetUseSsl(System.Boolean)">
+            <summary>
+            Sets whether SSL (HTTPS) should be used.
+            Intended to be called by your custom configuration builder.
+            </summary>
+            <param name="useSsl">True to use HTTPS.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.SetTenant(System.String)">
+            <summary>
+            Sets tenant value.
+            Intended to be called by your custom configuration builder.
+            </summary>
+            <param name="tenant">Custom tenant value.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.ToString">
+            <summary>
+            Overrides <see cref="M:System.Object.ToString"/> to provide a sanitized string representation (sensitive values masked).
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.Builder">
+            <summary>
+            Builder for <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt" /> instances.
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.Builder.SetSigningKeyId(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.Builder.SetClientId(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.Builder.SetPrivateKey(Microsoft.IdentityModel.Tokens.AsymmetricSecurityKey)">
+            <inheritdoc />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.Builder.Build">
+            <inheritdoc />
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.ProducersProvider">
             <summary>
@@ -5385,9 +5638,18 @@
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector" /> instance allowing the selection of target environment</returns>
             <exception cref="T:System.ArgumentException">Value cannot be a null reference or empty string - accessToken</exception>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.TokenSetter.SetClientAuthentication(Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData)">
+            <summary>
+            Sets the authentication configuration used to access feed resources.
+            </summary>
+            <param name="privateKeyJwtData">The authentication configuration containing credentials.</param>
+            <returns>
+            The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector"/>instance allowing the selection of target environment.
+            </returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.TokenSetter.SetAccessTokenFromConfigFile">
             <summary>
-            Sets the access token used to access feed resources (AMQP broker, Sports API, ...) to value read from configuration file
+            Sets the access token used to access feed resources (AMQP broker, Sports API, ...) to value read from a configuration file
             </summary>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector" /> instance allowing the selection of target environment</returns>
         </member>
@@ -6491,7 +6753,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CustomBetManager">
             <summary>
-            The run-time implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/> and <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2"/> interfaces
+            The run-time implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/> and <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/> interfaces
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CustomBetSelectionBuilder">
@@ -9302,20 +9564,13 @@
             <param name="selections">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing selections for which the probability should be calculated</param>
             <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter"/> providing the probability for the specified selections</returns>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2">
-            <summary>
-            Defines methods used to perform various custom bet operations
-            Extends <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/> with additional methods for prebuilt bets functionality.
-            This interface provides a safe upgrade path for clients with custom implementations of <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/>.
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.PrebuiltBetsRequestBuilder">
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.PrebuiltBetsRequestBuilder">
             <summary>
             Returns an <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder"/> instance used to build request for prebuilt bets
             </summary>
             <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder"/> instance used to build request for  prebuilt bets</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.GetPrebuiltBets(Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.GetPrebuiltBets(Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest)">
             <summary>
             Returns prebuilt bet recommendations for the specified request.
             </summary>
@@ -9326,25 +9581,25 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets"/> object for the given request
             </returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.GetCalculateRequestBuilder">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.GetCalculateRequestBuilder">
             <summary>
             Returns a new <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder"/> instance used to build a probability
             calculation request that may contain both AND selections and OR selection groups.
             </summary>
             <returns>A new <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder"/> instance</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.CalculateProbabilityAsync(Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.CalculateProbabilityAsync(Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder)">
             <summary>
             Returns an <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation"/> instance providing the probability for the request built
-            via <see cref="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.GetCalculateRequestBuilder"/>. Supports both AND selections and OR selection groups.
+            via <see cref="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.GetCalculateRequestBuilder"/>. Supports both AND selections and OR selection groups.
             </summary>
             <param name="request">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder"/> containing the legs of the bet</param>
             <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation"/> providing the probability for the specified request</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.CalculateProbabilityFilterAsync(Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.CalculateProbabilityFilterAsync(Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder)">
             <summary>
             Returns an <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter"/> instance providing the probability for the request built
-            via <see cref="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.GetCalculateRequestBuilder"/>, filtering out conflicting outcomes.
+            via <see cref="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.GetCalculateRequestBuilder"/>, filtering out conflicting outcomes.
             Supports both AND selections and OR selection groups.
             </summary>
             <param name="request">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICalculateRequestBuilder"/> containing the legs of the bet</param>
@@ -10585,9 +10840,14 @@
             The custom
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.Replay">
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.ReplayWithIntegrationCredentials">
             <summary>
-            The replay
+            The replay with integration credentials
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.ReplayWithProductionCredentials">
+            <summary>
+            The replay with production credentials
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.Integration">
@@ -12895,6 +13155,12 @@
             </summary>
             <value>The timestamps</value>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IMessage.MessageHeaders">
+            <summary>
+            Gets all AMQP headers delivered with the message as a read-only string dictionary.
+            The returned dictionary is never null.
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp">
             <summary>
             Defines a contract for all message timestamps
@@ -12919,25 +13185,6 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp.Dispatched">
             <summary>
             Gets the value specifying when the message was dispatched to the user from the sdk (milliseconds since EPOCH UTC)
-            </summary>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.IMessageV2">
-            <summary>
-            Extends <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMessage"/> with AMQP message header information.
-            This V2 interface exists to avoid breaking changes for customers who implement <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMessage"/> directly.
-            Access the new properties via an explicit cast:
-            <code>
-            if (oddsChange is IMessageV2 v2)
-            {
-                var headers = v2.MessageHeaders;
-            }
-            </code>
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.IMessageV2.MessageHeaders">
-            <summary>
-            Gets all AMQP headers delivered with the message as a read-only string dictionary.
-            The returned dictionary is never null.
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.AdditionalProbabilities.Win">
@@ -14423,7 +14670,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.RollbackBetSettlement`1.#ctor(Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp,Sportradar.OddsFeed.SDK.Api.IProducer,`0,System.Nullable{System.Int64},System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.IMarketCancel},System.Byte[],System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.RollbackBetSettlement`1.#ctor(Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp,Sportradar.OddsFeed.SDK.Api.IProducer,`0,System.Nullable{System.Int64},System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement},System.Byte[],System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.RollbackBetSettlement`1" /> message
             </summary>
@@ -15377,24 +15624,19 @@
             Gets a value indicating whether the outcome associated with current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement"/> is winning - i.e. have the bets placed on this outcome winning or losing
             </summary>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlementV2">
-            <summary>
-            Extended settlement information for an outcome(market selection) with each-way and dead-heat place factor support
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlementV2.EachWayResult">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayResult">
             <summary>
             Gets whether the each-way outcome is settled as a win or a place
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlementV2.EachWayPlaceFactor">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayPlaceFactor">
             <summary>
-            Gets the each-way place factor (fraction of win odds used to settle the place part) for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlementV2"/> instance
+            Gets the each-way place factor (fraction of win odds used to settle the place part) for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement"/> instance
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlementV2.DeadHeatFactorPlace">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.DeadHeatFactorPlace">
             <summary>
-            Gets the dead-heat factor for the place part of an each-way bet for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlementV2"/> instance
+            Gets the dead-heat factor for the place part of an each-way bet for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement"/> instance
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IPlayerOutcomeOdds">
@@ -21208,8 +21450,8 @@
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.DrawCacheItem"/> class
             </summary>
             <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn" /> specifying the id of the sport event associated with the current instance</param>
-            <param name="dataRouterManager">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager"/> used to obtain summary and fixture</param>
-            <param name="semaphorePool">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool" /> instance used to obtain sync objects</param>
+            <param name="dataRouterManager">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager"/> used to get summary and fixture</param>
+            <param name="semaphorePool">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool" /> instance used to get sync objects</param>
             <param name="defaultCulture">A <see cref="T:System.Globalization.CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
             <param name="fixtureTimestampCacheStore">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore`1"/> used to cache the sport events fixture timestamps</param>
         </member>

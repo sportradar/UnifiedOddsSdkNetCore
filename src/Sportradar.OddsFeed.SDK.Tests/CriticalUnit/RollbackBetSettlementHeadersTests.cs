@@ -88,17 +88,13 @@ public class RollbackBetSettlementHeadersTests
         stubRabbitChannel.SendMessage(rollbackBetSettlement, amqpHeaders);
 
         receivedRollback.ShouldNotBeNull();
-
-        var v2 = receivedRollback as IMessageV2;
-        v2.ShouldNotBeNull();
-
-        v2.MessageHeaders.ShouldNotBeNull();
-        v2.MessageHeaders.ContainsKey("Product").ShouldBeTrue();
-        v2.MessageHeaders["Product"].ShouldBe("ODDS_THIRD_PARTIES_PROVIDER|nvenue");
-        v2.MessageHeaders.ContainsKey("NULL_HEADER").ShouldBeTrue();
-        v2.MessageHeaders["NULL_HEADER"].ShouldBeNull();
-        v2.MessageHeaders.ContainsKey("custom_header").ShouldBeTrue();
-        v2.MessageHeaders["custom_header"].ShouldBe(5.ToString());
+        receivedRollback.MessageHeaders.ShouldNotBeNull();
+        receivedRollback.MessageHeaders.ContainsKey("Product").ShouldBeTrue();
+        receivedRollback.MessageHeaders["Product"].ShouldBe("ODDS_THIRD_PARTIES_PROVIDER|nvenue");
+        receivedRollback.MessageHeaders.ContainsKey("NULL_HEADER").ShouldBeTrue();
+        receivedRollback.MessageHeaders["NULL_HEADER"].ShouldBeNull();
+        receivedRollback.MessageHeaders.ContainsKey("custom_header").ShouldBeTrue();
+        receivedRollback.MessageHeaders["custom_header"].ShouldBe(5.ToString());
 
         feedUnit.Close();
     }

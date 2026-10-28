@@ -11,9 +11,18 @@ namespace Sportradar.OddsFeed.SDK.Tests.Api.FeedAccess;
 [SuppressMessage("ReSharper", "ConvertToPrimaryConstructor", Justification = "Pipeline format fails with primary constructor")]
 internal class StubChannel : IModel
 {
+    private EventHandler<ShutdownEventArgs> _modelShutdown;
+
+    private bool _throwOnShutdownUnsubscribe;
+
     public StubChannel(int channelNumber)
     {
         ChannelNumber = channelNumber;
+    }
+
+    public void PrepareForThrowOnShutdownUnsubscribe()
+    {
+        _throwOnShutdownUnsubscribe = true;
     }
 
     public void Dispose()
@@ -265,5 +274,17 @@ internal class StubChannel : IModel
     public event EventHandler<BasicReturnEventArgs> BasicReturn;
     public event EventHandler<CallbackExceptionEventArgs> CallbackException;
     public event EventHandler<FlowControlEventArgs> FlowControl;
-    public event EventHandler<ShutdownEventArgs> ModelShutdown;
+    public event EventHandler<ShutdownEventArgs> ModelShutdown
+    {
+        add => _modelShutdown += value;
+        remove
+        {
+            if (_throwOnShutdownUnsubscribe)
+            {
+                throw new InvalidOperationException("Error detaching channel shutdown");
+            }
+
+            _modelShutdown -= value;
+        }
+    }
 }

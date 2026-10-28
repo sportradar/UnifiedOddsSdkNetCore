@@ -65,30 +65,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         }
 
         /// <summary>
-        /// Sets the username used to authenticate with the messaging server
+        /// Sets the credentials used to authenticate with the messaging server
         /// </summary>
         /// <param name="username">The username used to authenticate with the messaging server</param>
-        /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
-        public ICustomConfigurationBuilder SetMessagingUsername(string username)
-        {
-            Guard.Argument(username, nameof(username)).NotNull().NotEmpty();
-
-            var rabbitConfig = (UofRabbitConfiguration)UofConfiguration.Rabbit;
-            rabbitConfig.Username = username;
-            UofConfiguration.Rabbit = rabbitConfig;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the password used to authenticate with the messaging server
-        /// </summary>
         /// <param name="password">The password used to authenticate with the messaging server</param>
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
-        public ICustomConfigurationBuilder SetMessagingPassword(string password)
+        public ICustomConfigurationBuilder SetMessagingCredentials(string username, string password)
         {
+            Guard.Argument(username, nameof(username)).NotNull().NotEmpty();
             Guard.Argument(password, nameof(password)).NotNull().NotEmpty();
 
             var rabbitConfig = (UofRabbitConfiguration)UofConfiguration.Rabbit;
+            rabbitConfig.Username = username;
             rabbitConfig.Password = password;
             UofConfiguration.Rabbit = rabbitConfig;
             return this;
@@ -119,6 +107,76 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             var rabbitConfig = (UofRabbitConfiguration)UofConfiguration.Rabbit;
             rabbitConfig.UseSsl = useMessagingSsl;
             UofConfiguration.Rabbit = rabbitConfig;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the host name of the authentication server.
+        /// </summary>
+        /// <param name="authenticationHost">Host name of the authentication server.</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
+        /// <exception cref="ArgumentException">Thrown when client authentication is not configured</exception>
+        public ICustomConfigurationBuilder SetClientAuthenticationHost(string authenticationHost)
+        {
+            if (UofConfiguration.Authentication == null)
+            {
+                throw new ArgumentException("Cannot set authentication host when client authentication is not configured");
+            }
+
+            var authConfig = (PrivateKeyJwt)UofConfiguration.Authentication;
+            authConfig.SetHost(authenticationHost);
+            UofConfiguration.Authentication = authConfig;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the port used to connect to the authentication server.
+        /// </summary>
+        /// <param name="port">Port used to connect to the authentication server.</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
+        /// <exception cref="ArgumentException">Thrown when client authentication is not configured</exception>
+        public ICustomConfigurationBuilder SetClientAuthenticationPort(int port)
+        {
+            if (UofConfiguration.Authentication == null)
+            {
+                throw new ArgumentException("Cannot set authentication port when client authentication is not configured");
+            }
+
+            var authConfig = (PrivateKeyJwt)UofConfiguration.Authentication;
+            authConfig.SetPort(port);
+            UofConfiguration.Authentication = authConfig;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the value specifying whether SSL should be used to communicate with the authentication server
+        /// </summary>
+        /// <param name="useSsl">The value specifying whether SSL should be used to communicate with the authentication server</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
+        /// <exception cref="ArgumentException">Thrown when client authentication is not configured</exception>
+        public ICustomConfigurationBuilder SetClientAuthenticationUseSsl(bool useSsl)
+        {
+            if (UofConfiguration.Authentication == null)
+            {
+                throw new ArgumentException("Cannot set authentication SSL settings when client authentication is not configured");
+            }
+
+            var authConfig = (PrivateKeyJwt)UofConfiguration.Authentication;
+            authConfig.SetUseSsl(useSsl);
+            UofConfiguration.Authentication = authConfig;
+            return this;
+        }
+
+        public ICustomConfigurationBuilder SetClientAuthenticationTenant(string tenant)
+        {
+            if (UofConfiguration.Authentication == null)
+            {
+                throw new ArgumentException("Cannot set client authentication tenant when client authentication is not configured");
+            }
+
+            var authConfig = (PrivateKeyJwt)UofConfiguration.Authentication;
+            authConfig.SetTenant(tenant);
+            UofConfiguration.Authentication = authConfig;
             return this;
         }
 
@@ -169,13 +227,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             {
                 SetMessagingPort(section.RabbitPort);
             }
-            if (!string.IsNullOrEmpty(section.RabbitUsername))
+            if (!string.IsNullOrEmpty(section.RabbitUsername) || !string.IsNullOrEmpty(section.RabbitPassword))
             {
-                SetMessagingUsername(section.RabbitUsername);
-            }
-            if (!string.IsNullOrEmpty(section.RabbitPassword))
-            {
-                SetMessagingPassword(section.RabbitPassword);
+                SetMessagingCredentials(section.RabbitUsername, section.RabbitPassword);
             }
             if (!string.IsNullOrEmpty(section.RabbitVirtualHost))
             {
@@ -214,6 +268,23 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             if (UofConfiguration.Api.Host.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || UofConfiguration.Api.Host.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidOperationException($"apiHost must not contain protocol specification. Value={UofConfiguration.Api.Host}");
+            }
+
+            if (UofConfiguration.Authentication != null)
+            {
+                ValidateAuthenticationHost();
+            }
+        }
+
+        private void ValidateAuthenticationHost()
+        {
+            if (UofConfiguration.Authentication.Host.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || UofConfiguration.Authentication.Host.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException($"Authentication Host must not contain protocol specification. Value={UofConfiguration.Authentication.Host}");
+            }
+            if (UofConfiguration.Authentication.Host.Contains(":"))
+            {
+                throw new InvalidOperationException($"Authentication Host must not contain port. Value={UofConfiguration.Authentication.Host}");
             }
         }
 

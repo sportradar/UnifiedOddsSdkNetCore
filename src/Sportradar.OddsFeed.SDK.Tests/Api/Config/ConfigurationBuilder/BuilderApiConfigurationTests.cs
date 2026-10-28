@@ -17,7 +17,8 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentThenApiConfigurationHasDefaultValues(SdkEnvironment environment)
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
@@ -56,9 +57,12 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.HttpClientTimeoutMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.HttpClientTimeoutDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.HttpClientTimeoutMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.HttpClientTimeoutMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.HttpClientTimeoutDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.HttpClientTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.HttpClientTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.HttpClientTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.HttpClientTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.HttpClientTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.HttpClientTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.HttpClientTimeoutMax)]
     public void WhenHttpClientTimeoutSetForPredefinedEnvironmentThenApiConfigurationHasExpectedTimeout(SdkEnvironment environment, int timeoutSeconds)
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
@@ -106,9 +110,12 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.HttpClientRecoveryTimeoutMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.HttpClientRecoveryTimeoutDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.HttpClientRecoveryTimeoutMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.HttpClientRecoveryTimeoutMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.HttpClientRecoveryTimeoutDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.HttpClientRecoveryTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.HttpClientRecoveryTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.HttpClientRecoveryTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.HttpClientRecoveryTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.HttpClientRecoveryTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.HttpClientRecoveryTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.HttpClientRecoveryTimeoutMax)]
     public void WhenHttpClientRecoveryTimeoutSetForPredefinedEnvironmentThenApiConfigurationHasExpectedRecoveryTimeout(SdkEnvironment environment, int timeoutSeconds)
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
@@ -156,9 +163,12 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.HttpClientFastFailingTimeoutMin)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.HttpClientFastFailingTimeoutDefault + 1)]
     [InlineData(SdkEnvironment.GlobalProduction, ConfigLimit.HttpClientFastFailingTimeoutMax)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.HttpClientFastFailingTimeoutMin)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.HttpClientFastFailingTimeoutDefault + 1)]
-    [InlineData(SdkEnvironment.Replay, ConfigLimit.HttpClientFastFailingTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.HttpClientFastFailingTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.HttpClientFastFailingTimeoutMin)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.HttpClientFastFailingTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.HttpClientFastFailingTimeoutDefault + 1)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ConfigLimit.HttpClientFastFailingTimeoutMax)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ConfigLimit.HttpClientFastFailingTimeoutMax)]
     public void WhenHttpClientFastFailingTimeoutSetForPredefinedEnvironmentThenApiConfigurationHasExpectedFastFailingTimeout(SdkEnvironment environment, int timeoutSeconds)
     {
         var expected = TimeSpan.FromSeconds(timeoutSeconds);
@@ -198,7 +208,8 @@ public class BuilderApiConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production, 123)]
     [InlineData(SdkEnvironment.GlobalIntegration, 123)]
     [InlineData(SdkEnvironment.GlobalProduction, 123)]
-    [InlineData(SdkEnvironment.Replay, 123)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, 123)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, 123)]
     public void WhenMaxConnectionsPerServerSetForPredefinedEnvironmentThenApiConfigurationHasExpectedMaxConnectionsPerServer(SdkEnvironment environment, int maxConnectionsPerServer)
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)

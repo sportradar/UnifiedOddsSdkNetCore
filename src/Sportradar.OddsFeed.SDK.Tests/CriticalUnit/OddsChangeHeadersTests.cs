@@ -107,19 +107,15 @@ public class OddsChangeHeadersTests
         stubRabbitChannel.SendMessage(oddsChange, amqpHeaders);
 
         receivedOddsChange.ShouldNotBeNull();
-
-        var v2 = receivedOddsChange as IMessageV2;
-        v2.ShouldNotBeNull();
-
-        v2.MessageHeaders.ShouldNotBeNull();
-        v2.MessageHeaders.ContainsKey("Product").ShouldBeTrue();
-        v2.MessageHeaders["Product"].ShouldBe("ODDS_THIRD_PARTIES_PROVIDER|nvenue");
-        v2.MessageHeaders.ContainsKey("NULL_HEADER").ShouldBeTrue();
-        v2.MessageHeaders["NULL_HEADER"].ShouldBeNull();
-        v2.MessageHeaders.ContainsKey("custom_header").ShouldBeTrue();
-        v2.MessageHeaders["custom_header"].ShouldBe(5.ToString());
-        v2.MessageHeaders.ContainsKey("producer").ShouldBeTrue();
-        v2.MessageHeaders["producer"].ShouldBe("some-custom-text-as-byte");
+        receivedOddsChange.MessageHeaders.ShouldNotBeNull();
+        receivedOddsChange.MessageHeaders.ContainsKey("Product").ShouldBeTrue();
+        receivedOddsChange.MessageHeaders["Product"].ShouldBe("ODDS_THIRD_PARTIES_PROVIDER|nvenue");
+        receivedOddsChange.MessageHeaders.ContainsKey("NULL_HEADER").ShouldBeTrue();
+        receivedOddsChange.MessageHeaders["NULL_HEADER"].ShouldBeNull();
+        receivedOddsChange.MessageHeaders.ContainsKey("custom_header").ShouldBeTrue();
+        receivedOddsChange.MessageHeaders["custom_header"].ShouldBe(5.ToString());
+        receivedOddsChange.MessageHeaders.ContainsKey("producer").ShouldBeTrue();
+        receivedOddsChange.MessageHeaders["producer"].ShouldBe("some-custom-text-as-byte");
 
         feedUnit.Close();
     }
@@ -186,13 +182,9 @@ public class OddsChangeHeadersTests
         stubRabbitChannel.SendMessage(oddsChange);
 
         receivedOddsChange.ShouldNotBeNull();
-
-        var v2 = receivedOddsChange as IMessageV2;
-        v2.ShouldNotBeNull();
-
-        v2.MessageHeaders.ShouldNotBeNull();
-        v2.MessageHeaders.ShouldHaveSingleItem();
-        v2.MessageHeaders.ShouldContainKey("timestamp_in_ms");
+        receivedOddsChange.MessageHeaders.ShouldNotBeNull();
+        receivedOddsChange.MessageHeaders.ShouldHaveSingleItem();
+        receivedOddsChange.MessageHeaders.ShouldContainKey("timestamp_in_ms");
 
         feedUnit.Close();
     }

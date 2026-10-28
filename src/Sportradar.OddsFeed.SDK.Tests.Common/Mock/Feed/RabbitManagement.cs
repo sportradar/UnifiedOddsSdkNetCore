@@ -17,6 +17,7 @@ using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed;
 using Xunit.Abstractions;
 
@@ -59,9 +60,10 @@ public class RabbitManagement
         ProducersAlive = new ConcurrentDictionary<int, DateTime>();
         _isRunning = false;
 
-        _projConfig = projConfig ?? new ProjectConfiguration();
-
-        ManagementClient = new ManagementClient(new Uri($"http://{_projConfig.GetRabbitIp()}:15672"),
+        _projConfig = projConfig ?? ProjectConfigurationBuilder.Create()
+                                                               .UseTestRabbitConfiguration()
+                                                               .Build();
+        ManagementClient = new ManagementClient(new Uri($"http://{_projConfig.RabbitHost}:15672"),
                                                 _projConfig.DefaultAdminRabbitUserName,
                                                 _projConfig.DefaultAdminRabbitPassword,
                                                 TimeSpan.FromMinutes(1));
@@ -69,11 +71,11 @@ public class RabbitManagement
 
     public void ResetRabbit()
     {
-        var _ = ManagementClient.GetExchanges();
+        _ = ManagementClient.GetExchanges();
         var rabbitUsers = ManagementClient.GetUsers();
         if (!rabbitUsers.Any(a => a.Name.Equals(_projConfig.SdkRabbitUsername, StringComparison.OrdinalIgnoreCase)))
         {
-            ManagementClient.CreateUser(UserInfo.ByPassword(_projConfig.SdkRabbitUsername, _projConfig.SdkRabbitPassword).AddTag("administrator"));
+            ManagementClient.CreateUser(_projConfig.SdkRabbitUsername, UserInfo.ByPassword(_projConfig.SdkRabbitPassword).AddTag("administrator"));
         }
 
         var testUser = ManagementClient.GetUser(_projConfig.SdkRabbitUsername);
@@ -85,8 +87,14 @@ public class RabbitManagement
         }
 
         var virtualHost = ManagementClient.GetVhost(_projConfig.VirtualHostName);
-        ManagementClient.CreatePermission(virtualHost, new PermissionInfo(testUser.Name));
-        ManagementClient.CreatePermission(virtualHost, new PermissionInfo(_projConfig.DefaultAdminRabbitUserName));
+
+        var allowAll = new PermissionInfo()
+                      .SetConfigure(".*")
+                      .SetWrite(".*")
+                      .SetRead(".*");
+
+        ManagementClient.CreatePermission(virtualHost, testUser.Name, allowAll);
+        ManagementClient.CreatePermission(virtualHost, _projConfig.DefaultAdminRabbitUserName, allowAll);
     }
 
     // start the connection for sending messages
@@ -94,15 +102,20 @@ public class RabbitManagement
     {
         ProducersAlive.Clear();
 
-        // clean connections
+        // clean connections on this virtual host only; other tests keep their own host
         var activeConnections = ManagementClient.GetConnections();
         foreach (var connection in activeConnections)
         {
-            ManagementClient.CloseConnection(connection);
+            if (!string.Equals(connection.Vhost, _projConfig.VirtualHostName, StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            ManagementClient.CloseConnection(connection.Name);
         }
 
-        _outputHelper.WriteLine($"Starting connection with HostName={_projConfig.GetRabbitIp()}");
-        var factory = new ConnectionFactory { HostName = _projConfig.GetRabbitIp(), UserName = _projConfig.DefaultAdminRabbitUserName, Password = _projConfig.DefaultAdminRabbitPassword, VirtualHost = _projConfig.VirtualHostName };
+        _outputHelper.WriteLine($"Starting connection with HostName={_projConfig.RabbitHost}");
+        var factory = new ConnectionFactory { HostName = _projConfig.RabbitHost, UserName = _projConfig.DefaultAdminRabbitUserName, Password = _projConfig.DefaultAdminRabbitPassword, VirtualHost = _projConfig.VirtualHostName };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
         _channel.ExchangeDeclare(_projConfig.UfExchange, ExchangeType.Topic, true);
@@ -119,23 +132,94 @@ public class RabbitManagement
         Start();
     }
 
-    public async Task DeleteVirtualHostAsync()
+    public void CreateVirtualHost(string vhost)
     {
         var virtualHosts = ManagementClient.GetVhosts();
-        if (!virtualHosts.Any(a => a.Name.Equals(_projConfig.VirtualHostName, StringComparison.OrdinalIgnoreCase)))
+        if (!virtualHosts.Any(a => a.Name.Equals(vhost, StringComparison.OrdinalIgnoreCase)))
+        {
+            ManagementClient.CreateVhost(vhost);
+        }
+    }
+
+    public async Task DeleteVirtualHostAsync()
+    {
+        var virtualHosts = await ManagementClient.GetVhostsAsync().ConfigureAwait(false);
+        if (virtualHosts.Any(a => a.Name.Equals(_projConfig.VirtualHostName, StringComparison.OrdinalIgnoreCase)))
         {
             await ManagementClient.DeleteVhostAsync(_projConfig.VirtualHostName).ConfigureAwait(false);
         }
     }
 
+    public void CreateUser(string username, string password, string vhost)
+    {
+        var rabbitUsers = ManagementClient.GetUsers();
+        if (rabbitUsers.Any(c => c.Name.Equals(username, StringComparison.OrdinalIgnoreCase)))
+        {
+            var existingUser = ManagementClient.GetUser(username);
+            ManagementClient.DeleteUser(existingUser);
+        }
+        ManagementClient.CreateUser(username, UserInfo.ByPassword(password).AddTag("administrator"));
+
+        var testUser = ManagementClient.GetUser(username);
+
+        CreateVirtualHost(vhost);
+
+        var virtualHost = ManagementClient.GetVhost(vhost);
+        var allowAll = new PermissionInfo()
+                      .SetConfigure(".*")
+                      .SetWrite(".*")
+                      .SetRead(".*");
+
+        ManagementClient.CreatePermission(virtualHost, testUser.Name, allowAll);
+        ManagementClient.CreatePermission(virtualHost, _projConfig.DefaultAdminRabbitUserName, allowAll);
+    }
+
+    public int FeedConsumerCount()
+    {
+        var consumers = ManagementClient.GetConsumersAsync(_projConfig.VirtualHostName, CancellationToken.None).GetAwaiter().GetResult();
+        return consumers.Count;
+    }
+
+    public async Task<bool> IsUserConnected(string username)
+    {
+        var connections = await ManagementClient.GetConnectionsAsync(CancellationToken.None).ConfigureAwait(false);
+        return connections.Any(a => a.User.Equals(username, StringComparison.OrdinalIgnoreCase));
+    }
+
+    public async Task DeleteUserAsync(int bookmakerId)
+    {
+        await DeleteUserAsync(bookmakerId.ToString()).ConfigureAwait(false);
+    }
+
+    public async Task DeleteUserAsync(string username)
+    {
+        var users = await ManagementClient.GetVhostsAsync().ConfigureAwait(false);
+        if (!users.Any(a => a.Name.Equals(username, StringComparison.OrdinalIgnoreCase)))
+        {
+            await ManagementClient.DeleteUserAsync(username).ConfigureAwait(false);
+        }
+    }
+
     // stop the connection for sending messages
-    public void Stop()
+    private void Stop()
     {
         _timer.Stop();
         _channel.Close();
         _channel.Dispose();
         _connection.Close();
         _connection.Dispose();
+    }
+
+    public void SafeStop()
+    {
+        try
+        {
+            Stop();
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
     }
 
     /// <summary>
@@ -284,7 +368,7 @@ public class RabbitManagement
     public bool RabbitChangeUserPassword(string username, string newPassword)
     {
         // Set MQ server credentials
-        var networkCredential = new NetworkCredential("consumer", "consumer");
+        var networkCredential = new NetworkCredential(_projConfig.DefaultAdminRabbitUserName, _projConfig.DefaultAdminRabbitPassword);
 
         // Instantiate HttpClientHandler, passing in the NetworkCredential
         var httpClientHandler = new HttpClientHandler { Credentials = networkCredential };
@@ -298,7 +382,7 @@ public class RabbitManagement
         var content = new StringContent(info, Encoding.UTF8, "application/json");
 
         //var httpContent = new StringContent($"{{\"password\":\"{newPassword}\",\"tags\":\"administrator\"}}}}", Encoding.UTF8, "application/json");
-        var httpResponseMessage = httpClient.PutAsync($"http://{_projConfig.GetRabbitIp()}:15672/api/users/{username}", content).GetAwaiter().GetResult();
+        var httpResponseMessage = httpClient.PutAsync($"http://{_projConfig.RabbitHost}:15672/api/users/{username}", content).GetAwaiter().GetResult();
         if (httpResponseMessage != null)
         {
             var responseContent = httpResponseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -309,5 +393,85 @@ public class RabbitManagement
         }
 
         return false;
+    }
+
+    public async Task CloseConnection(string connectionName, string closingReason)
+    {
+        if (string.IsNullOrWhiteSpace(connectionName))
+        {
+            throw new ArgumentException("Connection name must be provided.", nameof(connectionName));
+        }
+
+        var credentials = new NetworkCredential(
+                                                _projConfig.DefaultAdminRabbitUserName,
+                                                _projConfig.DefaultAdminRabbitPassword);
+
+        using var handler = new HttpClientHandler();
+        handler.Credentials = credentials;
+
+        using var client = new HttpClient(handler);
+        var encodedConnectionName = Uri.EscapeDataString(connectionName);
+
+        var url =
+            $"http://{_projConfig.RabbitHost}:15672/api/connections/{encodedConnectionName}";
+
+        var payload = new
+        {
+            name = encodedConnectionName,
+            reason = closingReason
+        };
+        var request = new HttpRequestMessage(HttpMethod.Delete, url);
+        var content = new StringContent(
+                                        JsonConvert.SerializeObject(payload),
+                                        Encoding.UTF8,
+                                        "application/json");
+        request.Content = content;
+        request.Headers.TryAddWithoutValidation("X-Reason", closingReason);
+
+        var response = await client.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        var responseBody = await response.Content.ReadAsStringAsync();
+        _outputHelper.WriteLine($"Rabbit ApiCall -> force close connection: " +
+                                $"StatusCode={response.StatusCode}, Reason='{closingReason}', Response={responseBody}");
+    }
+
+    public IReadOnlyList<string> GetAllConnectionNames(string rabbitUsername, string virtualHost = null)
+    {
+        var credentials = new NetworkCredential(
+                                                _projConfig.DefaultAdminRabbitUserName,
+                                                _projConfig.DefaultAdminRabbitPassword);
+
+        using var handler = new HttpClientHandler
+        {
+            Credentials = credentials
+        };
+
+        using var client = new HttpClient(handler);
+
+        var url = $"http://{_projConfig.RabbitHost}:15672/api/connections";
+
+        var response = client
+                      .GetAsync(url)
+                      .GetAwaiter()
+                      .GetResult();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            throw new InvalidOperationException(
+                                                $"Failed to get RabbitMQ connections. Status={response.StatusCode}, Response={error}");
+        }
+
+        var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+        var connections = JsonConvert.DeserializeObject<List<RabbitConnectionDto>>(json);
+
+        return connections
+              .Where(c => rabbitUsername == c.User &&
+                          (virtualHost == null || virtualHost == c.Vhost) &&
+                          !string.IsNullOrWhiteSpace(c.Name))
+              .Select(c => c.Name)
+              .ToList();
     }
 }

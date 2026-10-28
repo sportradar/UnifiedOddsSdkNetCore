@@ -5,6 +5,7 @@ using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 
@@ -15,12 +16,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
 /// </summary>
 public class CompleteInfo : ExampleBase
 {
-    private readonly CultureInfo _culture;
+    private readonly UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
 
-    public CompleteInfo(ILogger<CompleteInfo> logger, CultureInfo culture)
+    public CompleteInfo(ILogger<CompleteInfo> logger, UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
         : base(logger)
     {
-        _culture = culture;
+        _clientAuthentication = clientAuthentication;
     }
 
     public override void Run(MessageInterest messageInterest)
@@ -28,7 +29,12 @@ public class CompleteInfo : ExampleBase
         Console.WriteLine(string.Empty);
         Log.LogInformation("Running the Complete example");
 
-        var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication)
+                                  .SelectEnvironment(SdkEnvironment.GlobalIntegration)
+                                  .SetDefaultLanguage(CultureInfo.GetCultureInfo("en"))
+                                  .SetNodeId(457)
+                                  .Build();
+
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
 
         LimitRecoveryRequests(uofSdk);
@@ -40,8 +46,8 @@ public class CompleteInfo : ExampleBase
                             .SetMessageInterest(messageInterest)
                             .Build();
 
-        var marketWriter = new MarketWriter(TaskProcessor, _culture, Log);
-        var sportEntityWriter = new SportEntityWriter(TaskProcessor, _culture, false, Log);
+        var marketWriter = new MarketWriter(TaskProcessor, configuration.DefaultLanguage, Log);
+        var sportEntityWriter = new SportEntityWriter(TaskProcessor, configuration.DefaultLanguage, false, Log);
 
         Log.LogInformation("Creating entity specific dispatchers");
         var matchDispatcher = session.CreateSportSpecificMessageDispatcher<IMatch>();

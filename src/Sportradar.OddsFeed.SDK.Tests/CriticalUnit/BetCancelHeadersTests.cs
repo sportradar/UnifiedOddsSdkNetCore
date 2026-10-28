@@ -101,17 +101,13 @@ public class BetCancelHeadersTests
         stubRabbitChannel.SendMessage(betCancel, amqpHeaders);
 
         receivedBetCancel.ShouldNotBeNull();
-
-        var v2 = receivedBetCancel as IMessageV2;
-        v2.ShouldNotBeNull();
-
-        v2.MessageHeaders.ShouldNotBeNull();
-        v2.MessageHeaders.ContainsKey("Product").ShouldBeTrue();
-        v2.MessageHeaders["Product"].ShouldBe("ODDS_THIRD_PARTIES_PROVIDER|nvenue");
-        v2.MessageHeaders.ContainsKey("NULL_HEADER").ShouldBeTrue();
-        v2.MessageHeaders["NULL_HEADER"].ShouldBeNull();
-        v2.MessageHeaders.ContainsKey("custom_header").ShouldBeTrue();
-        v2.MessageHeaders["custom_header"].ShouldBe(5.ToString());
+        receivedBetCancel.MessageHeaders.ShouldNotBeNull();
+        receivedBetCancel.MessageHeaders.ContainsKey("Product").ShouldBeTrue();
+        receivedBetCancel.MessageHeaders["Product"].ShouldBe("ODDS_THIRD_PARTIES_PROVIDER|nvenue");
+        receivedBetCancel.MessageHeaders.ContainsKey("NULL_HEADER").ShouldBeTrue();
+        receivedBetCancel.MessageHeaders["NULL_HEADER"].ShouldBeNull();
+        receivedBetCancel.MessageHeaders.ContainsKey("custom_header").ShouldBeTrue();
+        receivedBetCancel.MessageHeaders["custom_header"].ShouldBe(5.ToString());
 
         feedUnit.Close();
     }

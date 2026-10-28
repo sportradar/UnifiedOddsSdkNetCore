@@ -191,7 +191,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 cultures);
         }
 
-        public IMarketCancel GetMarketForRollbackSettlement(ISportEvent sportEvent, market market, int producerId, Urn sportId, IReadOnlyCollection<CultureInfo> cultures)
+        public IMarketRollbackSettlement GetMarketForRollbackSettlement(ISportEvent sportEvent, market market, int producerId, Urn sportId, IReadOnlyCollection<CultureInfo> cultures)
         {
             _ = Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
             _ = Guard.Argument(market, nameof(market)).NotNull();

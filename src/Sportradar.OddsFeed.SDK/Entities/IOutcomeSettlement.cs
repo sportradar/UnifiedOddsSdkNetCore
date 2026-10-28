@@ -28,5 +28,20 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// Gets a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement"/> is winning - i.e. have the bets placed on this outcome winning or losing
         /// </summary>
         OutcomeResult OutcomeResult { get; }
+
+        /// <summary>
+        /// Gets whether the each-way outcome is settled as a win or a place
+        /// </summary>
+        EachWayResult? EachWayResult { get; }
+
+        /// <summary>
+        /// Gets the each-way place factor (fraction of win odds used to settle the place part) for the current <see cref="IOutcomeSettlement"/> instance
+        /// </summary>
+        double? EachWayPlaceFactor { get; }
+
+        /// <summary>
+        /// Gets the dead-heat factor for the place part of an each-way bet for the current <see cref="IOutcomeSettlement"/> instance
+        /// </summary>
+        double? DeadHeatFactorPlace { get; }
     }
 }

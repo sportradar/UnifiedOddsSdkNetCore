@@ -175,8 +175,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 IsInLiveCenterSoccer = _isInLiveCenterSoccer,
                 IsInLiveMatchTracker = _isInLiveMatchTracker,
                 IsInLiveScore = _isInLiveScore,
-                Links = linkTasks != null ? await Task.WhenAll(linkTasks) : null,
-                Channels = channelTasks != null ? await Task.WhenAll(channelTasks) : null
+                Links = linkTasks != null ? await Task.WhenAll(linkTasks).ConfigureAwait(false) : null,
+                Channels = channelTasks != null ? await Task.WhenAll(channelTasks).ConfigureAwait(false) : null
             };
         }
     }

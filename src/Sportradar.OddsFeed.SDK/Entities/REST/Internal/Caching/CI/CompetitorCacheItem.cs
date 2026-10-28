@@ -861,7 +861,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             {
                 foreach (var jersey in _jerseys)
                 {
-                    jerseysList.Add(await jersey.ExportAsync());
+                    jerseysList.Add(await jersey.ExportAsync().ConfigureAwait(false));
                 }
             }
 

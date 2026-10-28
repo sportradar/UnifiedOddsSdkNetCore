@@ -2,23 +2,25 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 
+[SuppressMessage("ReSharper", "ConvertToPrimaryConstructor", Justification = "Pipeline format fails with primary constructor")]
 public class XunitLoggerFactory : ILoggerFactory
 {
     public ILogger LastLogger { get; private set; }
-    private LogLevel LoggerLevel { get; }
     private readonly ITestOutputHelper _outputHelper;
+    private readonly LogLevel _minimumLogLevel;
     private readonly ConcurrentDictionary<string, ILogger> _registeredLoggers;
 
-    public XunitLoggerFactory(ITestOutputHelper outputHelper, LogLevel logLevel = LogLevel.Trace)
+    public XunitLoggerFactory(ITestOutputHelper outputHelper, LogLevel minimumLogLevel = LogLevel.Trace)
     {
         _outputHelper = outputHelper;
+        _minimumLogLevel = minimumLogLevel;
         _registeredLoggers = new ConcurrentDictionary<string, ILogger>();
-        LoggerLevel = logLevel;
     }
 
     public void Dispose()
@@ -35,7 +37,7 @@ public class XunitLoggerFactory : ILoggerFactory
             return existingLogger;
         }
 
-        var logger = new XUnitLogger(categoryName, _outputHelper, LoggerLevel);
+        var logger = new XUnitLogger(categoryName, _outputHelper, _minimumLogLevel);
         LastLogger = logger;
         _registeredLoggers[categoryName] = logger;
         return logger;
@@ -51,6 +53,12 @@ public class XunitLoggerFactory : ILoggerFactory
         return (XUnitLogger)CreateLogger(loggerType);
     }
 
+    public XUnitLogger GetRegisteredLogger(string categoryName)
+    {
+        categoryName = FormatLoggerName(categoryName);
+        return _registeredLoggers.TryGetValue(categoryName, out var logger) ? (XUnitLogger)logger : null;
+    }
+
     public XUnitLogger GetOrCreateLogger(string loggerTypeName)
     {
         return (XUnitLogger)CreateLogger(loggerTypeName);
@@ -59,11 +67,11 @@ public class XunitLoggerFactory : ILoggerFactory
     public XUnitLogger<T> GetOrCreateLogger<T>()
     {
         var key = typeof(T).FullName;
-        if (_registeredLoggers.TryGetValue(key, out var existingLogger))
+        if (_registeredLoggers.TryGetValue(key!, out var existingLogger))
         {
             return (XUnitLogger<T>)existingLogger;
         }
-        var logger = new XUnitLogger<T>(_outputHelper, LoggerLevel);
+        var logger = new XUnitLogger<T>(_outputHelper, _minimumLogLevel);
         LastLogger = logger;
         _registeredLoggers[key] = logger;
         return logger;

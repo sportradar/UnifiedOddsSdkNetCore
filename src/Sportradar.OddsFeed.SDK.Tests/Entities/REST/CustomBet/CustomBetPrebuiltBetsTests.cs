@@ -8,7 +8,6 @@ using FluentAssertions;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using Shouldly;
-using Sportradar.OddsFeed.SDK.Api.Managers;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -29,7 +28,7 @@ public class CustomBetPrebuiltBetsTests
     public async Task GetPrebuiltBetsThrowErrorWhenFetcherFails()
     {
         var dataFetcher = GetDataFetcherThrowingCommunicationExceptionAsync();
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -46,7 +45,7 @@ public class CustomBetPrebuiltBetsTests
     public async Task GetPrebuiltBetsThrowErrorWhenFetcherThrowsGenericException()
     {
         var dataFetcher = GetDataFetcherThrowingExceptionAsync();
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -63,7 +62,7 @@ public class CustomBetPrebuiltBetsTests
     public async Task GetPrebuiltBetsReturnsNullWhenFetcherFailsAndExceptionHandlingStrategyIsCatch()
     {
         var dataFetcher = GetDataFetcherThrowingCommunicationExceptionAsync();
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyCatch()
                                                       .WithDataFetcher(dataFetcher)
@@ -80,7 +79,7 @@ public class CustomBetPrebuiltBetsTests
     public async Task GetPrebuiltBetsReturnsNullWhenFetcherThrowsGenericExceptionAndExceptionHandlingStrategyIsCatch()
     {
         var dataFetcher = GetDataFetcherThrowingExceptionAsync();
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyCatch()
                                                       .WithDataFetcher(dataFetcher)
@@ -98,7 +97,7 @@ public class CustomBetPrebuiltBetsTests
     {
         var preBuiltBetsApiResponse = GetFullyPopulatedPrebuiltBetsType();
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForQuery(preBuiltBetsApiResponse, query => !query.ContainsKey("event_urn"));
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -119,7 +118,7 @@ public class CustomBetPrebuiltBetsTests
         var preBuiltBetsApiResponse = GetFullyPopulatedPrebuiltBetsType();
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForQuery(preBuiltBetsApiResponse, query => query["count"] == count.ToString());
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -138,7 +137,7 @@ public class CustomBetPrebuiltBetsTests
         var preBuiltBetsApiResponse = GetFullyPopulatedPrebuiltBetsType();
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForQuery(preBuiltBetsApiResponse, query => !query.ContainsKey("count"));
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -159,7 +158,7 @@ public class CustomBetPrebuiltBetsTests
         var preBuiltBetsApiResponse = GetFullyPopulatedPrebuiltBetsType();
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForQuery(preBuiltBetsApiResponse, query => query["event_urn"] == sportEventId);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -179,7 +178,7 @@ public class CustomBetPrebuiltBetsTests
         var preBuiltBetsApiResponse = GetFullyPopulatedPrebuiltBetsType();
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForQuery(preBuiltBetsApiResponse, query => query["length"] == length.ToString());
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -198,7 +197,7 @@ public class CustomBetPrebuiltBetsTests
         var preBuiltBetsApiResponse = GetFullyPopulatedPrebuiltBetsType();
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForQuery(preBuiltBetsApiResponse, query => !query.ContainsKey("length"));
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -219,7 +218,7 @@ public class CustomBetPrebuiltBetsTests
         var preBuiltBetsApiResponse = GetFullyPopulatedPrebuiltBetsType();
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForQuery(preBuiltBetsApiResponse, query => query["user"] == user);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -238,7 +237,7 @@ public class CustomBetPrebuiltBetsTests
         var preBuiltBetsApiResponse = GetFullyPopulatedPrebuiltBetsType();
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForQuery(preBuiltBetsApiResponse, query => !query.ContainsKey("user"));
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -259,7 +258,7 @@ public class CustomBetPrebuiltBetsTests
         var preBuiltBetsApiResponse = GetFullyPopulatedPrebuiltBetsType();
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForHeaders(preBuiltBetsApiResponse, headers => headers["x-sub-bookmaker"] == subBookmakerId.ToString());
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -287,7 +286,7 @@ public class CustomBetPrebuiltBetsTests
         var preBuiltBetsApiResponse = GetFullyPopulatedPrebuiltBetsType();
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -314,7 +313,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -336,7 +335,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -359,7 +358,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -380,7 +379,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -401,7 +400,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -422,7 +421,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -445,7 +444,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -468,7 +467,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -491,7 +490,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -516,7 +515,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -543,7 +542,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -567,7 +566,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -592,7 +591,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -618,7 +617,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -644,7 +643,7 @@ public class CustomBetPrebuiltBetsTests
 
         var dataFetcher = GetDataFetcherProvidingPrebuiltBetsForAnyRequest(preBuiltBetsApiResponse);
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .WithDataFetcher(dataFetcher)
@@ -662,7 +661,7 @@ public class CustomBetPrebuiltBetsTests
     [Fact]
     public void PrebuiltBetsRequestCannotBeConfiguredWithNullEventId()
     {
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
                                                       .AddDefaultDependencies()
                                                       .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                       .Build();
@@ -682,7 +681,7 @@ public class CustomBetPrebuiltBetsTests
             preBuiltBetsApiResponse,
             headers => headers["x-sub-bookmaker"] == bookmakerId.ToString());
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
             .AddDefaultDependencies()
             .WithConfigurationProviding(bookmakerId, ExceptionHandlingStrategy.Throw)
             .WithDataFetcher(dataFetcher)
@@ -706,7 +705,7 @@ public class CustomBetPrebuiltBetsTests
             preBuiltBetsApiResponse,
             headers => headers["x-sub-bookmaker"] == subBookmakerId.ToString());
 
-        var customBetManager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var customBetManager = CustomBetManagerBuilder.Create()
             .AddDefaultDependencies()
             .WithConfigurationProviding(bookmakerIdToBeOverwritten, ExceptionHandlingStrategy.Throw)
             .WithDataFetcher(dataFetcher)

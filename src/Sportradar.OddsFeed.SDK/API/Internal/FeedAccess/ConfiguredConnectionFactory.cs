@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
@@ -47,8 +48,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
 
             ValidateConnectionFactory(connectionFactory);
             ConnectionFactory = connectionFactory;
-
-            UpdateConnectionFactoryCredentials(ConnectionFactory, config);
         }
 
         public bool IsConnected()
@@ -70,10 +69,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
 
                 if (_connectionSingleton != null)
                 {
-                    ReleaseConnectionEvents(_connectionSingleton);
-                    _connectionSingleton.Dispose();
-                    _connectionSingleton = null;
-                    ConnectionCreated = DateTime.MinValue;
+                    DisposeAndForgetConnection();
                 }
 
                 ConnectionFactory.ClientProperties["SrUfSdkInit"] = SdkInfo.UtcNowString();
@@ -107,9 +103,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
                 }
                 finally
                 {
-                    _connectionSingleton.Dispose();
-                    _connectionSingleton = null;
-                    ConnectionCreated = DateTime.MinValue;
+                    DisposeAndForgetConnection();
                 }
             }
         }
@@ -151,8 +145,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             ConnectionShutdown?.Invoke(sender, e);
         }
 
-        internal static ConnectionFactory CreateConnectionFactoryWithImmutableFields(IUofConfiguration config)
+        internal static ConnectionFactory CreateConnectionFactoryWithImmutableFields(IUofConfiguration config, IAuthenticationTokenCache tokenCache, ILogger<ConfiguredConnectionFactory> logger)
         {
+            var credentialsProvider = SelectCredentialProvider(config, tokenCache, logger);
+
             return new ConnectionFactory
             {
                 ClientProvidedName = $"UofSdk / {SdkInfo.SdkType}",
@@ -163,7 +159,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
                 RequestedHeartbeat = config.Rabbit.Heartbeat,
                 RequestedConnectionTimeout = config.Rabbit.ConnectionTimeout,
                 Ssl = GetRabbitSslOptions(config),
-                ClientProperties = GetClientPropertiesWithSdkInfo(config)
+                ClientProperties = GetClientPropertiesWithSdkInfo(config),
+                CredentialsProvider = credentialsProvider
             };
         }
 
@@ -191,10 +188,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             }
         }
 
-        private static void UpdateConnectionFactoryCredentials(IConnectionFactory connectionFactory, IUofConfiguration config)
+        private void DisposeAndForgetConnection()
         {
-            connectionFactory.UserName = config.Rabbit.Username;
-            connectionFactory.Password = config.Rabbit.Password ?? string.Empty;
+            try
+            {
+                ReleaseConnectionEvents(_connectionSingleton);
+                _connectionSingleton.Dispose();
+            }
+            finally
+            {
+                _connectionSingleton = null;
+                ConnectionCreated = DateTime.MinValue;
+            }
         }
 
         private void ReleaseConnectionEvents(IConnection connection)
@@ -221,6 +226,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             }
 
             return sslOption;
+        }
+
+        private static ICredentialsProvider SelectCredentialProvider(IUofConfiguration config, IAuthenticationTokenCache tokenCache, ILogger<ConfiguredConnectionFactory> logger)
+        {
+            if (config.Authentication != null)
+            {
+                return new CredentialProviderCommonIam(config, tokenCache, logger);
+            }
+            return new CredentialProviderSso(config);
         }
     }
 }

@@ -172,7 +172,7 @@ public class UofConfigurationTests
                                       .SetDefaultLanguage(TestData.Culture)
                                       .Build();
 
-        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
+        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")));
 
         ValidateDefaultConfig(config, environment);
         ValidateDefaultProducerConfig(config);
@@ -181,36 +181,18 @@ public class UofConfigurationTests
         ValidateRabbitConfigForEnvironment(config, environment);
     }
 
-    [Fact]
-    public void SettingReplayEnvironmentHasCorrectValue()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    public void SettingReplayEnvironmentHasCorrectValue(SdkEnvironment environment)
     {
-        const SdkEnvironment environment = SdkEnvironment.Replay;
         var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
                                       .SetAccessToken(TestData.AccessToken)
                                       .SelectEnvironment(environment)
                                       .SetDefaultLanguage(TestData.Culture)
                                       .Build();
 
-        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
-
-        ValidateDefaultConfig(config, environment);
-        ValidateDefaultProducerConfig(config);
-        ValidateDefaultCacheConfig(config);
-        ValidateApiConfigForEnvironment(config, environment);
-        ValidateRabbitConfigForEnvironment(config, environment);
-    }
-
-    [Fact]
-    public void SelectingReplayEnvironmentHasCorrectValue()
-    {
-        const SdkEnvironment environment = SdkEnvironment.Replay;
-        var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
-                                      .SetAccessToken(TestData.AccessToken)
-                                      .SelectReplay()
-                                      .SetDefaultLanguage(TestData.Culture)
-                                      .Build();
-
-        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
+        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")));
 
         ValidateDefaultConfig(config, environment);
         ValidateDefaultProducerConfig(config);
@@ -233,12 +215,11 @@ public class UofConfigurationTests
                                       .SetVirtualHost("custom_virtual_host")
                                       .UseMessagingSsl(false)
                                       .SetMessagingHost("custom_mq_host")
-                                      .SetMessagingUsername("custom_username")
-                                      .SetMessagingPassword("custom_password")
+                                      .SetMessagingCredentials("custom_username", "custom_password")
                                       .SetMessagingPort(222)
                                       .Build();
 
-        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
+        config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")));
 
         ValidateDefaultConfig(config, environment);
         ValidateDefaultProducerConfig(config);

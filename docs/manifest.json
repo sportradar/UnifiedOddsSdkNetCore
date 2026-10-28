@@ -571,6 +571,62 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.yml\" sourcestartlinenumber=\"1\">Authentication configuration for the UOF SDK using the Private Key JWT method.\nThis corresponds to OAuth 2.0 Client Credentials with a JWT assertion signed by a private key.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder.yml\" sourcestartlinenumber=\"1\">Builder for creating <xref href=\"Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt\" data-throw-if-not-resolved=\"false\"></xref> instances.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.yml\" sourcestartlinenumber=\"1\">Authentication configuration for the UOF SDK using the Private Key JWT method.\nThis corresponds to OAuth 2.0 Client Credentials with a JWT assertion signed by a private key.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.yml\" sourcestartlinenumber=\"1\">Static factory and contracts for UOF client authentication.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.yml",
       "output": {
         ".html": {
@@ -1156,20 +1212,6 @@
       "IsMRef": true,
       "Title": "Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager",
       "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.yml\" sourcestartlinenumber=\"1\">Defines methods used to perform various custom bet operations</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.yml",
-      "output": {
-        ".html": {
-          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2",
-      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.yml\" sourcestartlinenumber=\"1\">Defines methods used to perform various custom bet operations\nExtends <xref href=\"Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager\" data-throw-if-not-resolved=\"false\"></xref> with additional methods for prebuilt bets functionality.\nThis interface provides a safe upgrade path for clients with custom implementations of <xref href=\"Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2153,20 +2195,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IMessageV2.yml",
-      "output": {
-        ".html": {
-          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IMessageV2.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Sportradar.OddsFeed.SDK.Entities.IMessageV2",
-      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.IMessageV2.yml\" sourcestartlinenumber=\"1\">Extends <xref href=\"Sportradar.OddsFeed.SDK.Entities.IMessage\" data-throw-if-not-resolved=\"false\"></xref> with AMQP message header information.\nThis V2 interface exists to avoid breaking changes for customers who implement <xref href=\"Sportradar.OddsFeed.SDK.Entities.IMessage\" data-throw-if-not-resolved=\"false\"></xref> directly.\nAccess the new properties via an explicit cast:</p>\n<pre><code class=\"lang-csharp\">if (oddsChange is IMessageV2 v2)\n{\n    var headers = v2.MessageHeaders;\n}</code></pre>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IOddsChange-1.yml",
       "output": {
         ".html": {
@@ -2276,20 +2304,6 @@
       "IsMRef": true,
       "Title": "Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement",
       "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.yml\" sourcestartlinenumber=\"1\">Represent settlement information for an outcome(market selection)</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlementV2.yml",
-      "output": {
-        ".html": {
-          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlementV2.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlementV2",
-      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlementV2.yml\" sourcestartlinenumber=\"1\">Extended settlement information for an outcome(market selection) with each-way and dead-heat place factor support</p>\n"
     },
     {
       "type": "ManagedReference",

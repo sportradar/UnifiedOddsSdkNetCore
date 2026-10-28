@@ -29,10 +29,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         {
             if (requestOptions.ExecutionPath == ExecutionPath.TimeCritical)
             {
-                return await _criticalDataProvider.GetDataAsync(identifiers);
+                return await _criticalDataProvider.GetDataAsync(identifiers).ConfigureAwait(false);
             }
 
-            return await _nonCriticalDataProvider.GetDataAsync(identifiers);
+            return await _nonCriticalDataProvider.GetDataAsync(identifiers).ConfigureAwait(false);
         }
 
         public void Dispose()

@@ -17,7 +17,8 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenAccessTokenSetForPredefinedEnvironmentThenConfigurationHasAccessToken(SdkEnvironment environment)
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
@@ -56,9 +57,12 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalProduction, -111)]
     [InlineData(SdkEnvironment.GlobalProduction, 0)]
     [InlineData(SdkEnvironment.GlobalProduction, 111)]
-    [InlineData(SdkEnvironment.Replay, -111)]
-    [InlineData(SdkEnvironment.Replay, 0)]
-    [InlineData(SdkEnvironment.Replay, 111)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, -111)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, -111)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, 0)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, 0)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, 111)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, 111)]
     public void WhenNodeIdSetForPredefinedEnvironmentThenConfigurationHasNodeId(SdkEnvironment environment, int nodeId)
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
@@ -98,8 +102,10 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration, ExceptionHandlingStrategy.Catch)]
     [InlineData(SdkEnvironment.GlobalProduction, ExceptionHandlingStrategy.Throw)]
     [InlineData(SdkEnvironment.GlobalProduction, ExceptionHandlingStrategy.Catch)]
-    [InlineData(SdkEnvironment.Replay, ExceptionHandlingStrategy.Throw)]
-    [InlineData(SdkEnvironment.Replay, ExceptionHandlingStrategy.Catch)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ExceptionHandlingStrategy.Throw)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ExceptionHandlingStrategy.Throw)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, ExceptionHandlingStrategy.Catch)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, ExceptionHandlingStrategy.Catch)]
     public void WhenExceptionHandlingStrategySetForPredefinedEnvironmentThenConfigurationHasStrategy(SdkEnvironment environment, ExceptionHandlingStrategy strategy)
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
@@ -127,29 +133,5 @@ public class BuilderSimplePropertiesTests : ConfigurationBuilderSetup
                     .Build();
 
         config.ExceptionHandlingStrategy.ShouldBe(strategy);
-    }
-
-    [Fact]
-    public void WhenReplaySelectedViaPredefinedEnvironmentAndShortcutThenConfigurationsAreEquivalent()
-    {
-        var configViaEnv = new TokenSetter(
-                                           UofConfigurationSectionProviderMock.Object,
-                                           _ => BookmakerDetailsProvider,
-                                           _ => ProducersProvider)
-                          .SetAccessToken(TestConsts.AnyAccessToken)
-                          .SelectEnvironment(SdkEnvironment.Replay)
-                          .SetDefaultLanguage(TestConsts.CultureEn)
-                          .Build();
-
-        var configViaReplay = new TokenSetter(
-                                              UofConfigurationSectionProviderMock.Object,
-                                              _ => BookmakerDetailsProvider,
-                                              _ => ProducersProvider)
-                             .SetAccessToken(TestConsts.AnyAccessToken)
-                             .SelectReplay()
-                             .SetDefaultLanguage(TestConsts.CultureEn)
-                             .Build();
-
-        configViaReplay.ShouldBeEquivalentTo(configViaEnv);
     }
 }

@@ -7,12 +7,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using EasyNetQ.Management.Client;
-using EasyNetQ.Management.Client.Model;
 using Moq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess;
 using Sportradar.OddsFeed.SDK.Common.Enums;
@@ -79,7 +79,7 @@ public sealed class RabbitFeedFixture : IAsyncLifetime
         }
 
         await Rabbit.DeleteVirtualHostAsync().ConfigureAwait(false);
-        Rabbit.Stop();
+        Rabbit.SafeStop();
     }
 
     private sealed class ForwardingTestOutput : ITestOutputHelper
@@ -103,6 +103,8 @@ public sealed class RabbitFeedFixture : IAsyncLifetime
 /// </summary>
 public abstract class RabbitFeedTestBase
 {
+    protected const int BookmakerId = 123;
+
     private readonly Deserializer<FeedMessage> _deserializer = new Deserializer<FeedMessage>();
     private readonly RegexRoutingKeyParser _keyParser = new RegexRoutingKeyParser();
 
@@ -123,6 +125,8 @@ public abstract class RabbitFeedTestBase
     protected ProjectConfiguration Project => Fixture.Project;
 
     protected XUnitLogger ChannelLogger => LoggerFactory.GetOrCreateLogger<RabbitMqChannel>().InnerLogger;
+
+    protected XUnitLogger ConnectionLogger => LoggerFactory.GetOrCreateLogger<ConfiguredConnectionFactory>().InnerLogger;
 
     protected XUnitLogger ReceiverLogger => LoggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
 
@@ -156,12 +160,59 @@ public abstract class RabbitFeedTestBase
 
         if (withBookmaker)
         {
-            var bookmaker = new Mock<IBookmakerDetails>();
-            bookmaker.SetupGet(b => b.BookmakerId).Returns(123);
-            builder.WithBookmakerDetails(bookmaker.Object);
+            builder.WithBookmakerDetails(Bookmaker());
         }
 
         return builder.Build();
+    }
+
+    internal IUofConfiguration CreateCiamConfiguration(string rabbitUsername = null, string rabbitPassword = null)
+    {
+        var builder = new UofConfigurationBuilder()
+                     .WithAuthenticationConfiguration(auth => auth.WithClientId("client-id")
+                                                                  .WithSigningKeyId("signing-key-id")
+                                                                  .WithHost("localhost")
+                                                                  .WithPort(80)
+                                                                  .WithSsl(false)
+                                                                  .WithAnyPrivateKey())
+                     .WithBookmakerDetails(Bookmaker())
+                     .WithRabbitConfiguration(rabbit =>
+                                              {
+                                                  var rabbitBuilder = rabbit.WithHost(Project.GetRabbitIp())
+                                                                            .WithPort(Project.DefaultRabbitPort)
+                                                                            .WithVirtualHost(Project.VirtualHostName)
+                                                                            .WithUseSsl(false)
+                                                                            .WithConnectionTimeout(TimeSpan.FromSeconds(ConfigLimit.RabbitConnectionTimeoutDefault))
+                                                                            .WithHeartbeat(TimeSpan.FromSeconds(ConfigLimit.RabbitHeartbeatDefault));
+                                                  if (rabbitUsername != null)
+                                                  {
+                                                      rabbitBuilder.WithUsername(rabbitUsername);
+                                                  }
+
+                                                  if (rabbitPassword != null)
+                                                  {
+                                                      rabbitBuilder.WithPassword(rabbitPassword);
+                                                  }
+
+                                                  rabbitBuilder.Build();
+                                              });
+        return builder.Build();
+    }
+
+    internal static void AssertSsoCredentials(IConnectionFactory factory, string username, string password)
+    {
+        var credentials = factory.CredentialsProvider;
+        credentials.ShouldBeAssignableTo<CredentialProviderSso>();
+        credentials.Name.ShouldBe("Sso");
+        credentials.UserName.ShouldBe(username);
+        credentials.Password.ShouldBe(password);
+    }
+
+    private static IBookmakerDetails Bookmaker()
+    {
+        var bookmaker = new Mock<IBookmakerDetails>();
+        bookmaker.SetupGet(details => details.BookmakerId).Returns(BookmakerId);
+        return bookmaker.Object;
     }
 
     internal OpenedFeed CreateFeed(IUofConfiguration config,
@@ -171,11 +222,13 @@ public abstract class RabbitFeedTestBase
                                     bool disposeConnection = true,
                                     bool trackMessages = true,
                                     bool trackFailures = true,
-                                    ISdkTimer timer = null)
+                                    ISdkTimer timer = null,
+                                    IAuthenticationTokenCache tokenCache = null)
     {
-        var configured = connection ?? new ConfiguredConnectionFactory(ConfiguredConnectionFactory.CreateConnectionFactoryWithImmutableFields(config),
-                                                                        config,
-                                                                        LoggerFactory.GetOrCreateLogger<ConfiguredConnectionFactory>());
+        var connectionLogger = LoggerFactory.GetOrCreateLogger<ConfiguredConnectionFactory>();
+        tokenCache ??= new Mock<IAuthenticationTokenCache>().Object;
+        var innerFactory = ConfiguredConnectionFactory.CreateConnectionFactoryWithImmutableFields(config, tokenCache, connectionLogger);
+        var configured = connection ?? new ConfiguredConnectionFactory(innerFactory, config, connectionLogger);
         var channelFactory = new ChannelFactory(configured);
         timer ??= new SdkTimer("ConnectionCheckTimer", TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(100));
         var channel = new RabbitMqChannel(channelFactory, timer, maxSilence ?? TimeSpan.FromSeconds(5), config.AccessToken, LoggerFactory.GetOrCreateLogger<RabbitMqChannel>());
@@ -192,9 +245,11 @@ public abstract class RabbitFeedTestBase
                                                    bool disposeConnection = true,
                                                    IEnumerable<string> routingKeys = null,
                                                    bool trackMessages = true,
-                                                   bool trackFailures = true)
+                                                   bool trackFailures = true,
+                                                   IAuthenticationTokenCache tokenCache = null,
+                                                   ISdkTimer timer = null)
     {
-        var feed = CreateFeed(config, maxSilence, parser, connection, disposeConnection, trackMessages, trackFailures);
+        var feed = CreateFeed(config, maxSilence, parser, connection, disposeConnection, trackMessages, trackFailures, timer, tokenCache);
         try
         {
             feed.Receiver.Open(interest, routingKeys ?? RoutingKeysFor(interest));
@@ -318,17 +373,7 @@ public abstract class RabbitFeedTestBase
 
     internal void CreateRabbitUser(string username, string password)
     {
-        var client = Fixture.Rabbit.ManagementClient;
-        var existing = client.GetUsers().FirstOrDefault(user => user.Name.Equals(username, StringComparison.OrdinalIgnoreCase));
-        if (existing != null)
-        {
-            client.DeleteUser(existing);
-        }
-
-        client.CreateUser(UserInfo.ByPassword(username, password).AddTag("administrator"));
-        var user = client.GetUser(username);
-        var vhost = client.GetVhost(Project.VirtualHostName);
-        client.CreatePermission(vhost, new PermissionInfo(user.Name));
+        Fixture.Rabbit.CreateUser(username, password, Project.VirtualHostName);
     }
 
     internal static async Task WaitUntilLogged(XUnitLogger logger, string messagePart, int times = 1)

@@ -1,9 +1,11 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 
@@ -14,9 +16,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
 /// </summary>
 public class SpecificDispatchers : ExampleBase
 {
-    public SpecificDispatchers(ILogger<SpecificDispatchers> logger)
+    private readonly UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
+
+    public SpecificDispatchers(ILogger<SpecificDispatchers> logger, UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
         : base(logger)
     {
+        _clientAuthentication = clientAuthentication;
     }
 
     public override void Run(MessageInterest messageInterest)
@@ -24,7 +29,12 @@ public class SpecificDispatchers : ExampleBase
         Console.WriteLine(string.Empty);
         Log.LogInformation("Running the Specific Dispatchers example");
 
-        var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication)
+                                  .SelectEnvironment(SdkEnvironment.GlobalIntegration)
+                                  .SetDefaultLanguage(CultureInfo.GetCultureInfo("en"))
+                                  .SetNodeId(457)
+                                  .Build();
+
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
 
         LimitRecoveryRequests(uofSdk);

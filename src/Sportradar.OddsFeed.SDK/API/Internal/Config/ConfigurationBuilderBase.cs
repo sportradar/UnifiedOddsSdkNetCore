@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
@@ -17,6 +19,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
     /// <typeparam name="T"></typeparam>
     internal abstract class ConfigurationBuilderBase<T> : IConfigurationBuilderBase<T> where T : class
     {
+        private const string CommonIamFailureMessage = "Configuration build failed: Common IAM token acquisition failed.";
+
         /// <summary>
         /// The <see cref="IUofConfigurationSectionProvider"/> containing data read from the config file
         /// </summary>
@@ -142,16 +146,48 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         protected void FetchBookmakerDetails()
         {
-            var bookmakerDetailsProvider = _bookmakerDetailsProviderFactory(UofConfiguration);
-            bookmakerDetailsProvider.LoadBookmakerDetails(UofConfiguration);
+            try
+            {
+                var bookmakerDetailsProvider = _bookmakerDetailsProviderFactory(UofConfiguration);
+                bookmakerDetailsProvider.LoadBookmakerDetails(UofConfiguration);
+            }
+            catch (CommunicationException ex) when (IsCommonIamTokenAcquisitionFailure(ex))
+            {
+                throw CreateCommonIamFailureException(ex);
+            }
+            catch (CommunicationException ex)
+            {
+                throw new CommunicationException("Fetching bookmaker details failed.", null, ex);
+            }
         }
 
         protected void FetchProducers()
         {
-            var producersProvider = _producersProviderFactory(UofConfiguration);
-            var producers = producersProvider.GetProducers();
-            ((UofProducerConfiguration)UofConfiguration.Producer).Producers = producers.ToList();
+            try
+            {
+                var producersProvider = _producersProviderFactory(UofConfiguration);
+                var producers = producersProvider.GetProducers();
+                ((UofProducerConfiguration)UofConfiguration.Producer).Producers = producers.ToList();
+            }
+            catch (CommunicationException ex) when (IsCommonIamTokenAcquisitionFailure(ex))
+            {
+                throw CreateCommonIamFailureException(ex);
+            }
+            catch (CommunicationException ex)
+            {
+                throw new CommunicationException("Fetching producers data failed.", null, ex);
+            }
+        }
 
+        private static CommunicationException CreateCommonIamFailureException(CommunicationException commonIamException)
+        {
+            return new CommunicationException(CommonIamFailureMessage, commonIamException.Url, commonIamException.ResponseCode, commonIamException);
+        }
+
+        private static bool IsCommonIamTokenAcquisitionFailure(CommunicationException exception)
+        {
+            return exception.ResponseCode == HttpStatusCode.Unauthorized &&
+                   exception.Message.Equals("Authentication token is not available. Unable to authenticate the request.", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

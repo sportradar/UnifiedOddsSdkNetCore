@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Security",
                                                      "S5766",
                                                      Justification = "Message instances are not deserialized from untrusted data. The attribute is kept for backward compatibility.")]
-    internal abstract class Message : IMessageV2
+    internal abstract class Message : IMessage
     {
         private static readonly IReadOnlyDictionary<string, string> EmptyHeaders = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
 

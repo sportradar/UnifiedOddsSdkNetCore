@@ -76,7 +76,15 @@ public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
     [Fact]
     public void SelectReplayEnvironmentReturnTest()
     {
-        var configurationBuilder = GetEnvironmentSelector().SelectReplay();
+        var configurationBuilder = GetEnvironmentSelector().SelectEnvironment(SdkEnvironment.ReplayWithIntegrationCredentials);
+
+        Assert.NotNull(configurationBuilder);
+    }
+
+    [Fact]
+    public void SelectReplayProductionEnvironmentReturnTest()
+    {
+        var configurationBuilder = GetEnvironmentSelector().SelectEnvironment(SdkEnvironment.ReplayWithProductionCredentials);
 
         Assert.NotNull(configurationBuilder);
     }
@@ -116,17 +124,19 @@ public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
         VerifyConfig(cfg, SdkEnvironment.Production, ScheduleData.CultureDe);
     }
 
-    [Fact]
-    public void ReplayEnvironmentResultValidation()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    public void ReplayEnvironmentResultValidation(SdkEnvironment expectedEnvironment)
     {
         var cfg = GetEnvironmentSelector()
-                 .SelectReplay()
-                 .SetDesiredLanguages(new List<CultureInfo> { ScheduleData.CultureDe })
+                 .SelectEnvironment(expectedEnvironment)
+                 .SetDesiredLanguages([ScheduleData.CultureDe])
                  .Build();
 
         Assert.NotNull(cfg);
-        Assert.Equal(SdkEnvironment.Replay, cfg.Environment);
-        VerifyConfig(cfg, SdkEnvironment.Replay, ScheduleData.CultureDe);
+        Assert.Equal(expectedEnvironment, cfg.Environment);
+        VerifyConfig(cfg, expectedEnvironment, ScheduleData.CultureDe);
     }
 
     [Fact]
@@ -143,27 +153,21 @@ public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
     }
 
     [Fact]
-    public void ReplayShouldTargetIntegrationApiBecauseReplayButWeNeedAnExplanationWhy()
+    public void ReplayWithProductionCredentialsShouldTargetProductionApi()
     {
-        var cfg = GetEnvironmentSelector().SelectReplay().SetDefaultLanguage(ScheduleData.CultureEn).Build();
+        var cfg = GetEnvironmentSelector().SelectEnvironment(SdkEnvironment.ReplayWithProductionCredentials).SetDefaultLanguage(ScheduleData.CultureEn).Build();
 
-        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), cfg.Api.Host);
+        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Production), cfg.Api.Host);
     }
 
-    [Fact]
-    public void ReplayShouldPointToNonGlobalMessagingHostAsItIsLongTermStrategy()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    public void ReplayConfigurationShouldBeCreatedForReplayEnvironment(SdkEnvironment replayEnvironment)
     {
-        var cfg = GetEnvironmentSelector().SelectReplay().SetDefaultLanguage(ScheduleData.CultureEn).Build();
+        var cfg = GetEnvironmentSelector().SelectEnvironment(replayEnvironment).SetDefaultLanguage(ScheduleData.CultureEn).Build();
 
-        Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.Replay), cfg.Rabbit.Host);
-    }
-
-    [Fact]
-    public void ReplayConfigurationShouldBeCreatedForReplayEnvironment()
-    {
-        var cfg = GetEnvironmentSelector().SelectReplay().SetDefaultLanguage(ScheduleData.CultureEn).Build();
-
-        Assert.Equal(SdkEnvironment.Replay, cfg.Environment);
+        Assert.Equal(replayEnvironment, cfg.Environment);
     }
 
     // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local

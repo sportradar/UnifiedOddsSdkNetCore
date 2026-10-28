@@ -556,13 +556,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
 
         protected override async Task<T> CreateExportableBaseAsync<T>()
         {
-            var exportable = await base.CreateExportableBaseAsync<T>();
+            var exportable = await base.CreateExportableBaseAsync<T>().ConfigureAwait(false);
 
             if (exportable is ExportableCompetition competition)
             {
                 competition.BookingStatus = _bookingStatus;
-                competition.Venue = _venue != null ? await _venue.ExportAsync() : null;
-                competition.Conditions = _conditions != null ? await _conditions.ExportAsync() : null;
+                competition.Venue = _venue != null ? await _venue.ExportAsync().ConfigureAwait(false) : null;
+                competition.Conditions = _conditions != null ? await _conditions.ExportAsync().ConfigureAwait(false) : null;
                 competition.Competitors = Competitors?.Select(c => c.ToString()).ToList();
                 competition.ReferenceId = _referenceId?.ReferenceIds?.ToDictionary(r => r.Key, r => r.Value);
                 competition.CompetitorsQualifiers = _competitorsQualifiers?.ToDictionary(q => q.Key.ToString(), q => q.Value);

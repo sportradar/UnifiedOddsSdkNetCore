@@ -358,7 +358,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
 
         protected override async Task<T> CreateExportableBaseAsync<T>()
         {
-            var exportable = await base.CreateExportableBaseAsync<T>();
+            var exportable = await base.CreateExportableBaseAsync<T>().ConfigureAwait(false);
             var stage = exportable as ExportableStage;
 
             if (stage == null)

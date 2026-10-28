@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// <summary>
     /// Represents the result of a market outcome (selection)
     /// </summary>
-    internal class OutcomeSettlement : Outcome, IOutcomeSettlementV2
+    internal class OutcomeSettlement : Outcome, IOutcomeSettlement
     {
         /// <summary>Initializes a new instance of the <see cref="OutcomeSettlement" /> class</summary>
         /// <param name="deadHeatFactor">a dead-head factor for the current <see cref="IOutcomeSettlement" /> instance.</param>

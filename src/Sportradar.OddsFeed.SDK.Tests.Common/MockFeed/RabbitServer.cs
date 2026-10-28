@@ -33,11 +33,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common.MockFeed;
 internal class RabbitServer
 {
     //private const string LocalRabbitIp = "192.168.0.151";  //home
-    private const string LocalRabbitIp = "10.27.121.90"; //office
+    private const string LocalRabbitIp = "localhost"; //office
     public const string SdkRabbitUsername = "testuser";
     public const string SdkRabbitPassword = "testpass";
     private const string UfExchange = "unifiedfeed";
-    private const string VirtualHostName = "/virtualhost";
+    internal const string VirtualHostName = "/virtualhost";
     private const string DefaultRabbitUserName = "guest";
     private const string DefaultRabbitPassword = "guest";
     private IConnection _connection;
@@ -75,12 +75,12 @@ internal class RabbitServer
 
         ManagementClient = new ManagementClient(new Uri($"http://{GetRabbitIp()}:15672"), DefaultRabbitUserName, DefaultRabbitPassword);
 
-        var _ = ManagementClient.GetExchanges();
+        _ = ManagementClient.GetExchanges();
 
         var rabbitUsers = ManagementClient.GetUsers();
         if (!rabbitUsers.Any(a => a.Name.Equals(SdkRabbitUsername)))
         {
-            ManagementClient.CreateUser(UserInfo.ByPassword(SdkRabbitUsername, SdkRabbitPassword).AddTag("administrator"));
+            ManagementClient.CreateUser(SdkRabbitUsername, UserInfo.ByPassword(SdkRabbitPassword).AddTag("administrator"));
         }
 
         var testUser = ManagementClient.GetUser(SdkRabbitUsername);
@@ -92,8 +92,13 @@ internal class RabbitServer
         }
 
         var virtualHost = ManagementClient.GetVhost(VirtualHostName);
-        ManagementClient.CreatePermission(virtualHost, new PermissionInfo(testUser.Name));
-        ManagementClient.CreatePermission(virtualHost, new PermissionInfo(DefaultRabbitUserName));
+        var allowAll = new PermissionInfo()
+                      .SetConfigure(".*")
+                      .SetWrite(".*")
+                      .SetRead(".*");
+
+        ManagementClient.CreatePermission(virtualHost, testUser.Name, allowAll);
+        ManagementClient.CreatePermission(virtualHost, DefaultRabbitUserName, allowAll);
     }
 
     public static string GetRabbitIp()
@@ -107,11 +112,18 @@ internal class RabbitServer
     {
         ProducersAlive.Clear();
 
-        // clean connections
-        var activeConnections = ManagementClient.GetConnections();
+        var activeConnections = ManagementClient.GetConnections()
+                                                .Where(connection => string.Equals(connection.Vhost, VirtualHostName, StringComparison.Ordinal));
         foreach (var connection in activeConnections)
         {
-            ManagementClient.CloseConnection(connection);
+            try
+            {
+                ManagementClient.CloseConnection(connection.Name);
+            }
+            catch (Exception e)
+            {
+                _outputHelper.WriteLine($"Could not close connection {connection.Name}: {e.Message}");
+            }
         }
 
         _outputHelper.WriteLine($"Starting connection with HostName={GetRabbitIp()}");
@@ -275,11 +287,7 @@ internal class RabbitServer
         var httpResponseMessage = httpClient.PutAsync($"http://{GetRabbitIp()}:15672/api/users/{username}", content).GetAwaiter().GetResult();
         if (httpResponseMessage != null)
         {
-            var responseContent = string.Empty;
-            if (httpResponseMessage.Content != null)
-            {
-                responseContent = httpResponseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            }
+            var responseContent = httpResponseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
             _outputHelper.WriteLine(
                 $"Rabbit ApiCall -> change user password: StatusCode={httpResponseMessage.StatusCode}, RequestContent={content.ReadAsStringAsync().GetAwaiter().GetResult()}, ResponseContent={responseContent}");
