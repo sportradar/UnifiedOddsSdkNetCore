@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Markets;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed.Messages;
 
@@ -67,6 +68,11 @@ public sealed class BetSettlementBuilder
 
     public BetSettlementBuilder AddOutcome(int id, int result)
     {
+        return AddOutcome(BetSettlementMarketOutcomeBuilder.Create().WithId(id).WithResult(result));
+    }
+
+    public BetSettlementBuilder AddOutcome(BetSettlementMarketOutcomeBuilder outcomeBuilder)
+    {
         if (_currentMarket == null)
         {
             throw new InvalidOperationException("AddOutcome must follow AddMarket.");
@@ -76,7 +82,7 @@ public sealed class BetSettlementBuilder
                        ? new List<betSettlementMarketOutcome>(_currentMarket.Items)
                        : new List<betSettlementMarketOutcome>();
 
-        list.Add(new betSettlementMarketOutcome { id = id.ToString(), result = result });
+        list.Add(outcomeBuilder.Build());
         _currentMarket.Items = list.ToArray();
         return this;
     }

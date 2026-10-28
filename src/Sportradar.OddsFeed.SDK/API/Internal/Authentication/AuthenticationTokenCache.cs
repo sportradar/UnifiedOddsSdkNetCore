@@ -46,21 +46,21 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
 
         public async Task RefreshApiTokenAsync(string oldToken)
         {
-            var currentToken = await GetTokenForApi();
+            var currentToken = await GetTokenForApi().ConfigureAwait(false);
             if (currentToken != null && !string.Equals(currentToken, oldToken, StringComparison.Ordinal))
             {
                 return;
             }
 
-            await _semaphoreSlim.WaitAsync();
+            await _semaphoreSlim.WaitAsync().ConfigureAwait(false);
 
             try
             {
-                currentToken = await GetTokenForApi();
+                currentToken = await GetTokenForApi().ConfigureAwait(false);
                 if (currentToken == null || string.Equals(currentToken, oldToken, StringComparison.Ordinal))
                 {
                     await _cache.ExpireAsync(UofApiTokenAudience).ConfigureAwait(false);
-                    await GetTokenForApi();
+                    await GetTokenForApi().ConfigureAwait(false);
                 }
             }
             finally
@@ -73,7 +73,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
         {
             try
             {
-                return await _cache.GetOrSetAsync<AuthenticationToken>(audience, async (ctx, tokenCt) => await FetchAndCacheTokenAsync(audience, ctx, tokenCt).ConfigureAwait(false));
+                return await _cache.GetOrSetAsync<AuthenticationToken>(audience, async (ctx, tokenCt) => await FetchAndCacheTokenAsync(audience, ctx, tokenCt).ConfigureAwait(false)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

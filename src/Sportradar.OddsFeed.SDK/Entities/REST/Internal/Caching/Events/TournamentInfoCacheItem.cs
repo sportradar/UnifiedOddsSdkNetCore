@@ -434,10 +434,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         {
             if (_competitorsReferences != null)
             {
-                return await PrepareCompetitorsReferences(_competitorsReferences);
+                return await PrepareCompetitorsReferences(_competitorsReferences).ConfigureAwait(false);
             }
             await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
-            return await PrepareCompetitorsReferences(_competitorsReferences);
+            return await PrepareCompetitorsReferences(_competitorsReferences).ConfigureAwait(false);
         }
 
         private async Task<IDictionary<Urn, ReferenceIdCacheItem>> PrepareCompetitorsReferences(IDictionary<Urn, ReferenceIdCacheItem> competitorsReferences)
@@ -447,7 +447,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
                 return competitorsReferences;
             }
 
-            var groups = await GetGroupsAsync(new[] { DefaultCulture });
+            var groups = await GetGroupsAsync(new[] { DefaultCulture }).ConfigureAwait(false);
             return groups?.SelectMany(g => g.CompetitorsReferences).Distinct().ToDictionary(c => c.Key, c => c.Value);
         }
 
@@ -821,7 +821,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
 
         protected override async Task<T> CreateExportableBaseAsync<T>()
         {
-            var exportable = await base.CreateExportableBaseAsync<T>();
+            var exportable = await base.CreateExportableBaseAsync<T>().ConfigureAwait(false);
             var info = exportable as ExportableTournamentInfo;
 
             if (info == null)
@@ -835,7 +835,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
             info.Competitors = _competitors?.Select(s => s.ToString());
             info.CurrentSeasonInfo = _currentSeasonInfo != null ? await _currentSeasonInfo.ExportAsync().ConfigureAwait(false) : null;
             var groupsTasks = _groups?.Select(async g => await g.ExportAsync().ConfigureAwait(false));
-            info.Groups = groupsTasks != null ? await Task.WhenAll(groupsTasks) : null;
+            info.Groups = groupsTasks != null ? await Task.WhenAll(groupsTasks).ConfigureAwait(false) : null;
             info.ScheduleUrns = _scheduleUrns?.Select(s => s.ToString()).ToList();
             info.Round = _round != null ? await _round.ExportAsync().ConfigureAwait(false) : null;
             info.Year = _year;

@@ -1796,6 +1796,18 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
         
         private bool dead_heat_factorFieldSpecified;
         
+        private double dead_heat_factor_placeField;
+        
+        private bool dead_heat_factor_placeFieldSpecified;
+        
+        private double each_way_factorField;
+        
+        private bool each_way_factorFieldSpecified;
+        
+        private eachWayResult each_way_resultField;
+        
+        private bool each_way_resultFieldSpecified;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string id {
@@ -1861,6 +1873,85 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.dead_heat_factorFieldSpecified = value;
             }
         }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public double dead_heat_factor_place {
+            get {
+                return this.dead_heat_factor_placeField;
+            }
+            set {
+                this.dead_heat_factor_placeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool dead_heat_factor_placeSpecified {
+            get {
+                return this.dead_heat_factor_placeFieldSpecified;
+            }
+            set {
+                this.dead_heat_factor_placeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public double each_way_factor {
+            get {
+                return this.each_way_factorField;
+            }
+            set {
+                this.each_way_factorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool each_way_factorSpecified {
+            get {
+                return this.each_way_factorFieldSpecified;
+            }
+            set {
+                this.each_way_factorFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public eachWayResult each_way_result {
+            get {
+                return this.each_way_resultField;
+            }
+            set {
+                this.each_way_resultField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool each_way_resultSpecified {
+            get {
+                return this.each_way_resultFieldSpecified;
+            }
+            set {
+                this.each_way_resultFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    public enum eachWayResult {
+        
+        /// <remarks/>
+        place,
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("winner|place")]
+        winnerplace,
     }
     
     /// <remarks/>

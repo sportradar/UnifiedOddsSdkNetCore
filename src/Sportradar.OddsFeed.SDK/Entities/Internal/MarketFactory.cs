@@ -1,5 +1,6 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -11,6 +12,7 @@ using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration;
@@ -163,6 +165,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, marketSettlement.id, specifiers, producerId, sportId);
             var outcomes = (IEnumerable<IOutcomeSettlement>)marketSettlement.Items?.Select(outcome => new OutcomeSettlement(
                                outcome.dead_heat_factorSpecified ? (double?)outcome.dead_heat_factor : null,
+                                outcome.each_way_resultSpecified ? MapEachWayResult(outcome.each_way_result) : null,
+                               outcome.each_way_factorSpecified ? (double?)outcome.each_way_factor : null,
+                               outcome.dead_heat_factor_placeSpecified ? (double?)outcome.dead_heat_factor_place : null,
                                outcome.id,
                                outcome.result,
                                MessageMapperHelper.GetVoidFactor(outcome.void_factorSpecified, outcome.void_factor),
@@ -306,6 +311,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 ? null
                 : new MarketMetadata(marketMetadata);
 
+        }
+
+        private static EachWayResult? MapEachWayResult(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
+
+            if (string.Equals("winner|place", value, StringComparison.Ordinal))
+            {
+                return EachWayResult.WinnerPlace;
+            }
+
+            if (string.Equals("place", value, StringComparison.Ordinal))
+            {
+                return EachWayResult.Place;
+            }
+
+            return EachWayResult.UnsupportedBySdk;
         }
     }
 }

@@ -101,7 +101,7 @@ public sealed class ProxiedRabbit : IAsyncDisposable
 
     private static string GetRabbitHostWithinDockerNetwork()
     {
-        var isLocal = Environment.GetEnvironmentVariable("CI") == null;
-        return isLocal ? "rabbitmq" : "toxiproxy";
+        var rabbitHostFromEnv = Environment.GetEnvironmentVariable("RABBITMQ_IP");
+        return !string.IsNullOrWhiteSpace(rabbitHostFromEnv) ? rabbitHostFromEnv : "host.docker.internal";
     }
 }

@@ -15,6 +15,7 @@ using Sportradar.OddsFeed.SDK.Api.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Api.Managers;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments;
@@ -359,6 +360,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
         {
             if (eventArgs.BasicProperties != null
                 && eventArgs.BasicProperties.IsHeadersPresent()
+                && !eventArgs.BasicProperties.Headers.IsNullOrEmpty()
                 && eventArgs.BasicProperties.Headers.TryGetValue("timestamp_in_ms", out var headerTimestamp)
                 && long.TryParse(headerTimestamp.ToString(), out var timestamp))
             {

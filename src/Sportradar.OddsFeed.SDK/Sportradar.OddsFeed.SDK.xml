@@ -10479,6 +10479,11 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ConnectionValidator"/> used to detect potential connectivity issues
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Api.UofSdk._usageMeterProvider">
+            <summary>
+            The usage metrics <see cref="T:OpenTelemetry.Metrics.MeterProvider"/> when export is enabled; otherwise null
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.UofSdk.#ctor(System.IServiceProvider,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.UofSdk"/> class
@@ -14516,9 +14521,12 @@
             Represents the result of a market outcome (selection)
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement.#ctor(System.Nullable{System.Double},System.String,System.Int32,System.Nullable{Sportradar.OddsFeed.SDK.Entities.Rest.Enums.VoidFactor},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration.INameProvider,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames.IMarketMappingProvider,System.Collections.Generic.IReadOnlyCollection{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement.#ctor(System.Nullable{System.Double},System.Nullable{Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult},System.Nullable{System.Double},System.Nullable{System.Double},System.String,System.Int32,System.Nullable{Sportradar.OddsFeed.SDK.Entities.Rest.Enums.VoidFactor},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration.INameProvider,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames.IMarketMappingProvider,System.Collections.Generic.IReadOnlyCollection{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition)">
             <summary>Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement" /> class</summary>
             <param name="deadHeatFactor">a dead-head factor for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement" /> instance.</param>
+            <param name="eachWayResult">an each-way result for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement" /> instance.</param>
+            <param name="eachWayPlaceFactor">an each-way place factor for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement" /> instance.</param>
+            <param name="deadHeatFactorPlace">a dead-heat factor for the place part of an each-way bet.</param>
             <param name="id">the value uniquely identifying the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement" /></param>
             <param name="result">a value indicating whether the outcome associated with current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement" /> is winning</param>
             <param name="voidFactor">the <see cref="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement.VoidFactor" /> associated with a current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement" /> or a null reference</param>
@@ -14535,6 +14543,21 @@
             A dead heat is defined as an event in which there are two or more joint winning contracts.
             Dead heat rules state that the stake should be divided by the number of competitors involved in the dead heat and then settled at the normal odds
             </remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement.EachWayResult">
+            <summary>
+            Gets whether the each-way outcome is settled as a win or a place
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement.EachWayPlaceFactor">
+            <summary>
+            Gets the each-way place factor (fraction of win odds used to settle the place part)
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement.DeadHeatFactorPlace">
+            <summary>
+            Gets the dead-heat factor for the place part of an each-way bet
+            </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement.VoidFactor">
             <summary>
@@ -15599,6 +15622,21 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.OutcomeResult">
             <summary>
             Gets a value indicating whether the outcome associated with current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement"/> is winning - i.e. have the bets placed on this outcome winning or losing
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayResult">
+            <summary>
+            Gets whether the each-way outcome is settled as a win or a place
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayPlaceFactor">
+            <summary>
+            Gets the each-way place factor (fraction of win odds used to settle the place part) for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement"/> instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.DeadHeatFactorPlace">
+            <summary>
+            Gets the dead-heat factor for the place part of an each-way bet for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement"/> instance
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IPlayerOutcomeOdds">
@@ -17568,6 +17606,26 @@
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.DrawType.Unknown">
             <summary>
             The unknown
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult">
+            <summary>
+            Indicates whether an each-way outcome is settled as a win or a place
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.WinnerPlace">
+            <summary>
+            The outcome is settled as a winner/place
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.Place">
+            <summary>
+            The outcome is settled as a place
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.UnsupportedBySdk">
+            <summary>
+            Indicating that the each-way result was present in message, but SDK does not support the each-way value
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EventStatus">
@@ -35049,6 +35107,24 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factorSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_place">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_placeSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factor">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factorSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_result">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_resultSpecified">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata">

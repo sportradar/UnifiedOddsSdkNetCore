@@ -406,7 +406,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                                                                  sportFromCacheAsync.ConfigureAwait(false);
                                                                  return sportFromCacheAsync;
                                                              })
-                                                .ToList());
+                                                .ToList()).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

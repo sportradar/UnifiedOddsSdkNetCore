@@ -275,14 +275,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
 
         protected override async Task<T> CreateExportableBaseAsync<T>()
         {
-            var exportable = await base.CreateExportableBaseAsync<T>();
+            var exportable = await base.CreateExportableBaseAsync<T>().ConfigureAwait(false);
             if (exportable is ExportableDraw draw)
             {
                 draw.LotteryId = _lotteryId?.ToString();
                 draw.DrawStatus = _drawStatus;
                 draw.ResultsChronological = _resultsChronological;
                 var resultTasks = _results?.Select(async r => await r.ExportAsync().ConfigureAwait(false));
-                draw.Results = resultTasks != null ? await Task.WhenAll(resultTasks) : null;
+                draw.Results = resultTasks != null ? await Task.WhenAll(resultTasks).ConfigureAwait(false) : null;
                 draw.DisplayId = _displayId;
             }
             return exportable;

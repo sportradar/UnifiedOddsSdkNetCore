@@ -109,6 +109,69 @@ public class MarketWithOddsNameForCompetitorMarketsTests : MarketNameSetup
         outcomeNameTemplate.ShouldBe(expectedOutcomeNameTemplate);
     }
 
+    [Theory]
+    [InlineData("participant", "sr:competitor:44")]
+    [InlineData("participant", "bg:competitor:44")]
+    [InlineData("server", "sr:competitor:66390")]
+    public async Task MarketNameIsGeneratedWhenPercentOperandIsNotNamedCompetitorButUrnTypeIsCompetitor(string operand, string competitorId)
+    {
+        var specifiers = $"{operand}={competitorId}|total=1.5";
+        var expectedMarketNameTemplate = $"{{%{operand}}} winner";
+        const string expectedMarketName = "Liverpool FC winner";
+        const string outcomeId = "13";
+        const string expectedOutcomeNameTemplate = "under {total}";
+        const string expectedOutcomeName = "under 1.5";
+
+        var apiMarketDescription = MdForInvariantList.GetMarket282WithCompetitorInMarketName();
+        apiMarketDescription.name = expectedMarketNameTemplate;
+        var competitorProfile = Soccer.GetHomeCompetitorProfileEndpoint();
+        competitorProfile.competitor.id = competitorId;
+
+        SetupInvariantMarketListEndpoint(apiMarketDescription, DefaultLanguage);
+        SetupProfileCacheToReturnCompetitorNameWithFetching(competitorProfile, DefaultLanguage);
+
+        var marketOddsChange = CreateMarketWithOdds282WithSpecifiers(specifiers);
+
+        var market = MarketFactory.GetMarketWithOdds(AnySportEventMock.Object, marketOddsChange, TestConsts.AnyProducerId, TestConsts.AnySportId, [DefaultLanguage]);
+        var outcome = market.OutcomeOdds.First(o => o.Id == outcomeId);
+
+        market.ShouldNotBeNull();
+        outcome.ShouldNotBeNull();
+        var marketName = await market.GetNameAsync(DefaultLanguage);
+        var marketNameTemplate = market.MarketDefinition.GetNameTemplate(DefaultLanguage);
+        var outcomeName = await outcome.GetNameAsync(DefaultLanguage);
+        var outcomeNameTemplate = outcome.OutcomeDefinition.GetNameTemplate(DefaultLanguage);
+
+        marketName.ShouldBe(expectedMarketName);
+        marketNameTemplate.ShouldBe(apiMarketDescription.name);
+        marketNameTemplate.ShouldBe(expectedMarketNameTemplate);
+        outcomeName.ShouldBe(expectedOutcomeName);
+        outcomeNameTemplate.ShouldBe(expectedOutcomeNameTemplate);
+    }
+
+    [Fact]
+    public async Task MarketNameReplacesUnknownUrnTypeWithEmptyString()
+    {
+        const string specifiers = "course=sr:venue:6030";
+        const string expectedMarketNameTemplate = "{%course} winner";
+        const string expectedMarketName = " winner";
+
+        var apiMarketDescription = MdForInvariantList.GetMarket282WithCompetitorInMarketName();
+        apiMarketDescription.name = expectedMarketNameTemplate;
+        SetupInvariantMarketListEndpoint(apiMarketDescription, DefaultLanguage);
+
+        var marketOddsChange = CreateMarketWithOdds282WithSpecifiers(specifiers);
+
+        var market = MarketFactory.GetMarketWithOdds(AnySportEventMock.Object, marketOddsChange, TestConsts.AnyProducerId, TestConsts.AnySportId, [DefaultLanguage]);
+
+        market.ShouldNotBeNull();
+        var marketName = await market.GetNameAsync(DefaultLanguage);
+        var marketNameTemplate = market.MarketDefinition.GetNameTemplate(DefaultLanguage);
+
+        marketName.ShouldBe(expectedMarketName);
+        marketNameTemplate.ShouldBe(expectedMarketNameTemplate);
+    }
+
     private static oddsChangeMarket CreateMarketWithOdds282WithSpecifiers(string specifiers)
     {
         return MarketWithOddsBuilder.Create()

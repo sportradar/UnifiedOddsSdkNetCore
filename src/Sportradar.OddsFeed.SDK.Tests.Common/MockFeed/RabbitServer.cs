@@ -37,7 +37,7 @@ internal class RabbitServer
     public const string SdkRabbitUsername = "testuser";
     public const string SdkRabbitPassword = "testpass";
     private const string UfExchange = "unifiedfeed";
-    private const string VirtualHostName = "/virtualhost";
+    internal const string VirtualHostName = "/virtualhost";
     private const string DefaultRabbitUserName = "guest";
     private const string DefaultRabbitPassword = "guest";
     private IConnection _connection;
@@ -112,11 +112,18 @@ internal class RabbitServer
     {
         ProducersAlive.Clear();
 
-        // clean connections
-        var activeConnections = ManagementClient.GetConnections();
+        var activeConnections = ManagementClient.GetConnections()
+                                                .Where(connection => string.Equals(connection.Vhost, VirtualHostName, StringComparison.Ordinal));
         foreach (var connection in activeConnections)
         {
-            ManagementClient.CloseConnection(connection.Name);
+            try
+            {
+                ManagementClient.CloseConnection(connection.Name);
+            }
+            catch (Exception e)
+            {
+                _outputHelper.WriteLine($"Could not close connection {connection.Name}: {e.Message}");
+            }
         }
 
         _outputHelper.WriteLine($"Starting connection with HostName={GetRabbitIp()}");

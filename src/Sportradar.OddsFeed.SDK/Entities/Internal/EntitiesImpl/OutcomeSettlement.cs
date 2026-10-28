@@ -15,6 +15,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     {
         /// <summary>Initializes a new instance of the <see cref="OutcomeSettlement" /> class</summary>
         /// <param name="deadHeatFactor">a dead-head factor for the current <see cref="IOutcomeSettlement" /> instance.</param>
+        /// <param name="eachWayResult">an each-way result for the current <see cref="IOutcomeSettlement" /> instance.</param>
+        /// <param name="eachWayPlaceFactor">an each-way place factor for the current <see cref="IOutcomeSettlement" /> instance.</param>
+        /// <param name="deadHeatFactorPlace">a dead-heat factor for the place part of an each-way bet.</param>
         /// <param name="id">the value uniquely identifying the current <see cref="IOutcomeSettlement" /></param>
         /// <param name="result">a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement" /> is winning</param>
         /// <param name="voidFactor">the <see cref="VoidFactor" /> associated with a current <see cref="IOutcomeSettlement" /> or a null reference</param>
@@ -23,6 +26,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="outcomeDefinition">The associated <see cref="IOutcomeDefinition"/></param>
         internal OutcomeSettlement(double? deadHeatFactor,
+                                   EachWayResult? eachWayResult,
+                                   double? eachWayPlaceFactor,
+                                   double? deadHeatFactorPlace,
                                    string id,
                                    int result,
                                    VoidFactor? voidFactor,
@@ -33,6 +39,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             : base(id, nameProvider, mappingProvider, cultures, outcomeDefinition)
         {
             DeadHeatFactor = deadHeatFactor;
+            EachWayResult = eachWayResult;
+            EachWayPlaceFactor = eachWayPlaceFactor;
+            DeadHeatFactorPlace = deadHeatFactorPlace;
             VoidFactor = voidFactor;
             switch (result)
             {
@@ -59,6 +68,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// Dead heat rules state that the stake should be divided by the number of competitors involved in the dead heat and then settled at the normal odds
         /// </remarks>
         public double? DeadHeatFactor { get; }
+
+        /// <summary>
+        /// Gets whether the each-way outcome is settled as a win or a place
+        /// </summary>
+        public EachWayResult? EachWayResult { get; }
+
+        /// <summary>
+        /// Gets the each-way place factor (fraction of win odds used to settle the place part)
+        /// </summary>
+        public double? EachWayPlaceFactor { get; }
+
+        /// <summary>
+        /// Gets the dead-heat factor for the place part of an each-way bet
+        /// </summary>
+        public double? DeadHeatFactorPlace { get; }
 
         /// <summary>
         /// Gets the <see cref="VoidFactor" /> associated with a current <see cref="IOutcomeSettlement" /> or a null reference.

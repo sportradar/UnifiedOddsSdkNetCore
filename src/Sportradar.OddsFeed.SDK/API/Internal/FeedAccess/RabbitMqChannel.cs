@@ -63,7 +63,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
 
         private readonly string _accessToken;
 
-        private readonly SemaphoreSlim _timerSemaphoreSlim = new SemaphoreSlim(1);
+        private SemaphoreSlim _timerSemaphoreSlim;
+
+        internal SemaphoreSlim TimerSemaphore
+        {
+            get => _timerSemaphoreSlim;
+            set => _timerSemaphoreSlim = value;
+        }
 
         public RabbitMqChannel(IChannelFactory channelFactory, ISdkTimer timer, TimeSpan maxTimeBetweenMessages, string accessToken, ILogger<RabbitMqChannel> logger)
         {
@@ -89,20 +95,32 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
         /// <param name="routingKeys">A <see cref="IEnumerable{String}"/> specifying the routing keys of the constructed queue.</param>
         public void Open(MessageInterest interest, IEnumerable<string> routingKeys)
         {
+            var keys = routingKeys?.ToList();
+            if (keys.IsNullOrEmpty())
+            {
+                throw new ArgumentNullException(nameof(routingKeys), "Missing routing keys");
+            }
+
             if (Interlocked.CompareExchange(ref _isOpened, 1, 0) != 0)
             {
                 _logger.LogError("Opening an already opened channel is not allowed");
                 throw new InvalidOperationException("The instance is already opened");
             }
 
+            _timerSemaphoreSlim = new SemaphoreSlim(1);
             _messageInterest = interest;
-            _routingKeys = routingKeys.ToList();
-            if (_routingKeys.IsNullOrEmpty())
+            _routingKeys = keys;
+            try
             {
-                throw new ArgumentNullException(nameof(routingKeys), "Missing routing keys");
+                _timer.Start();
             }
-
-            _timer.Start();
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "Error starting the channel timer");
+                Interlocked.Exchange(ref _isOpened, 0);
+                StopTimerAndReleaseSemaphore();
+                throw;
+            }
         }
 
         /// <summary>
@@ -113,15 +131,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
         {
             if (Interlocked.CompareExchange(ref _isOpened, 0, 1) != 1)
             {
-                _logger.LogError("Cannot close the channel on channelNumber: {ChannelNumber}, because this channel is already closed", Channel?.ChannelNumber);
+                _logger.LogError("Cannot close the channel on channelNumber: {ChannelNumber}, because this channel is already closed", TryReadChannelNumber());
                 throw new InvalidOperationException("The instance is already closed");
             }
 
-            DetachEventsAndCloseChannel();
-
-            _timer.Stop();
-            _timerSemaphoreSlim.ReleaseSafe();
-            _timerSemaphoreSlim.Dispose();
+            try
+            {
+                DetachEventsAndCloseChannel();
+            }
+            finally
+            {
+                StopTimerAndReleaseSemaphore();
+            }
         }
 
         /// <summary>
@@ -138,15 +159,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
         private void BasicConsumerOnShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
         {
             var reason = shutdownEventArgs.ReplyText == null ? string.Empty : ClearAccessTokenFrom(shutdownEventArgs.ReplyText);
-            _logger.LogInformation("The consumer is shutdown. ConsumerTag={ConsumerTag}, Reason={ErrorMessage}", BasicConsumer.ConsumerTags, reason);
-
+            _logger.LogInformation("The consumer is shutdown. ConsumerTag={ConsumerTag}, Reason={ErrorMessage}", BasicConsumer?.ConsumerTags, reason);
         }
 
         private void ChannelOnModelShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
         {
             var reason = shutdownEventArgs.ReplyText == null ? string.Empty : ClearAccessTokenFrom(shutdownEventArgs.ReplyText);
-            _logger.LogInformation("The channel is shutdown. ChannelNumber={ChannelNumber}, Reason={ErrorMessage}", Channel.ChannelNumber.ToString(CultureInfo.InvariantCulture), reason);
-
+            _logger.LogInformation("The channel is shutdown. ChannelNumber={ChannelNumber}, Reason={ErrorMessage}", TryReadChannelNumber(), reason);
         }
 
         private void CreateChannelAndAttachEvents()
@@ -187,22 +206,73 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
 
         private void DetachEventsAndCloseChannel()
         {
-            _logger.LogInformation("Closing the channel with channelNumber: {ChannelNumber}", Channel?.ChannelNumber.ToString(CultureInfo.InvariantCulture));
+            var channelNumber = TryReadChannelNumber();
+            _logger.LogInformation("Closing the channel with channelNumber: {ChannelNumber}", channelNumber);
             if (BasicConsumer != null)
             {
                 BasicConsumer.Received -= BasicConsumerOnDataReceived;
                 BasicConsumer.Shutdown -= BasicConsumerOnShutdown;
                 BasicConsumer = null;
             }
-            if (Channel != null)
+
+            var channel = Channel;
+            Channel = null;
+            ChannelStarted = DateTime.MinValue;
+            if (channel == null)
             {
-                Channel.ModelShutdown -= ChannelOnModelShutdown;
-                Channel.Close();
-                Channel.Dispose();
-                Channel = null;
+                return;
             }
 
-            ChannelStarted = DateTime.MinValue;
+            try
+            {
+                channel.ModelShutdown -= ChannelOnModelShutdown;
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "Error detaching channel shutdown on channelNumber: {ChannelNumber}", channelNumber);
+            }
+
+            try
+            {
+                channel.Close();
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "Error closing channel on channelNumber: {ChannelNumber}", channelNumber);
+            }
+
+            try
+            {
+                channel.Dispose();
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "Error disposing channel on channelNumber: {ChannelNumber}", channelNumber);
+            }
+        }
+
+        private void StopTimerAndReleaseSemaphore()
+        {
+            try
+            {
+                _timer.Stop();
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "Error stopping the channel timer");
+            }
+
+            var semaphore = _timerSemaphoreSlim;
+            _timerSemaphoreSlim = null;
+            semaphore?.ReleaseSafe();
+            try
+            {
+                semaphore?.Dispose();
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "Error disposing the channel timer semaphore");
+            }
         }
 
         private void OnTimerElapsed(object sender, EventArgs e)
@@ -215,27 +285,65 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
         /// </summary>
         private async Task OnTimerElapsedAsync()
         {
-            await _timerSemaphoreSlim.WaitAsync().ConfigureAwait(false);
-
-            if (IsOpened)
+            var semaphore = _timerSemaphoreSlim;
+            if (semaphore == null)
             {
-                try
-                {
-                    RecreateChannelIfNoMessagesArrivedWithinInterval();
-
-                    RecreateChannelIfNoMessagesArrivedWithinIntervalFromChannelStart();
-
-                    RecreateChannelIfConnectionIsNewer();
-
-                    CreateChannelIfDoesNotExist();
-                }
-                catch (Exception e)
-                {
-                    _logger.LogWarning(e, "Error checking connection for channelNumber: {ChannelNumber}", Channel?.ChannelNumber.ToString(CultureInfo.InvariantCulture));
-                }
+                _logger.LogDebug("Connection check skipped because the channel is not opened");
+                return;
             }
 
-            _timerSemaphoreSlim.ReleaseSafe();
+            try
+            {
+                await semaphore.WaitAsync().ConfigureAwait(false);
+            }
+            catch (ObjectDisposedException)
+            {
+                _logger.LogDebug("Connection check skipped because the channel is closed");
+                return;
+            }
+
+            try
+            {
+                if (IsOpened)
+                {
+                    try
+                    {
+                        RecreateChannelIfNoMessagesArrivedWithinInterval();
+
+                        RecreateChannelIfNoMessagesArrivedWithinIntervalFromChannelStart();
+
+                        RecreateChannelIfConnectionIsNewer();
+
+                        CreateChannelIfDoesNotExist();
+                    }
+                    catch (Exception e)
+                    {
+                        var channelNumber = TryReadChannelNumber();
+                        if (Channel != null && ChannelStarted == DateTime.MinValue)
+                        {
+                            DetachEventsAndCloseChannel();
+                        }
+
+                        _logger.LogWarning(e, "Error checking connection for channelNumber: {ChannelNumber}", channelNumber);
+                    }
+                }
+            }
+            finally
+            {
+                semaphore.ReleaseSafe();
+            }
+        }
+
+        private string TryReadChannelNumber()
+        {
+            try
+            {
+                return Channel?.ChannelNumber.ToString(CultureInfo.InvariantCulture);
+            }
+            catch (ObjectDisposedException)
+            {
+                return null;
+            }
         }
 
         private void CreateChannelIfDoesNotExist()

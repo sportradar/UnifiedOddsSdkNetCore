@@ -8143,6 +8143,45 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.DeadHeatFactor
   nameWithType: IOutcomeSettlement.DeadHeatFactor
+- uid: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.DeadHeatFactorPlace
+  name: DeadHeatFactorPlace
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.html#Sportradar_OddsFeed_SDK_Entities_IOutcomeSettlement_DeadHeatFactorPlace
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.DeadHeatFactorPlace
+  fullName: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.DeadHeatFactorPlace
+  nameWithType: IOutcomeSettlement.DeadHeatFactorPlace
+- uid: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.DeadHeatFactorPlace*
+  name: DeadHeatFactorPlace
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.html#Sportradar_OddsFeed_SDK_Entities_IOutcomeSettlement_DeadHeatFactorPlace_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.DeadHeatFactorPlace
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.DeadHeatFactorPlace
+  nameWithType: IOutcomeSettlement.DeadHeatFactorPlace
+- uid: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayPlaceFactor
+  name: EachWayPlaceFactor
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.html#Sportradar_OddsFeed_SDK_Entities_IOutcomeSettlement_EachWayPlaceFactor
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayPlaceFactor
+  fullName: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayPlaceFactor
+  nameWithType: IOutcomeSettlement.EachWayPlaceFactor
+- uid: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayPlaceFactor*
+  name: EachWayPlaceFactor
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.html#Sportradar_OddsFeed_SDK_Entities_IOutcomeSettlement_EachWayPlaceFactor_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayPlaceFactor
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayPlaceFactor
+  nameWithType: IOutcomeSettlement.EachWayPlaceFactor
+- uid: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayResult
+  name: EachWayResult
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.html#Sportradar_OddsFeed_SDK_Entities_IOutcomeSettlement_EachWayResult
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayResult
+  fullName: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayResult
+  nameWithType: IOutcomeSettlement.EachWayResult
+- uid: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayResult*
+  name: EachWayResult
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.html#Sportradar_OddsFeed_SDK_Entities_IOutcomeSettlement_EachWayResult_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayResult
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.EachWayResult
+  nameWithType: IOutcomeSettlement.EachWayResult
 - uid: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.OutcomeResult
   name: OutcomeResult
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.html#Sportradar_OddsFeed_SDK_Entities_IOutcomeSettlement_OutcomeResult
@@ -12577,6 +12616,30 @@ references:
   commentId: F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.DrawType.Unknown
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.DrawType.Unknown
   nameWithType: DrawType.Unknown
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult
+  name: EachWayResult
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.html
+  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult
+  nameWithType: EachWayResult
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.Place
+  name: Place
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.html#Sportradar_OddsFeed_SDK_Entities_Rest_Enums_EachWayResult_Place
+  commentId: F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.Place
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.Place
+  nameWithType: EachWayResult.Place
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.UnsupportedBySdk
+  name: UnsupportedBySdk
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.html#Sportradar_OddsFeed_SDK_Entities_Rest_Enums_EachWayResult_UnsupportedBySdk
+  commentId: F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.UnsupportedBySdk
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.UnsupportedBySdk
+  nameWithType: EachWayResult.UnsupportedBySdk
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.WinnerPlace
+  name: WinnerPlace
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.html#Sportradar_OddsFeed_SDK_Entities_Rest_Enums_EachWayResult_WinnerPlace
+  commentId: F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.WinnerPlace
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EachWayResult.WinnerPlace
+  nameWithType: EachWayResult.WinnerPlace
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EventStatus
   name: EventStatus
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EventStatus.html
@@ -19625,6 +19688,84 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factorSpecified
   nameWithType: betSettlementMarketOutcome.dead_heat_factorSpecified
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_place
+  name: dead_heat_factor_place
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_dead_heat_factor_place
+  commentId: P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_place
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_place
+  nameWithType: betSettlementMarketOutcome.dead_heat_factor_place
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_place*
+  name: dead_heat_factor_place
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_dead_heat_factor_place_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_place
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_place
+  nameWithType: betSettlementMarketOutcome.dead_heat_factor_place
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_placeSpecified
+  name: dead_heat_factor_placeSpecified
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_dead_heat_factor_placeSpecified
+  commentId: P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_placeSpecified
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_placeSpecified
+  nameWithType: betSettlementMarketOutcome.dead_heat_factor_placeSpecified
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_placeSpecified*
+  name: dead_heat_factor_placeSpecified
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_dead_heat_factor_placeSpecified_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_placeSpecified
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.dead_heat_factor_placeSpecified
+  nameWithType: betSettlementMarketOutcome.dead_heat_factor_placeSpecified
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factor
+  name: each_way_factor
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_each_way_factor
+  commentId: P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factor
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factor
+  nameWithType: betSettlementMarketOutcome.each_way_factor
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factor*
+  name: each_way_factor
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_each_way_factor_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factor
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factor
+  nameWithType: betSettlementMarketOutcome.each_way_factor
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factorSpecified
+  name: each_way_factorSpecified
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_each_way_factorSpecified
+  commentId: P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factorSpecified
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factorSpecified
+  nameWithType: betSettlementMarketOutcome.each_way_factorSpecified
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factorSpecified*
+  name: each_way_factorSpecified
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_each_way_factorSpecified_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factorSpecified
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_factorSpecified
+  nameWithType: betSettlementMarketOutcome.each_way_factorSpecified
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_result
+  name: each_way_result
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_each_way_result
+  commentId: P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_result
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_result
+  nameWithType: betSettlementMarketOutcome.each_way_result
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_result*
+  name: each_way_result
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_each_way_result_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_result
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_result
+  nameWithType: betSettlementMarketOutcome.each_way_result
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_resultSpecified
+  name: each_way_resultSpecified
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_each_way_resultSpecified
+  commentId: P:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_resultSpecified
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_resultSpecified
+  nameWithType: betSettlementMarketOutcome.each_way_resultSpecified
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_resultSpecified*
+  name: each_way_resultSpecified
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_each_way_resultSpecified_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_resultSpecified
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.each_way_resultSpecified
+  nameWithType: betSettlementMarketOutcome.each_way_resultSpecified
 - uid: Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.id
   name: id
   href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_betSettlementMarketOutcome_id

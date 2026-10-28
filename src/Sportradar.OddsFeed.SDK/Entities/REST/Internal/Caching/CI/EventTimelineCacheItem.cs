@@ -123,7 +123,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             return new ExportableEventTimeline
             {
                 FetchedCultures = new List<CultureInfo>(_fetchedCultures ?? new List<CultureInfo>()),
-                Timeline = timelineTasks != null ? await Task.WhenAll(timelineTasks) : null,
+                Timeline = timelineTasks != null ? await Task.WhenAll(timelineTasks).ConfigureAwait(false) : null,
                 IsFinalized = _isFinalized
             };
         }

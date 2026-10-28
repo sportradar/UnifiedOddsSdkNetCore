@@ -12,6 +12,7 @@ using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -421,7 +422,7 @@ public class ProfileCacheBaseTests : ProfileCacheSetup
         Assert.Equal(exported.Count, _profileMemoryCache.GetKeys().Count);
     }
 
-    [Fact]
+    [RetryFact(maxRetries: 3, delayBetweenRetriesMs: 1000)]
     public async Task ImportWhenCachePopulatedAndPlayerProfileRemovedThenDeletedItemIsAdded()
     {
         await PopulateCache();

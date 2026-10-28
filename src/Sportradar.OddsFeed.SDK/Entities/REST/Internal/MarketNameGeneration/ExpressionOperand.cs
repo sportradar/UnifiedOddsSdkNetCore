@@ -134,7 +134,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration
         /// <returns>A <see cref="Task{String}" /> containing the integer value of the operand as a <see cref="string" /></returns>
         public async Task<string> GetStringValue()
         {
-            var newValue = await GetIntValue();
+            var newValue = await GetIntValue().ConfigureAwait(false);
             return newValue.ToString();
         }
     }

@@ -41,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
             {
                 httpRequestMessage.Content = CreateJwtRequestContent(clientAssertionJwt, audience);
 
-                return await SendRequestAsync(httpRequestMessage, cancellationToken);
+                return await SendRequestAsync(httpRequestMessage, cancellationToken).ConfigureAwait(false);
             }
         }
 

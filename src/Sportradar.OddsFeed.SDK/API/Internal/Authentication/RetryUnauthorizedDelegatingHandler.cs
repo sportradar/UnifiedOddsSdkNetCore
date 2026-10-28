@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            return _pipeline.ExecuteAsync(async _ => await base.SendAsync(request, cancellationToken), cancellationToken).AsTask();
+            return _pipeline.ExecuteAsync(async _ => await base.SendAsync(request, cancellationToken).ConfigureAwait(false), cancellationToken).AsTask();
         }
 
         private static RetryStrategyOptions<HttpResponseMessage> CreateRetryStrategyOptions(IAuthenticationTokenCache tokenCache)

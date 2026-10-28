@@ -939,10 +939,10 @@
 
     <ItemGroup>
         <PackageReference Include="EasyNetQ.Management.Client" Version="3.0.1"/>
-        <PackageReference Include="Moq.AutoMock" Version="4.0.2"/>
+        <PackageReference Include="Moq.AutoMock" Version="4.0.3"/>
         <PackageReference Include="Shouldly" Version="4.3.0" />
         <PackageReference Include="ToxiproxyNetCore" Version="1.0.50" />
-        <PackageReference Include="WireMock.Net" Version="2.11.0"/>
+        <PackageReference Include="WireMock.Net" Version="2.18.0"/>
         <PackageReference Include="xunit.abstractions" Version="2.0.3"/>
         <PackageReference Include="xunit.assert" Version="2.9.3" />
         <PackageReference Include="xunit.extensibility.execution" Version="2.9.3" />

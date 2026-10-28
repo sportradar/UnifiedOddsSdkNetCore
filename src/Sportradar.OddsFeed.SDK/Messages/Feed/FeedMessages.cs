@@ -22,27 +22,27 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class odds_change {
-        
+
         private sportEventStatus sport_event_statusField;
-        
+
         private oddsGenerationProperties odds_generation_propertiesField;
-        
+
         private odds_changeOdds oddsField;
-        
+
         private int productField;
-        
+
         private string event_idField;
-        
+
         private long timestampField;
-        
+
         private long request_idField;
-        
+
         private bool request_idFieldSpecified;
-        
+
         private int odds_change_reasonField;
-        
+
         private bool odds_change_reasonFieldSpecified;
-        
+
         /// <remarks/>
         public sportEventStatus sport_event_status {
             get {
@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.sport_event_statusField = value;
             }
         }
-        
+
         /// <remarks/>
         public oddsGenerationProperties odds_generation_properties {
             get {
@@ -62,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.odds_generation_propertiesField = value;
             }
         }
-        
+
         /// <remarks/>
         public odds_changeOdds odds {
             get {
@@ -72,7 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.oddsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int product {
@@ -83,7 +83,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.productField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string event_id {
@@ -94,7 +94,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.event_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long timestamp {
@@ -105,7 +105,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.timestampField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long request_id {
@@ -116,7 +116,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool request_idSpecified {
@@ -127,7 +127,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int odds_change_reason {
@@ -138,7 +138,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.odds_change_reasonField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool odds_change_reasonSpecified {
@@ -150,216 +150,216 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class sportEventStatus {
-        
+
         private clockType clockField;
-        
+
         private periodScoreType[] period_scoresField;
-        
+
         private resultType[] resultsField;
-        
+
         private statisticsType statisticsField;
-        
+
         private int statusField;
-        
+
         private int reportingField;
-        
+
         private bool reportingFieldSpecified;
-        
+
         private int match_statusField;
-        
+
         private decimal home_scoreField;
-        
+
         private bool home_scoreFieldSpecified;
-        
+
         private decimal away_scoreField;
-        
+
         private bool away_scoreFieldSpecified;
-        
+
         private int home_penalty_scoreField;
-        
+
         private bool home_penalty_scoreFieldSpecified;
-        
+
         private int away_penalty_scoreField;
-        
+
         private bool away_penalty_scoreFieldSpecified;
-        
+
         private int home_gamescoreField;
-        
+
         private bool home_gamescoreFieldSpecified;
-        
+
         private int away_gamescoreField;
-        
+
         private bool away_gamescoreFieldSpecified;
-        
+
         private int home_legscoreField;
-        
+
         private bool home_legscoreFieldSpecified;
-        
+
         private int away_legscoreField;
-        
+
         private bool away_legscoreFieldSpecified;
-        
+
         private int current_serverField;
-        
+
         private bool current_serverFieldSpecified;
-        
+
         private bool expedite_modeField;
-        
+
         private bool expedite_modeFieldSpecified;
-        
+
         private bool tiebreakField;
-        
+
         private bool tiebreakFieldSpecified;
-        
+
         private int home_suspendField;
-        
+
         private bool home_suspendFieldSpecified;
-        
+
         private int away_suspendField;
-        
+
         private bool away_suspendFieldSpecified;
-        
+
         private int ballsField;
-        
+
         private bool ballsFieldSpecified;
-        
+
         private int strikesField;
-        
+
         private bool strikesFieldSpecified;
-        
+
         private int outsField;
-        
+
         private bool outsFieldSpecified;
-        
+
         private string basesField;
-        
+
         private int home_batterField;
-        
+
         private bool home_batterFieldSpecified;
-        
+
         private int away_batterField;
-        
+
         private bool away_batterFieldSpecified;
-        
+
         private string pitcherField;
-        
+
         private string batterField;
-        
+
         private int pitch_countField;
-        
+
         private bool pitch_countFieldSpecified;
-        
+
         private int pitches_seenField;
-        
+
         private bool pitches_seenFieldSpecified;
-        
+
         private int total_hitsField;
-        
+
         private bool total_hitsFieldSpecified;
-        
+
         private int total_pitchesField;
-        
+
         private bool total_pitchesFieldSpecified;
-        
+
         private int possessionField;
-        
+
         private bool possessionFieldSpecified;
-        
+
         private int positionField;
-        
+
         private bool positionFieldSpecified;
-        
+
         private int tryField;
-        
+
         private bool tryFieldSpecified;
-        
+
         private int yardsField;
-        
+
         private bool yardsFieldSpecified;
-        
+
         private int throwField;
-        
+
         private bool throwFieldSpecified;
-        
+
         private int visitField;
-        
+
         private bool visitFieldSpecified;
-        
+
         private int remaining_redsField;
-        
+
         private bool remaining_redsFieldSpecified;
-        
+
         private int deliveryField;
-        
+
         private bool deliveryFieldSpecified;
-        
+
         private int home_remaining_bowlsField;
-        
+
         private bool home_remaining_bowlsFieldSpecified;
-        
+
         private int away_remaining_bowlsField;
-        
+
         private bool away_remaining_bowlsFieldSpecified;
-        
+
         private int current_endField;
-        
+
         private bool current_endFieldSpecified;
-        
+
         private int inningsField;
-        
+
         private bool inningsFieldSpecified;
-        
+
         private int overField;
-        
+
         private bool overFieldSpecified;
-        
+
         private int home_penalty_runsField;
-        
+
         private bool home_penalty_runsFieldSpecified;
-        
+
         private int away_penalty_runsField;
-        
+
         private bool away_penalty_runsFieldSpecified;
-        
+
         private int home_dismissalsField;
-        
+
         private bool home_dismissalsFieldSpecified;
-        
+
         private int away_dismissalsField;
-        
+
         private bool away_dismissalsFieldSpecified;
-        
+
         private int current_ct_teamField;
-        
+
         private bool current_ct_teamFieldSpecified;
-        
+
         private int period_of_leaderField;
-        
+
         private bool period_of_leaderFieldSpecified;
-        
+
         private int home_drive_countField;
-        
+
         private bool home_drive_countFieldSpecified;
-        
+
         private int away_drive_countField;
-        
+
         private bool away_drive_countFieldSpecified;
-        
+
         private int home_play_countField;
-        
+
         private bool home_play_countFieldSpecified;
-        
+
         private int away_play_countField;
-        
+
         private bool away_play_countFieldSpecified;
-        
+
         /// <remarks/>
         public clockType clock {
             get {
@@ -369,7 +369,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.clockField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("period_score", IsNullable=false)]
         public periodScoreType[] period_scores {
@@ -380,7 +380,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.period_scoresField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("result", IsNullable=false)]
         public resultType[] results {
@@ -391,7 +391,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.resultsField = value;
             }
         }
-        
+
         /// <remarks/>
         public statisticsType statistics {
             get {
@@ -401,7 +401,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.statisticsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int status {
@@ -412,7 +412,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.statusField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int reporting {
@@ -423,7 +423,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.reportingField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool reportingSpecified {
@@ -434,7 +434,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.reportingFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int match_status {
@@ -445,7 +445,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.match_statusField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal home_score {
@@ -456,7 +456,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_scoreField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool home_scoreSpecified {
@@ -467,7 +467,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_scoreFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal away_score {
@@ -478,7 +478,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_scoreField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool away_scoreSpecified {
@@ -489,7 +489,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_scoreFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int home_penalty_score {
@@ -500,7 +500,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_penalty_scoreField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool home_penalty_scoreSpecified {
@@ -511,7 +511,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_penalty_scoreFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int away_penalty_score {
@@ -522,7 +522,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_penalty_scoreField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool away_penalty_scoreSpecified {
@@ -533,7 +533,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_penalty_scoreFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int home_gamescore {
@@ -544,7 +544,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_gamescoreField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool home_gamescoreSpecified {
@@ -555,7 +555,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_gamescoreFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int away_gamescore {
@@ -566,7 +566,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_gamescoreField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool away_gamescoreSpecified {
@@ -577,7 +577,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_gamescoreFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int home_legscore {
@@ -588,7 +588,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_legscoreField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool home_legscoreSpecified {
@@ -599,7 +599,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_legscoreFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int away_legscore {
@@ -610,7 +610,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_legscoreField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool away_legscoreSpecified {
@@ -621,7 +621,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_legscoreFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int current_server {
@@ -632,7 +632,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.current_serverField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool current_serverSpecified {
@@ -643,7 +643,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.current_serverFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public bool expedite_mode {
@@ -654,7 +654,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.expedite_modeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool expedite_modeSpecified {
@@ -665,7 +665,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.expedite_modeFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public bool tiebreak {
@@ -676,7 +676,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.tiebreakField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool tiebreakSpecified {
@@ -687,7 +687,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.tiebreakFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int home_suspend {
@@ -698,7 +698,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_suspendField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool home_suspendSpecified {
@@ -709,7 +709,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_suspendFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int away_suspend {
@@ -720,7 +720,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_suspendField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool away_suspendSpecified {
@@ -731,7 +731,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_suspendFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int balls {
@@ -742,7 +742,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.ballsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool ballsSpecified {
@@ -753,7 +753,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.ballsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int strikes {
@@ -764,7 +764,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.strikesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool strikesSpecified {
@@ -775,7 +775,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.strikesFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int outs {
@@ -786,7 +786,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.outsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool outsSpecified {
@@ -797,7 +797,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.outsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string bases {
@@ -808,7 +808,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.basesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int home_batter {
@@ -819,7 +819,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_batterField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool home_batterSpecified {
@@ -830,7 +830,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_batterFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int away_batter {
@@ -841,7 +841,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_batterField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool away_batterSpecified {
@@ -852,7 +852,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_batterFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string pitcher {
@@ -863,7 +863,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.pitcherField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string batter {
@@ -874,7 +874,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.batterField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int pitch_count {
@@ -885,7 +885,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.pitch_countField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool pitch_countSpecified {
@@ -896,7 +896,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.pitch_countFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int pitches_seen {
@@ -907,7 +907,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.pitches_seenField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool pitches_seenSpecified {
@@ -918,7 +918,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.pitches_seenFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int total_hits {
@@ -929,7 +929,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.total_hitsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool total_hitsSpecified {
@@ -940,7 +940,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.total_hitsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int total_pitches {
@@ -951,7 +951,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.total_pitchesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool total_pitchesSpecified {
@@ -962,7 +962,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.total_pitchesFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int possession {
@@ -973,7 +973,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.possessionField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool possessionSpecified {
@@ -984,7 +984,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.possessionFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int position {
@@ -995,7 +995,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.positionField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool positionSpecified {
@@ -1006,7 +1006,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.positionFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int @try {
@@ -1017,7 +1017,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.tryField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool trySpecified {
@@ -1028,7 +1028,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.tryFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int yards {
@@ -1039,7 +1039,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.yardsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool yardsSpecified {
@@ -1050,7 +1050,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.yardsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int @throw {
@@ -1061,7 +1061,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.throwField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool throwSpecified {
@@ -1072,7 +1072,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.throwFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int visit {
@@ -1083,7 +1083,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.visitField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool visitSpecified {
@@ -1094,7 +1094,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.visitFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int remaining_reds {
@@ -1105,7 +1105,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.remaining_redsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool remaining_redsSpecified {
@@ -1116,7 +1116,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.remaining_redsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int delivery {
@@ -1127,7 +1127,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.deliveryField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool deliverySpecified {
@@ -1138,7 +1138,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.deliveryFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int home_remaining_bowls {
@@ -1149,7 +1149,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_remaining_bowlsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool home_remaining_bowlsSpecified {
@@ -1160,7 +1160,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_remaining_bowlsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int away_remaining_bowls {
@@ -1171,7 +1171,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_remaining_bowlsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool away_remaining_bowlsSpecified {
@@ -1182,7 +1182,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_remaining_bowlsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int current_end {
@@ -1193,7 +1193,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.current_endField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool current_endSpecified {
@@ -1204,7 +1204,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.current_endFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int innings {
@@ -1215,7 +1215,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.inningsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool inningsSpecified {
@@ -1226,7 +1226,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.inningsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int over {
@@ -1237,7 +1237,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.overField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool overSpecified {
@@ -1248,7 +1248,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.overFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int home_penalty_runs {
@@ -1259,7 +1259,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_penalty_runsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool home_penalty_runsSpecified {
@@ -1270,7 +1270,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_penalty_runsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int away_penalty_runs {
@@ -1281,7 +1281,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_penalty_runsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool away_penalty_runsSpecified {
@@ -1292,7 +1292,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_penalty_runsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int home_dismissals {
@@ -1303,7 +1303,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_dismissalsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool home_dismissalsSpecified {
@@ -1314,7 +1314,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_dismissalsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int away_dismissals {
@@ -1325,7 +1325,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_dismissalsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool away_dismissalsSpecified {
@@ -1336,7 +1336,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_dismissalsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int current_ct_team {
@@ -1347,7 +1347,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.current_ct_teamField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool current_ct_teamSpecified {
@@ -1358,7 +1358,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.current_ct_teamFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int period_of_leader {
@@ -1369,7 +1369,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.period_of_leaderField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool period_of_leaderSpecified {
@@ -1380,7 +1380,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.period_of_leaderFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int home_drive_count {
@@ -1391,7 +1391,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_drive_countField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool home_drive_countSpecified {
@@ -1402,7 +1402,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_drive_countFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int away_drive_count {
@@ -1413,7 +1413,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_drive_countField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool away_drive_countSpecified {
@@ -1424,7 +1424,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_drive_countFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int home_play_count {
@@ -1435,7 +1435,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_play_countField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool home_play_countSpecified {
@@ -1446,7 +1446,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_play_countFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int away_play_count {
@@ -1457,7 +1457,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.away_play_countField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool away_play_countSpecified {
@@ -1469,28 +1469,28 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class clockType {
-        
+
         private string match_timeField;
-        
+
         private string stoppage_timeField;
-        
+
         private string stoppage_time_announcedField;
-        
+
         private string remaining_timeField;
-        
+
         private string remaining_time_in_periodField;
-        
+
         private bool stoppedField;
-        
+
         private bool stoppedFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string match_time {
@@ -1501,7 +1501,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.match_timeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string stoppage_time {
@@ -1512,7 +1512,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.stoppage_timeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string stoppage_time_announced {
@@ -1523,7 +1523,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.stoppage_time_announcedField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string remaining_time {
@@ -1534,7 +1534,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.remaining_timeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string remaining_time_in_period {
@@ -1545,7 +1545,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.remaining_time_in_periodField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public bool stopped {
@@ -1556,7 +1556,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.stoppedField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool stoppedSpecified {
@@ -1568,26 +1568,26 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class market {
-        
+
         private marketOutcome[] outcomeField;
-        
+
         private int idField;
-        
+
         private string specifiersField;
-        
+
         private string extended_specifiersField;
-        
+
         private int void_reasonField;
-        
+
         private bool void_reasonFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("outcome")]
         public marketOutcome[] outcome {
@@ -1598,7 +1598,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.outcomeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int id {
@@ -1609,7 +1609,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string specifiers {
@@ -1620,7 +1620,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.specifiersField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string extended_specifiers {
@@ -1631,7 +1631,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.extended_specifiersField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int void_reason {
@@ -1642,7 +1642,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.void_reasonField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool void_reasonSpecified {
@@ -1654,7 +1654,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -1662,9 +1662,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     public partial class marketOutcome {
-        
+
         private string idField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string id {
@@ -1676,28 +1676,28 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class betSettlementMarket {
-        
+
         private betSettlementMarketOutcome[] itemsField;
-        
+
         private int idField;
-        
+
         private string specifiersField;
-        
+
         private string extended_specifiersField;
-        
+
         private int void_reasonField;
-        
+
         private bool void_reasonFieldSpecified;
-        
+
         private string resultField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("outcome")]
         public betSettlementMarketOutcome[] Items {
@@ -1708,7 +1708,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.itemsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int id {
@@ -1719,7 +1719,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string specifiers {
@@ -1730,7 +1730,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.specifiersField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string extended_specifiers {
@@ -1741,7 +1741,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.extended_specifiersField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int void_reason {
@@ -1752,7 +1752,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.void_reasonField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool void_reasonSpecified {
@@ -1763,7 +1763,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.void_reasonFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string result {
@@ -1775,7 +1775,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -1783,19 +1783,31 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     public partial class betSettlementMarketOutcome {
-        
+
         private string idField;
-        
+
         private int resultField;
-        
+
         private double void_factorField;
-        
+
         private bool void_factorFieldSpecified;
-        
+
         private double dead_heat_factorField;
-        
+
         private bool dead_heat_factorFieldSpecified;
-        
+
+        private double dead_heat_factor_placeField;
+
+        private bool dead_heat_factor_placeFieldSpecified;
+
+        private double each_way_factorField;
+
+        private bool each_way_factorFieldSpecified;
+
+        private string each_way_resultField;
+
+        private bool each_way_resultFieldSpecified;
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string id {
@@ -1806,7 +1818,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int result {
@@ -1817,7 +1829,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.resultField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double void_factor {
@@ -1828,7 +1840,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.void_factorField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool void_factorSpecified {
@@ -1839,7 +1851,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.void_factorFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double dead_heat_factor {
@@ -1850,7 +1862,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.dead_heat_factorField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool dead_heat_factorSpecified {
@@ -1861,31 +1873,97 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.dead_heat_factorFieldSpecified = value;
             }
         }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public double dead_heat_factor_place {
+            get {
+                return this.dead_heat_factor_placeField;
+            }
+            set {
+                this.dead_heat_factor_placeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool dead_heat_factor_placeSpecified {
+            get {
+                return this.dead_heat_factor_placeFieldSpecified;
+            }
+            set {
+                this.dead_heat_factor_placeFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public double each_way_factor {
+            get {
+                return this.each_way_factorField;
+            }
+            set {
+                this.each_way_factorField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool each_way_factorSpecified {
+            get {
+                return this.each_way_factorFieldSpecified;
+            }
+            set {
+                this.each_way_factorFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string each_way_result {
+            get {
+                return this.each_way_resultField;
+            }
+            set {
+                this.each_way_resultField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool each_way_resultSpecified {
+            get {
+                return this.each_way_resultFieldSpecified;
+            }
+            set {
+                this.each_way_resultFieldSpecified = value;
+            }
+        }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class marketMetadata {
-        
+
         private long next_betstopField;
-        
+
         private bool next_betstopFieldSpecified;
-        
+
         private long start_timeField;
-        
+
         private bool start_timeFieldSpecified;
-        
+
         private long end_timeField;
-        
+
         private bool end_timeFieldSpecified;
-        
+
         private long aams_idField;
-        
+
         private bool aams_idFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long next_betstop {
@@ -1896,7 +1974,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.next_betstopField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool next_betstopSpecified {
@@ -1907,7 +1985,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.next_betstopFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long start_time {
@@ -1918,7 +1996,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.start_timeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool start_timeSpecified {
@@ -1929,7 +2007,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.start_timeFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long end_time {
@@ -1940,7 +2018,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.end_timeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool end_timeSpecified {
@@ -1951,7 +2029,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.end_timeFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long aams_id {
@@ -1962,7 +2040,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.aams_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool aams_idSpecified {
@@ -1974,36 +2052,36 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class oddsChangeMarket {
-        
+
         private marketMetadata market_metadataField;
-        
+
         private oddsChangeMarketOutcome[] outcomeField;
-        
+
         private int idField;
-        
+
         private string specifiersField;
-        
+
         private string extended_specifiersField;
-        
+
         private int favouriteField;
-        
+
         private bool favouriteFieldSpecified;
-        
+
         private int statusField;
-        
+
         private bool statusFieldSpecified;
-        
+
         private int cashout_statusField;
-        
+
         private bool cashout_statusFieldSpecified;
-        
+
         /// <remarks/>
         public marketMetadata market_metadata {
             get {
@@ -2013,7 +2091,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.market_metadataField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("outcome")]
         public oddsChangeMarketOutcome[] outcome {
@@ -2024,7 +2102,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.outcomeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int id {
@@ -2035,7 +2113,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string specifiers {
@@ -2046,7 +2124,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.specifiersField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string extended_specifiers {
@@ -2057,7 +2135,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.extended_specifiersField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int favourite {
@@ -2068,7 +2146,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.favouriteField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool favouriteSpecified {
@@ -2079,7 +2157,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.favouriteFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int status {
@@ -2090,7 +2168,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.statusField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool statusSpecified {
@@ -2101,7 +2179,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.statusFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int cashout_status {
@@ -2112,7 +2190,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.cashout_statusField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool cashout_statusSpecified {
@@ -2124,7 +2202,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -2132,45 +2210,45 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     public partial class oddsChangeMarketOutcome {
-        
+
         private string idField;
-        
+
         private double oddsField;
-        
+
         private bool oddsFieldSpecified;
-        
+
         private double probabilitiesField;
-        
+
         private bool probabilitiesFieldSpecified;
-        
+
         private double win_probabilitiesField;
-        
+
         private bool win_probabilitiesFieldSpecified;
-        
+
         private double lose_probabilitiesField;
-        
+
         private bool lose_probabilitiesFieldSpecified;
-        
+
         private double refund_probabilitiesField;
-        
+
         private bool refund_probabilitiesFieldSpecified;
-        
+
         private double half_win_probabilitiesField;
-        
+
         private bool half_win_probabilitiesFieldSpecified;
-        
+
         private double half_lose_probabilitiesField;
-        
+
         private bool half_lose_probabilitiesFieldSpecified;
-        
+
         private int activeField;
-        
+
         private bool activeFieldSpecified;
-        
+
         private int teamField;
-        
+
         private bool teamFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string id {
@@ -2181,7 +2259,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double odds {
@@ -2192,7 +2270,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.oddsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool oddsSpecified {
@@ -2203,7 +2281,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.oddsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double probabilities {
@@ -2214,7 +2292,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.probabilitiesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool probabilitiesSpecified {
@@ -2225,7 +2303,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.probabilitiesFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double win_probabilities {
@@ -2236,7 +2314,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.win_probabilitiesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool win_probabilitiesSpecified {
@@ -2247,7 +2325,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.win_probabilitiesFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double lose_probabilities {
@@ -2258,7 +2336,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.lose_probabilitiesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool lose_probabilitiesSpecified {
@@ -2269,7 +2347,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.lose_probabilitiesFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double refund_probabilities {
@@ -2280,7 +2358,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.refund_probabilitiesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool refund_probabilitiesSpecified {
@@ -2291,7 +2369,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.refund_probabilitiesFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double half_win_probabilities {
@@ -2302,7 +2380,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.half_win_probabilitiesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool half_win_probabilitiesSpecified {
@@ -2313,7 +2391,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.half_win_probabilitiesFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double half_lose_probabilities {
@@ -2324,7 +2402,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.half_lose_probabilitiesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool half_lose_probabilitiesSpecified {
@@ -2335,7 +2413,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.half_lose_probabilitiesFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int active {
@@ -2346,7 +2424,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.activeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool activeSpecified {
@@ -2357,7 +2435,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.activeFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int team {
@@ -2368,7 +2446,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.teamField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool teamSpecified {
@@ -2380,22 +2458,22 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class oddsGenerationProperties {
-        
+
         private double expected_totalsField;
-        
+
         private bool expected_totalsFieldSpecified;
-        
+
         private double expected_supremacyField;
-        
+
         private bool expected_supremacyFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double expected_totals {
@@ -2406,7 +2484,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.expected_totalsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool expected_totalsSpecified {
@@ -2417,7 +2495,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.expected_totalsFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public double expected_supremacy {
@@ -2428,7 +2506,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.expected_supremacyField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool expected_supremacySpecified {
@@ -2440,18 +2518,18 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class statisticsScoreType {
-        
+
         private int homeField;
-        
+
         private int awayField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int home {
@@ -2462,7 +2540,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.homeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int away {
@@ -2474,24 +2552,24 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class statisticsType {
-        
+
         private statisticsScoreType yellow_cardsField;
-        
+
         private statisticsScoreType red_cardsField;
-        
+
         private statisticsScoreType yellow_red_cardsField;
-        
+
         private statisticsScoreType cornersField;
-        
+
         private statisticsScoreType green_cardsField;
-        
+
         /// <remarks/>
         public statisticsScoreType yellow_cards {
             get {
@@ -2501,7 +2579,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.yellow_cardsField = value;
             }
         }
-        
+
         /// <remarks/>
         public statisticsScoreType red_cards {
             get {
@@ -2511,7 +2589,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.red_cardsField = value;
             }
         }
-        
+
         /// <remarks/>
         public statisticsScoreType yellow_red_cards {
             get {
@@ -2521,7 +2599,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.yellow_red_cardsField = value;
             }
         }
-        
+
         /// <remarks/>
         public statisticsScoreType corners {
             get {
@@ -2531,7 +2609,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.cornersField = value;
             }
         }
-        
+
         /// <remarks/>
         public statisticsScoreType green_cards {
             get {
@@ -2542,20 +2620,20 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class resultType {
-        
+
         private int match_status_codeField;
-        
+
         private decimal home_scoreField;
-        
+
         private decimal away_scoreField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int match_status_code {
@@ -2566,7 +2644,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.match_status_codeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal home_score {
@@ -2577,7 +2655,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_scoreField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal away_score {
@@ -2589,22 +2667,22 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class periodScoreType {
-        
+
         private int match_status_codeField;
-        
+
         private int numberField;
-        
+
         private decimal home_scoreField;
-        
+
         private decimal away_scoreField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int match_status_code {
@@ -2615,7 +2693,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.match_status_codeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int number {
@@ -2626,7 +2704,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.numberField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal home_score {
@@ -2637,7 +2715,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.home_scoreField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal away_score {
@@ -2649,7 +2727,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -2657,17 +2735,17 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     public partial class odds_changeOdds {
-        
+
         private oddsChangeMarket[] marketField;
-        
+
         private int betting_statusField;
-        
+
         private bool betting_statusFieldSpecified;
-        
+
         private int betstop_reasonField;
-        
+
         private bool betstop_reasonFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("market")]
         public oddsChangeMarket[] market {
@@ -2678,7 +2756,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.marketField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int betting_status {
@@ -2689,7 +2767,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.betting_statusField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool betting_statusSpecified {
@@ -2700,7 +2778,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.betting_statusFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int betstop_reason {
@@ -2711,7 +2789,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.betstop_reasonField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool betstop_reasonSpecified {
@@ -2723,7 +2801,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -2732,21 +2810,21 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class bet_settlement {
-        
+
         private betSettlementMarket[] outcomesField;
-        
+
         private int productField;
-        
+
         private string event_idField;
-        
+
         private long timestampField;
-        
+
         private long request_idField;
-        
+
         private bool request_idFieldSpecified;
-        
+
         private int certaintyField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("market", IsNullable=false)]
         public betSettlementMarket[] outcomes {
@@ -2757,7 +2835,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.outcomesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int product {
@@ -2768,7 +2846,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.productField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string event_id {
@@ -2779,7 +2857,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.event_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long timestamp {
@@ -2790,7 +2868,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.timestampField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long request_id {
@@ -2801,7 +2879,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool request_idSpecified {
@@ -2812,7 +2890,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int certainty {
@@ -2824,7 +2902,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -2833,19 +2911,19 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class rollback_bet_settlement {
-        
+
         private market[] marketField;
-        
+
         private int productField;
-        
+
         private string event_idField;
-        
+
         private long timestampField;
-        
+
         private long request_idField;
-        
+
         private bool request_idFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("market")]
         public market[] market {
@@ -2856,7 +2934,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.marketField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int product {
@@ -2867,7 +2945,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.productField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string event_id {
@@ -2878,7 +2956,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.event_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long timestamp {
@@ -2889,7 +2967,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.timestampField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long request_id {
@@ -2900,7 +2978,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool request_idSpecified {
@@ -2912,7 +2990,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -2921,29 +2999,29 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class bet_cancel {
-        
+
         private market[] marketField;
-        
+
         private int productField;
-        
+
         private string event_idField;
-        
+
         private long timestampField;
-        
+
         private long request_idField;
-        
+
         private bool request_idFieldSpecified;
-        
+
         private long start_timeField;
-        
+
         private bool start_timeFieldSpecified;
-        
+
         private long end_timeField;
-        
+
         private bool end_timeFieldSpecified;
-        
+
         private string superceded_byField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("market")]
         public market[] market {
@@ -2954,7 +3032,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.marketField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int product {
@@ -2965,7 +3043,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.productField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string event_id {
@@ -2976,7 +3054,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.event_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long timestamp {
@@ -2987,7 +3065,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.timestampField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long request_id {
@@ -2998,7 +3076,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool request_idSpecified {
@@ -3009,7 +3087,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long start_time {
@@ -3020,7 +3098,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.start_timeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool start_timeSpecified {
@@ -3031,7 +3109,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.start_timeFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long end_time {
@@ -3042,7 +3120,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.end_timeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool end_timeSpecified {
@@ -3053,7 +3131,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.end_timeFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string superceded_by {
@@ -3065,7 +3143,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -3074,27 +3152,27 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class rollback_bet_cancel {
-        
+
         private market[] marketField;
-        
+
         private int productField;
-        
+
         private string event_idField;
-        
+
         private long timestampField;
-        
+
         private long request_idField;
-        
+
         private bool request_idFieldSpecified;
-        
+
         private long start_timeField;
-        
+
         private bool start_timeFieldSpecified;
-        
+
         private long end_timeField;
-        
+
         private bool end_timeFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("market")]
         public market[] market {
@@ -3105,7 +3183,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.marketField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int product {
@@ -3116,7 +3194,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.productField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string event_id {
@@ -3127,7 +3205,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.event_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long timestamp {
@@ -3138,7 +3216,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.timestampField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long request_id {
@@ -3149,7 +3227,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool request_idSpecified {
@@ -3160,7 +3238,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long start_time {
@@ -3171,7 +3249,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.start_timeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool start_timeSpecified {
@@ -3182,7 +3260,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.start_timeFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long end_time {
@@ -3193,7 +3271,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.end_timeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool end_timeSpecified {
@@ -3205,7 +3283,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -3214,13 +3292,13 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class alive {
-        
+
         private int productField;
-        
+
         private long timestampField;
-        
+
         private int subscribedField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int product {
@@ -3231,7 +3309,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.productField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long timestamp {
@@ -3242,7 +3320,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.timestampField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int subscribed {
@@ -3254,7 +3332,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -3263,13 +3341,13 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class snapshot_complete {
-        
+
         private long request_idField;
-        
+
         private int productField;
-        
+
         private long timestampField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long request_id {
@@ -3280,7 +3358,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int product {
@@ -3291,7 +3369,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.productField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long timestamp {
@@ -3303,7 +3381,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -3312,27 +3390,27 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class fixture_change {
-        
+
         private int productField;
-        
+
         private string event_idField;
-        
+
         private long timestampField;
-        
+
         private long request_idField;
-        
+
         private bool request_idFieldSpecified;
-        
+
         private int change_typeField;
-        
+
         private bool change_typeFieldSpecified;
-        
+
         private long start_timeField;
-        
+
         private long next_live_timeField;
-        
+
         private bool next_live_timeFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int product {
@@ -3343,7 +3421,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.productField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string event_id {
@@ -3354,7 +3432,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.event_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long timestamp {
@@ -3365,7 +3443,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.timestampField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long request_id {
@@ -3376,7 +3454,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool request_idSpecified {
@@ -3387,7 +3465,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int change_type {
@@ -3398,7 +3476,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.change_typeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool change_typeSpecified {
@@ -3409,7 +3487,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.change_typeFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long start_time {
@@ -3420,7 +3498,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.start_timeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long next_live_time {
@@ -3431,7 +3509,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.next_live_timeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool next_live_timeSpecified {
@@ -3443,7 +3521,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
     [System.SerializableAttribute()]
@@ -3452,23 +3530,23 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class bet_stop {
-        
+
         private int productField;
-        
+
         private string event_idField;
-        
+
         private long timestampField;
-        
+
         private long request_idField;
-        
+
         private bool request_idFieldSpecified;
-        
+
         private string groupsField;
-        
+
         private int market_statusField;
-        
+
         private bool market_statusFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int product {
@@ -3479,7 +3557,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.productField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string event_id {
@@ -3490,7 +3568,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.event_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long timestamp {
@@ -3501,7 +3579,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.timestampField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long request_id {
@@ -3512,7 +3590,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool request_idSpecified {
@@ -3523,7 +3601,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.request_idFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string groups {
@@ -3534,7 +3612,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.groupsField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int market_status {
@@ -3545,7 +3623,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.market_statusField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool market_statusSpecified {

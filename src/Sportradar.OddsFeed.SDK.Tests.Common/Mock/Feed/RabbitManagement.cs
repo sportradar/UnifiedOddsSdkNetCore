@@ -102,10 +102,15 @@ public class RabbitManagement
     {
         ProducersAlive.Clear();
 
-        // clean connections
+        // clean connections on this virtual host only; other tests keep their own host
         var activeConnections = ManagementClient.GetConnections();
         foreach (var connection in activeConnections)
         {
+            if (!string.Equals(connection.Vhost, _projConfig.VirtualHostName, StringComparison.Ordinal))
+            {
+                continue;
+            }
+
             ManagementClient.CloseConnection(connection.Name);
         }
 
@@ -139,7 +144,7 @@ public class RabbitManagement
     public async Task DeleteVirtualHostAsync()
     {
         var virtualHosts = await ManagementClient.GetVhostsAsync().ConfigureAwait(false);
-        if (!virtualHosts.Any(a => a.Name.Equals(_projConfig.VirtualHostName, StringComparison.OrdinalIgnoreCase)))
+        if (virtualHosts.Any(a => a.Name.Equals(_projConfig.VirtualHostName, StringComparison.OrdinalIgnoreCase)))
         {
             await ManagementClient.DeleteVhostAsync(_projConfig.VirtualHostName).ConfigureAwait(false);
         }
@@ -167,6 +172,12 @@ public class RabbitManagement
 
         ManagementClient.CreatePermission(virtualHost, testUser.Name, allowAll);
         ManagementClient.CreatePermission(virtualHost, _projConfig.DefaultAdminRabbitUserName, allowAll);
+    }
+
+    public int FeedConsumerCount()
+    {
+        var consumers = ManagementClient.GetConsumersAsync(_projConfig.VirtualHostName, CancellationToken.None).GetAwaiter().GetResult();
+        return consumers.Count;
     }
 
     public async Task<bool> IsUserConnected(string username)
@@ -262,6 +273,21 @@ public class RabbitManagement
                               basicProperties,
                               body);
         _outputHelper.WriteLine($"MQ sent: {timestamp.FromEpochTime().ToLongTimeString()}   {routingKey}   {message}");
+    }
+
+    /// <summary>
+    /// Publishes an arbitrary body. Unlike <see cref="Send(string, string, long, IReadOnlyDictionary{string, string})"/>, this does not add a timestamp header.
+    /// </summary>
+    public void SendRaw(byte[] body, string routingKey, IDictionary<string, object> headers = null)
+    {
+        var basicProperties = _channel.CreateBasicProperties();
+        if (headers != null)
+        {
+            basicProperties.Headers = new Dictionary<string, object>(headers);
+        }
+
+        _channel.BasicPublish(_projConfig.UfExchange, routingKey, basicProperties, body);
+        _outputHelper.WriteLine($"MQ raw sent: {routingKey} ({body?.Length ?? 0} bytes)");
     }
 
     /// <summary>
@@ -410,7 +436,7 @@ public class RabbitManagement
                                 $"StatusCode={response.StatusCode}, Reason='{closingReason}', Response={responseBody}");
     }
 
-    public IReadOnlyList<string> GetAllConnectionNames(string rabbitUsername)
+    public IReadOnlyList<string> GetAllConnectionNames(string rabbitUsername, string virtualHost = null)
     {
         var credentials = new NetworkCredential(
                                                 _projConfig.DefaultAdminRabbitUserName,
@@ -442,7 +468,9 @@ public class RabbitManagement
         var connections = JsonConvert.DeserializeObject<List<RabbitConnectionDto>>(json);
 
         return connections
-              .Where(c => rabbitUsername == c.User && !string.IsNullOrWhiteSpace(c.Name))
+              .Where(c => rabbitUsername == c.User &&
+                          (virtualHost == null || virtualHost == c.Vhost) &&
+                          !string.IsNullOrWhiteSpace(c.Name))
               .Select(c => c.Name)
               .ToList();
     }

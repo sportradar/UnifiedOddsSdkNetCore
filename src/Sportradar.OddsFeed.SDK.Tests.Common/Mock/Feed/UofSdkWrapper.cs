@@ -48,8 +48,14 @@ public class UofSdkWrapper
         {
             return;
         }
+        var consumersBeforeOpen = rabbitMgm.FeedConsumerCount();
         UofSdk.Open();
         TestExecutionHelper.WaitToComplete(() => rabbitMgm.ManagementClient.GetConnectionsAsync(CancellationToken.None).GetAwaiter().GetResult().Count >= 2);
+        var feedConsumerRegistered = TestExecutionHelper.WaitToComplete(() => rabbitMgm.FeedConsumerCount() > consumersBeforeOpen);
+        if (!feedConsumerRegistered)
+        {
+            throw new TimeoutException("UofSdk feed consumer was not registered on RabbitMQ");
+        }
 
         outputHelper.WriteLine("UofSdk started");
     }

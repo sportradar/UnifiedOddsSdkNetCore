@@ -114,7 +114,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="ICompetitionStatus"/> instance containing information about the progress of the sport event</returns>
         public async Task<ICompetitionStatus> GetStatusAsync()
         {
-            var item = await GetSportEventStatusCacheItem();
+            var item = await GetSportEventStatusCacheItem().ConfigureAwait(false);
 
             return item == null
                        ? null

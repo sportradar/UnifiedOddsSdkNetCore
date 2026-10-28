@@ -44,21 +44,17 @@ public sealed class BetSettlementMarketBuilder
 
     public BetSettlementMarketBuilder AddOutcome(int id, int result)
     {
-        _outcomes.Add(new betSettlementMarketOutcome
-        {
-            id = id.ToString(),
-            result = result
-        });
-        return this;
+        return AddOutcome(BetSettlementMarketOutcomeBuilder.Create().WithId(id).WithResult(result));
     }
 
     public BetSettlementMarketBuilder AddOutcome(string id, int result)
     {
-        _outcomes.Add(new betSettlementMarketOutcome
-        {
-            id = id,
-            result = result
-        });
+        return AddOutcome(BetSettlementMarketOutcomeBuilder.Create().WithId(id).WithResult(result));
+    }
+
+    public BetSettlementMarketBuilder AddOutcome(BetSettlementMarketOutcomeBuilder outcomeBuilder)
+    {
+        _outcomes.Add(outcomeBuilder.Build());
         return this;
     }
 

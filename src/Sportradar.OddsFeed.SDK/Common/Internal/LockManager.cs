@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
         public async Task WaitAsync(string key)
         {
-            await LockInternalAsync(key, _uniqueItems, _lockTimeout, _lockSleep);
+            await LockInternalAsync(key, _uniqueItems, _lockTimeout, _lockSleep).ConfigureAwait(false);
         }
 
         public void Release()
@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
         public async Task ReleaseAsync(string key)
         {
-            await ReleaseInternalAsync(key, _uniqueItems, _lockTimeout, _lockSleep);
+            await ReleaseInternalAsync(key, _uniqueItems, _lockTimeout, _lockSleep).ConfigureAwait(false);
         }
 
         private void LockInternal(string key, ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout, TimeSpan lockSleep)
@@ -147,7 +147,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
         public async Task CleanAsync()
         {
-            await CleanAsync(_uniqueItems, _lockTimeout);
+            await CleanAsync(_uniqueItems, _lockTimeout).ConfigureAwait(false);
         }
 
         public async Task CleanAsync(ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout)
@@ -158,7 +158,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 {
                     if ((DateTime.Now - item.Value).TotalMilliseconds >= lockTimeout.TotalMilliseconds)
                     {
-                        await ReleaseInternalAsync(item.Key, uniqueItems, lockTimeout, _lockSleep);
+                        await ReleaseInternalAsync(item.Key, uniqueItems, lockTimeout, _lockSleep).ConfigureAwait(false);
                     }
                 }
             }

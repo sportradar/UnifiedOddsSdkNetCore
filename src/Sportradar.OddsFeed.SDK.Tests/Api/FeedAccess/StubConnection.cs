@@ -17,7 +17,7 @@ internal class StubConnection : IConnection
 
     public int RemotePort { get; }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
     }
 
@@ -69,7 +69,7 @@ internal class StubConnection : IConnection
         ConnectionShutdown?.Invoke(this, new ShutdownEventArgs(ShutdownInitiator.Library, reasonCode, reasonText));
     }
 
-    public void Close(TimeSpan timeout)
+    public virtual void Close(TimeSpan timeout)
     {
         throw new NotImplementedException();
     }
@@ -79,7 +79,7 @@ internal class StubConnection : IConnection
         throw new NotImplementedException();
     }
 
-    public IModel CreateModel()
+    public virtual IModel CreateModel()
     {
         return new StubChannel(DefaultChannelNumber);
     }
@@ -100,7 +100,7 @@ internal class StubConnection : IConnection
     public AmqpTcpEndpoint Endpoint { get; }
     public uint FrameMax { get; }
     public TimeSpan Heartbeat { get; }
-    public bool IsOpen { get; } = true;
+    public bool IsOpen { get; set; } = true;
     public AmqpTcpEndpoint[] KnownHosts { get; }
     public IProtocol Protocol { get; }
     public IDictionary<string, object> ServerProperties { get; }

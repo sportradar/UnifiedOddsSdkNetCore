@@ -278,7 +278,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                 AllowAutoRedirect = true
                                                                                             }))
                     .SetHandlerLifetime(TimeSpan.FromMinutes(10))
-                    .AddHttpMessageHandlerIf<RetryUnauthorizedDelegatingHandler>(configuration.AuthenticationIsConfigured)
                     .AddHttpMessageHandler<UsageDelegatingHandler>();
 
             services.AddTransient<ISdkHttpClient, SdkHttpClient>(serviceProvider => new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientNameForNormal));

@@ -101,6 +101,50 @@ public class MarketWithOddsNameForPlayerMarketsTests : MarketNameSetup
         outcomeNameTemplate.ShouldBe(expectedOutcomeNameTemplate);
     }
 
+    [Theory]
+    [InlineData("athlete", "sr:player:151545")]
+    [InlineData("athlete", "bg:player:151545")]
+    [InlineData("scorer", "sr:player:151545")]
+    public async Task MarketNameIsGeneratedWhenPercentOperandIsNotNamedPlayerButUrnTypeIsPlayer(string operand, string playerId)
+    {
+        var specifiers = $"{operand}={playerId}|total=1.5";
+        var expectedMarketNameTemplate = $"{{%{operand}}} winner";
+        const string expectedMarketName = "Van Dijk, Virgil winner";
+        const string outcomeId = "13";
+        const string expectedOutcomeNameTemplate = "under {total}";
+        const string expectedOutcomeName = "under 1.5";
+
+        var apiMarketDescription = MdForInvariantList.GetMarket915WithPlayerInNameFromSpecifier();
+        apiMarketDescription.name = expectedMarketNameTemplate;
+        SetupInvariantMarketListEndpoint(apiMarketDescription, DefaultLanguage);
+        var playerProfile = Soccer.GetHomeCompetitorPlayerProfile151545();
+        playerProfile.player.id = playerId;
+        SetupProfileCacheToReturnPlayerNameWithFetching(playerProfile, DefaultLanguage);
+
+        var marketOddsChange = MarketWithOddsBuilder.Create()
+                                                    .WithMarketId(915)
+                                                    .WithOutcome("13", 1.5)
+                                                    .WithOutcome("12", 2.5)
+                                                    .WithSpecifiers(specifiers)
+                                                    .Build();
+
+        var market = MarketFactory.GetMarketWithOdds(AnySportEventMock.Object, marketOddsChange, 1, UrnCreate.SportId(1), [DefaultLanguage]);
+        var outcome = market.OutcomeOdds.First(o => o.Id == outcomeId);
+
+        market.ShouldNotBeNull();
+        outcome.ShouldNotBeNull();
+        var marketName = await market.GetNameAsync(DefaultLanguage);
+        var marketNameTemplate = market.MarketDefinition.GetNameTemplate(DefaultLanguage);
+        var outcomeName = await outcome.GetNameAsync(DefaultLanguage);
+        var outcomeNameTemplate = outcome.OutcomeDefinition.GetNameTemplate(DefaultLanguage);
+
+        marketName.ShouldBe(expectedMarketName);
+        marketNameTemplate.ShouldBe(apiMarketDescription.name);
+        marketNameTemplate.ShouldBe(expectedMarketNameTemplate);
+        outcomeName.ShouldBe(expectedOutcomeName);
+        outcomeNameTemplate.ShouldBe(expectedOutcomeNameTemplate);
+    }
+
     [Fact]
     public async Task OutcomeNameIsGeneratedWithPlayerReferenceInSpecifier()
     {

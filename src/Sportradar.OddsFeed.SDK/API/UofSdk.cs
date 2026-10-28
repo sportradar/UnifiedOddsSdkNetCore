@@ -11,6 +11,7 @@ using Dawn;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using OpenTelemetry.Metrics;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
@@ -173,6 +174,11 @@ namespace Sportradar.OddsFeed.SDK.Api
         private readonly ConnectionValidator _connectionValidator;
 
         /// <summary>
+        /// The usage metrics <see cref="MeterProvider"/> when export is enabled; otherwise null
+        /// </summary>
+        private readonly MeterProvider _usageMeterProvider;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UofSdk"/> class
         /// </summary>
         /// <param name="serviceProvider">A <see cref="IServiceProvider"/> instance including UofSdk configuration</param>
@@ -210,7 +216,9 @@ namespace Sportradar.OddsFeed.SDK.Api
             _feedRecoveryManager = ServiceProvider.GetRequiredService<IAbstractFactory<IFeedRecoveryManager>>().Create();
             _connectionValidator = ServiceProvider.GetRequiredService<ConnectionValidator>();
 
-            _ = UsageTelemetry.SetupUsageTelemetry(UofConfig, ServiceProvider.GetRequiredService<IHttpClientFactory>());
+            _usageMeterProvider = UsageTelemetry.SetupUsageTelemetry(
+                UofConfig,
+                ServiceProvider.GetRequiredService<IHttpClientFactory>());
         }
 
         /// <summary>
@@ -556,6 +564,15 @@ namespace Sportradar.OddsFeed.SDK.Api
 
             if (disposing)
             {
+                try
+                {
+                    _usageMeterProvider?.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    _log.LogWarning(ex, "An exception has occurred while disposing the usage meter provider instance");
+                }
+
                 try
                 {
                     //ServiceProvider.Dispose();

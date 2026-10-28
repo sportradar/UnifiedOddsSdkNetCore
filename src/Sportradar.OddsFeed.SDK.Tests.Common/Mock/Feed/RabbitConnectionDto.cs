@@ -6,4 +6,5 @@ public sealed class RabbitConnectionDto
 {
     public string Name { get; set; }
     public string User { get; set; }
+    public string Vhost { get; set; }
 }

@@ -19,8 +19,9 @@ internal static class TournamentInfoEndpointExtensions
         return Urn.Parse(tournamentInfoEndpoint.tournament.sport.id);
     }
 
-    public static Uri GetTournamentSummaryUri(this tournamentInfoEndpoint tournamentInfoEndpoint, string baseUrl, CultureInfo language)
+    public static Uri GetTournamentSummaryUri(this tournamentInfoEndpoint tournamentInfoEndpoint, string baseUrl, CultureInfo language, string sportEventId = null)
     {
-        return new Uri($"{baseUrl}/v1/sports/{language.TwoLetterISOLanguageName}/sport_events/{tournamentInfoEndpoint.tournament.id}/summary.xml");
+        var id = sportEventId ?? tournamentInfoEndpoint.tournament.id;
+        return new Uri($"{baseUrl}/v1/sports/{language.TwoLetterISOLanguageName}/sport_events/{id}/summary.xml");
     }
 }

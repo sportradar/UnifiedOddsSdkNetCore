@@ -1,6 +1,5 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
-using System;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
