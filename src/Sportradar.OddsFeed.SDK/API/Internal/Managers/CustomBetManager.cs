@@ -16,9 +16,9 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
 namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
 {
     /// <summary>
-    /// The run-time implementation of the <see cref="ICustomBetManager"/> and <see cref="ICustomBetManagerV2"/> interfaces
+    /// The run-time implementation of the <see cref="ICustomBetManager"/> and <see cref="ICustomBetManager"/> interfaces
     /// </summary>
-    internal class CustomBetManager : ICustomBetManagerV2
+    internal class CustomBetManager : ICustomBetManager
     {
         private readonly ILogger _clientLog;
         private readonly ILogger _executionLog;

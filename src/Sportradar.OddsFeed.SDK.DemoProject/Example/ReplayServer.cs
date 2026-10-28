@@ -12,6 +12,7 @@ using Sportradar.OddsFeed.SDK.Api.Replay;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
+
 // ReSharper disable UnusedMember.Local
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
@@ -32,6 +33,7 @@ public class ReplayServer : ExampleBase
 
         Log.LogInformation("Retrieving configuration from application configuration file");
         var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
+
         var host = Host.CreateDefaultBuilder()
                        .ConfigureLogging((_, logging) =>
                                          {

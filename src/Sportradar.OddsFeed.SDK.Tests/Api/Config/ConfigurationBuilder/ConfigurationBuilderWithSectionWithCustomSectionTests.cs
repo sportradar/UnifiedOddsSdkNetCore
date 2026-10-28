@@ -3,15 +3,13 @@
 // Ignore Spelling: Ssl
 
 using System.Configuration;
-using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
-using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Sdk.Config;
 using Xunit;
-using Xunit.Abstractions;
 
 // ReSharper disable TooManyChainedReferences
 
@@ -19,187 +17,199 @@ namespace Sportradar.OddsFeed.SDK.Tests.API.Config.ConfigurationBuilder;
 
 public class ConfigurationBuilderWithSectionWithCustomSectionTests : ConfigurationBuilderWithSectionSetup
 {
-    private readonly ITestOutputHelper _outputHelper;
-
-    public ConfigurationBuilderWithSectionWithCustomSectionTests(ITestOutputHelper outputHelper)
-    {
-        _outputHelper = outputHelper;
-    }
-
     [Fact]
     public void AccessTokenHasCorrectValue()
     {
-        CustomSection.AccessToken = "my_token";
-        Assert.Equal(CustomSection.AccessToken, CustomBuilder(CustomSection).Build().AccessToken);
+        const string accessToken = "my_token";
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithAccessToken(accessToken).Build();
+
+        var config = CustomBuilder(customSection).Build();
+
+        Assert.Equal(accessToken, config.AccessToken);
     }
 
     [Fact]
     public void DefaultLanguageFromSectionHasCorrectValue()
     {
-        var customSection = (TestSection)TestSection.GetCustomSection();
-        customSection.DefaultLanguage = "de";
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields()
+                                                    .WithDefaultLanguage(TestConsts.CultureDe.TwoLetterISOLanguageName)
+                                                    .Build();
 
         var config = CustomBuilder(customSection).Build();
-        _outputHelper.WriteLine($"Default language: {config.DefaultLanguage.Name}");
-        _outputHelper.WriteLine($"Languages: {SdkInfo.ConvertCultures(config.Languages)}");
 
-        Assert.Equal(customSection.DefaultLanguage, config.DefaultLanguage.TwoLetterISOLanguageName);
-        Assert.Equal(2, config.Languages.Count);
+        Assert.Equal(TestConsts.CultureDe, config.DefaultLanguage);
+        Assert.Single(config.Languages);
+        Assert.Equal(TestConsts.CultureDe, config.Languages[0]);
     }
 
     [Fact]
     public void DefaultLanguageFromSectionCanBeOverrideManually()
     {
-        CustomSection.DefaultLanguage = "de";
-        var cultureEn = new CultureInfo("en");
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithDefaultLanguage(TestConsts.CultureDe.TwoLetterISOLanguageName).Build();
 
-        var config = CustomBuilder(CustomSection).SetDefaultLanguage(cultureEn).Build();
-        _outputHelper.WriteLine($"Default language: {config.DefaultLanguage.Name}");
-        _outputHelper.WriteLine($"Languages: {SdkInfo.ConvertCultures(config.Languages)}");
+        var config = CustomBuilder(customSection).SetDefaultLanguage(TestConsts.CultureEn).Build();
 
-        Assert.Equal(cultureEn, config.DefaultLanguage);
+        Assert.Equal(TestConsts.CultureEn, config.DefaultLanguage);
         Assert.Equal(2, config.Languages.Count);
     }
 
     [Fact]
-    public void DefaultLanguageFromSectionCanBeOverrideManuallyAndBack()
+    public void SettingDefaultLanguageFromSectionAddsToLanguages()
     {
-        CustomSection.DefaultLanguage = "de";
-        var cultureDe = new CultureInfo("de");
-        var cultureEn = new CultureInfo("en");
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields()
+                                                    .WithDefaultLanguage(TestConsts.CultureDe.TwoLetterISOLanguageName)
+                                                    .Build();
 
-        var config = CustomBuilder(CustomSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build();
-        _outputHelper.WriteLine($"Default language: {config.DefaultLanguage.Name}");
-        _outputHelper.WriteLine($"Languages: {SdkInfo.ConvertCultures(config.Languages)}");
+        var config = CustomBuilder(customSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build();
 
-        Assert.Equal(cultureDe, config.DefaultLanguage);
-        Assert.Equal(2, config.Languages.Count);
+        Assert.Equal(TestConsts.CultureDe, config.DefaultLanguage);
+        Assert.Single(config.Languages);
+    }
+
+    [Fact]
+    public void OverridingDefaultLanguageFromSection()
+    {
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields()
+                                                    .WithDefaultLanguage(TestConsts.CultureDe.TwoLetterISOLanguageName)
+                                                    .WithLanguages(TestConsts.CultureDe.TwoLetterISOLanguageName)
+                                                    .Build();
+
+        var config = CustomBuilder(customSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build();
+
+        Assert.Equal(TestConsts.CultureDe, config.DefaultLanguage);
+        Assert.Single(config.Languages);
     }
 
     [Fact]
     public void LanguagesHasCorrectValue()
     {
-        CustomSection.DefaultLanguage = "it";
-        CustomSection.Languages = "it,de,en";
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithDefaultLanguage("it").WithLanguages("it,de,en").Build();
 
-        Assert.True(GetCultureList(CustomSection.Languages).SequenceEqual(CustomBuilder(CustomSection).Build().Languages));
-        Assert.True(GetCultureList(CustomSection.DefaultLanguage).SequenceEqual(CustomBuilder(CustomSection).SetDesiredLanguages(null).Build().Languages));
+        Assert.True(GetCultureList(customSection.Languages).SequenceEqual(CustomBuilder(customSection).Build().Languages));
+        Assert.True(GetCultureList(customSection.DefaultLanguage).SequenceEqual(CustomBuilder(customSection).SetDesiredLanguages(null).Build().Languages));
 
-        CustomSection.DefaultLanguage = "sl";
-        var langString = "sl," + CustomSection.Languages;
-        Assert.True(GetCultureList(langString).SequenceEqual(CustomBuilder(CustomSection).Build().Languages));
+        var langString = "sl," + customSection.Languages;
+        customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithDefaultLanguage("sl").WithLanguages(langString).Build();
+
+        Assert.True(GetCultureList(langString).SequenceEqual(CustomBuilder(customSection).Build().Languages));
     }
 
     [Fact]
     public void DisabledProducersHasCorrectValue()
     {
-        CustomSection.DisabledProducers = "1,3";
-        Assert.True(GetIntList(CustomSection.DisabledProducers).SequenceEqual(CustomBuilder(CustomSection).Build().Producer.DisabledProducers));
+        const string disabledProducers = "2,4,6";
 
-        Assert.Empty(CustomBuilder(CustomSection).SetDisabledProducers(null).Build().Producer.DisabledProducers);
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithDisabledProducers(disabledProducers).Build();
+
+        Assert.True(GetIntList(disabledProducers).SequenceEqual(CustomBuilder(customSection).Build().Producer.DisabledProducers));
+
+        Assert.Empty(CustomBuilder(customSection).SetDisabledProducers(null).Build().Producer.DisabledProducers);
     }
 
     [Fact]
     public void NodeIdHasCorrectValue()
     {
-        CustomSection.NodeId = 15;
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithNodeId(11).Build();
 
-        Assert.Equal(CustomSection.NodeId, CustomBuilder(CustomSection).Build().NodeId);
-        Assert.Equal(0, CustomBuilder(CustomSection).SetNodeId(0).Build().NodeId);
-        Assert.Equal(CustomSection.NodeId, CustomBuilder(CustomSection).SetNodeId(0).LoadFromConfigFile().Build().NodeId);
+        Assert.Equal(customSection.NodeId, CustomBuilder(customSection).Build().NodeId);
+        Assert.Equal(0, CustomBuilder(customSection).SetNodeId(0).Build().NodeId);
+        Assert.Equal(customSection.NodeId, CustomBuilder(customSection).SetNodeId(0).LoadFromConfigFile().Build().NodeId);
     }
 
     [Fact]
     public void EnvironmentHasCorrectValue()
     {
-        Assert.Equal(SdkEnvironment.Custom, CustomBuilder(CustomSection).Build().Environment);
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithEnvironment(SdkEnvironment.Custom).Build();
+
+        Assert.Equal(SdkEnvironment.Custom, CustomBuilder(customSection).Build().Environment);
     }
 
     [Fact]
     public void ExceptionHandlingStrategyHasCorrectValue()
     {
-        CustomSection.ExceptionHandlingStrategy = ExceptionHandlingStrategy.Throw;
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithExceptionHandlingStrategy(ExceptionHandlingStrategy.Throw).Build();
 
-        Assert.Equal(CustomSection.ExceptionHandlingStrategy, CustomBuilder(CustomSection).Build().ExceptionHandlingStrategy);
-        Assert.Equal(ExceptionHandlingStrategy.Catch, CustomBuilder(CustomSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).Build().ExceptionHandlingStrategy);
-        Assert.Equal(CustomSection.ExceptionHandlingStrategy, CustomBuilder(CustomSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).LoadFromConfigFile().Build().ExceptionHandlingStrategy);
+        Assert.Equal(customSection.ExceptionHandlingStrategy, CustomBuilder(customSection).Build().ExceptionHandlingStrategy);
+        Assert.Equal(ExceptionHandlingStrategy.Catch, CustomBuilder(customSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).Build().ExceptionHandlingStrategy);
+        Assert.Equal(customSection.ExceptionHandlingStrategy, CustomBuilder(customSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).LoadFromConfigFile().Build().ExceptionHandlingStrategy);
     }
 
     [Fact]
     public void MessagingHostIsIgnored()
     {
-        CustomSection.RabbitHost = CustomRabbitHost;
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitHost(TestConsts.AnyRabbitHost).Build();
 
-        Assert.Equal(CustomRabbitHost, CustomBuilder(CustomSection).Build().Rabbit.Host);
+        Assert.Equal(CustomRabbitHost, CustomBuilder(customSection).Build().Rabbit.Host);
     }
 
     [Fact]
     public void PortHasCorrectValue()
     {
-        CustomSection.RabbitPort = 2250;
-        CustomSection.RabbitUseSsl = true;
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitPort(2250).WithRabbitUseSsl(true).Build();
 
-        Assert.Equal(CustomSection.RabbitPort, CustomBuilder(CustomSection).Build().Rabbit.Port);
+        Assert.Equal(customSection.RabbitPort, CustomBuilder(customSection).Build().Rabbit.Port);
 
-        CustomSection.RabbitUseSsl = false;
-        Assert.Equal(CustomSection.RabbitPort, CustomBuilder(CustomSection).Build().Rabbit.Port);
+        customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitPort(2250).WithRabbitUseSsl(false).Build();
+
+        Assert.Equal(customSection.RabbitPort, CustomBuilder(customSection).Build().Rabbit.Port);
     }
 
     [Fact]
-    public void UsernameHasCorrectValue()
+    public void MessagingCredentialsHasCorrectValue()
     {
-        CustomSection.RabbitUsername = "username";
-        CustomSection.AccessToken = "token";
+        const string rabbitUsername = "custom-username";
+        const string rabbitPassword = "custom-password";
 
-        Assert.Equal(CustomSection.RabbitUsername, CustomBuilder(CustomSection).Build().Rabbit.Username);
-    }
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitUsername(rabbitUsername).WithRabbitPassword(rabbitPassword).Build();
 
-    [Fact]
-    public void PasswordHasDefaultValue()
-    {
-        CustomSection.RabbitPassword = null;
-        Assert.Null(CustomBuilder(CustomSection).Build().Rabbit.Password);
-
-        CustomSection.RabbitPassword = "myPassword";
-        Assert.NotNull(CustomBuilder(CustomSection).Build().Rabbit.Password);
-        Assert.Equal(CustomSection.RabbitPassword, CustomBuilder(CustomSection).Build().Rabbit.Password);
+        Assert.Equal(rabbitUsername, CustomBuilder(customSection).Build().Rabbit.Username);
+        Assert.Equal(rabbitPassword, CustomBuilder(customSection).Build().Rabbit.Password);
     }
 
     [Fact]
     public void VirtualHostHasDefaultValue()
     {
-        CustomSection.RabbitVirtualHost = null;
-        Assert.Equal(TestData.VirtualHost, CustomBuilder(CustomSection).Build().Rabbit.VirtualHost);
+        const string rabbitVirtualHost = "custom-virtual-host";
 
-        CustomSection.RabbitVirtualHost = "my_virtual_host";
-        Assert.Equal(CustomSection.RabbitVirtualHost, CustomBuilder(CustomSection).Build().Rabbit.VirtualHost);
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitVirtualHost(null).Build();
+
+        Assert.Equal(TestData.VirtualHost, CustomBuilder(customSection).Build().Rabbit.VirtualHost);
+
+        customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitVirtualHost(rabbitVirtualHost).Build();
+
+        Assert.Equal(rabbitVirtualHost, CustomBuilder(customSection).Build().Rabbit.VirtualHost);
     }
 
     [Fact]
     public void UseMessagingSslHasCorrectValue()
     {
-        CustomSection.RabbitUseSsl = false;
-        Assert.False(CustomBuilder(CustomSection).Build().Rabbit.UseSsl);
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitUseSsl(false).Build();
 
-        CustomSection.RabbitUseSsl = true;
-        Assert.True(CustomBuilder(CustomSection).Build().Rabbit.UseSsl);
+        Assert.False(CustomBuilder(customSection).Build().Rabbit.UseSsl);
+
+        customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitUseSsl(true).Build();
+
+        Assert.True(CustomBuilder(customSection).Build().Rabbit.UseSsl);
     }
 
     [Fact]
     public void ApiHostHasDefaultValue()
     {
-        CustomSection.ApiHost = CustomApiHost;
-        Assert.Equal(CustomApiHost, CustomBuilder(CustomSection).Build().Api.Host);
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithApiHost(TestConsts.AnyApiHost).Build();
+
+        Assert.Equal(TestConsts.AnyApiHost, CustomBuilder(customSection).Build().Api.Host);
     }
 
     [Fact]
     public void UseApiSslHasCorrectValue()
     {
-        CustomSection.ApiUseSsl = false;
-        Assert.False(CustomBuilder(CustomSection).Build().Api.UseSsl);
+        var customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithApiUseSsl(false).Build();
 
-        CustomSection.ApiUseSsl = true;
-        Assert.True(CustomBuilder(CustomSection).Build().Api.UseSsl);
+        Assert.False(CustomBuilder(customSection).Build().Api.UseSsl);
+
+        customSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithApiUseSsl(true).Build();
+
+        Assert.True(CustomBuilder(customSection).Build().Api.UseSsl);
     }
 
     [Fact]

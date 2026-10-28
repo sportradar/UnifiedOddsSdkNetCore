@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Shouldly;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.CashOut;
@@ -39,9 +38,8 @@ public class CashOutProbabilitiesHeadersTests
 
         var result = await provider.GetCashOutProbabilitiesAsync<ISportEvent>(AnyEventId);
 
-        var messageV2 = (IMessageV2)result;
-        messageV2.ShouldNotBeNull();
-        messageV2.MessageHeaders.ShouldBeEmpty();
+        result.ShouldNotBeNull();
+        result.MessageHeaders.ShouldBeEmpty();
     }
 
     private static cashout CreateCashoutMessage(IReadOnlyDictionary<string, string> headers)

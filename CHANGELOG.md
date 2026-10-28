@@ -1,6 +1,48 @@
 # Change Log
 
-## 3.13.0
+## 4.0.0 (breaking change)
+- Added private key JWT client authentication through `SetClientAuthentication`, as an alternative to access tokens. The configured signing key id is sent as the JWT `kid` header. Client authentication works for Unified Feed API calls, RabbitMQ connections, and Replay server connections with `SdkEnvironment.ReplayWithIntegrationCredentials` or `SdkEnvironment.ReplayWithProductionCredentials`. A custom environment can set the authentication tenant. See the migration guide for setup.
+- Unified Feed API calls are retried once when the response status is 401 (Unauthorized).
+- Removed `IEnvironmentSelector.SelectReplay()` and `SdkEnvironment.Replay` (breaking change). Use `SdkEnvironment.ReplayWithIntegrationCredentials` or `SdkEnvironment.ReplayWithProductionCredentials`.
+- Replaced `SetMessagingUsername` and `SetMessagingPassword` on `ICustomConfigurationBuilder` with `SetMessagingCredentials(string username, string password)` (breaking change).
+- Merged the temporary 3.x interfaces into their base interfaces (breaking change).
+  - `ICustomBetManagerV2` members are now on `ICustomBetManager`. Code that cast `CustomBetManager` to `ICustomBetManagerV2` must use `ICustomBetManager` directly.
+  - `MessageHeaders` is now on `IMessage`. Code that cast messages to `IMessageV2` must read `MessageHeaders` from `IMessage`.
+  - `EachWayResult`, `EachWayPlaceFactor`, and `DeadHeatFactorPlace` are now on `IOutcomeSettlement`. Unrecognized each-way result values are reported as `EachWayResult.UnsupportedBySdk`. Code that cast settled outcomes to `IOutcomeSettlementV2` must use `IOutcomeSettlement`.
+- `IRollbackBetSettlement` markets are exposed as `IMarketRollbackSettlement`, so in-play rollback settlement markets do not need a cast to `IMarketRollbackSettlement` (breaking change).
+- Added `net8.0` as a target framework alongside `netstandard2.0`.
+- Failures while closing or disposing a feed channel or connection do not interrupt cleanup.
+- Added dependencies on `System.IdentityModel.Tokens.Jwt` and `ZiggyCreatures.FusionCache`, and upgraded SDK dependencies to the latest compatible stable versions.
+
+## 2026-08-10 4.0.0-rc5
+- Fixed Common IAM client authentication so the configured signing key id is sent as the JWT `kid` header, allowing Common IAM to select the registered public key.
+- Merged ICustomBetManagerV2 into CustomBetManager. Prebuilt bets and Or-selections probability calculations are now accessible directly via `uofSdk.CustomBetManager` without casting.
+  - Client previously casting `(ICustomBetManagerV2)uofSdk.CustomBetManager` must switch to `uofSdk.CustomBetManager` directly
+- Extended feed messages with `MessageHeaders` on `IMessage` (replacing the temporary `IMessageV2` interface used on the 3.x line).
+- Upgraded SDK dependencies to the latest stable versions.
+- ClientAuthentication is supported for Replay Server connections
+  - NOTE: ClientAuthentication for Replay Server is currently supported only for `SdkEnvironment.ReplayWithIntegrationCredentials`
+
+## 2026-03-24 4.0.0-rc4
+- Added support for In-Play bet settlements, see release notes for v.3.8.0 for more details.
+
+## 2026-02-09 4.0.0-rc3
+- Client Authentication is supported for Rabbit MQ connections
+- Configurable Authentication Tenant
+- When using custom configuration builder replaced SetUsername and SetPassword with SetAuthenticationCredentials
+- Expanded sdk library target framework to netstandard 2.0 and net8.0
+- Upgraded dependencies to latest versions
+
+## 2025-11-24 4.0.0-rc2
+- UoF API call is retried once if the response has a status code 401 (Unauthorized)
+- Internal resiliency improvements for Common IAM communication
+
+## 2025-11-10 4.0.0-rc1
+- Introduced ClientAuthentication configuration as a more secure and recommended alternative to access tokens (only UF API calls are supported at the moment). Check the migration guide for more details.
+- Added a dependency to System.IdentityModel.Tokens.Jwt
+- Added a dependency to ZiggyCreatures.FusionCache
+
+## 2026-10-23 3.13.0
 - Fixed an issue where a closed RabbitMQ connection was reused after the broker closed it, so the feed stayed disconnected until the application was restarted.
 - Usage metrics export stops when the SDK is disposed, so creating another SDK instance in the same process no longer stacks background exporters.
 
@@ -504,4 +546,3 @@ to
 - Upgraded Unity to 5.11.3
 - Removed obsolete methods and properties
 - Merged V1, V2, ... extended interfaces into base one
-

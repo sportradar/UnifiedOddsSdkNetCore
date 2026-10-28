@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Dawn;
@@ -68,19 +67,19 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             try
             {
                 requestMessage = CreateGetRequestMessageWith(uri, queryParameters, headers);
-                var responseMessage = await SendRequestAsync(requestMessage);
-                responseStream = await GetResponseStreamAsync(uri, responseMessage);
+                var responseMessage = await SendRequestAsync(requestMessage).ConfigureAwait(false);
+                responseStream = await GetResponseStreamAsync(uri, responseMessage).ConfigureAwait(false);
             }
             catch (CommunicationException ex)
             {
-                traceId = GetTraceId(requestMessage);
+                traceId = requestMessage.GetTraceId();
                 const string msgErrorTemplate = "TraceId: {TraceId} GET: {GetUri} Response: {ResponseStatusCode} took {Elapsed} ms Response: {ResponseContent}";
                 _restLog.LogError(ex, msgErrorTemplate, traceId, uri.AbsoluteUri, ex.ResponseCode, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture), GetCommunicationExceptionContent(ex));
                 throw;
             }
             catch (Exception ex)
             {
-                traceId = GetTraceId(requestMessage);
+                traceId = requestMessage.GetTraceId();
                 _restLog.LogError(ex, "Failed to execute http get with TraceId: {TraceId} for the Url: {Url}", traceId, uri?.AbsoluteUri);
                 throw new CommunicationException($"Failed to execute http get with TraceId: {traceId}", uri?.ToString(), ex);
             }
@@ -89,7 +88,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 watch.Stop();
             }
 
-            traceId = GetTraceId(requestMessage);
+            traceId = requestMessage.GetTraceId();
 
             if (!_restLog.IsEnabled(LogLevel.Debug))
             {
@@ -99,15 +98,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             }
 
             const string msgSuccessWithContentTemplate = "TraceId: {TraceId} GET: {GetUri} took {Elapsed} ms Response: {ResponseContent}";
-            var responseContent = await new StreamReader(responseStream).ReadToEndAsync();
+            var responseContent = await new StreamReader(responseStream).ReadToEndAsync().ConfigureAwait(false);
             responseContent = responseContent.Replace("\n", string.Empty);
 
             _restLog.LogDebug(msgSuccessWithContentTemplate, traceId, uri.AbsoluteUri, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture), responseContent);
 
             var memoryStream = new MemoryStream();
             var writer = new StreamWriter(memoryStream);
-            await writer.WriteAsync(responseContent);
-            await writer.FlushAsync();
+            await writer.WriteAsync(responseContent).ConfigureAwait(false);
+            await writer.FlushAsync().ConfigureAwait(false);
             memoryStream.Position = 0;
             return memoryStream;
         }
@@ -132,11 +131,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// <exception cref="CommunicationException">Failed to execute http post</exception>
         public override async Task<HttpResponseMessage> PostDataAsync(Uri uri, HttpContent content = null)
         {
-            await LogPostRequestHttpContent(uri, content);
+            await LogPostRequestHttpContent(uri, content).ConfigureAwait(false);
 
             var watch = Stopwatch.StartNew();
 
-            HttpResponseMessage response = null;
+            HttpResponseMessage response;
             HttpRequestMessage requestMessage = null;
             string traceId;
             try
@@ -145,11 +144,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 {
                     Content = content ?? new StringContent(string.Empty)
                 };
-                response = await PostHttpRequestAsync(requestMessage);
+                response = await PostHttpRequestAsync(requestMessage).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                traceId = GetTraceId(requestMessage);
+                traceId = requestMessage.GetTraceId();
                 _restLog.LogError(ex, "TraceId: {TraceId} POST: {PostUri} took {Elapsed} ms", traceId, uri?.AbsoluteUri, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture));
 
                 if (ex.GetType() != typeof(ObjectDisposedException) && ex.GetType() != typeof(TaskCanceledException))
@@ -164,8 +163,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 watch.Stop();
             }
 
-            traceId = GetTraceId(requestMessage);
-            await LogPostResponseHttpContent(traceId, uri, response, watch);
+            traceId = requestMessage.GetTraceId();
+            await LogPostResponseHttpContent(traceId, uri, response, watch).ConfigureAwait(false);
 
             return response;
         }
@@ -245,18 +244,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             return commException.Response == null
                        ? commException.Message
                        : commException.Response.Replace("\n", string.Empty);
-        }
-
-        private static string GetTraceId(HttpRequestMessage responseMessage)
-        {
-            var traceId = "";
-            var requestHeaders = responseMessage?.Headers;
-            if (requestHeaders != null && requestHeaders.TryGetValues(HttpApiConstants.TraceIdHeaderName, out var headers))
-            {
-                traceId = headers?.FirstOrDefault() ?? "";
-            }
-
-            return traceId;
         }
     }
 }

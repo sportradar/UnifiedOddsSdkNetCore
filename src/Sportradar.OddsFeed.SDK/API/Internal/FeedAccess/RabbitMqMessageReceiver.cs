@@ -11,9 +11,9 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Api.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Api.Managers;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -115,7 +115,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             _deserializer = deserializer;
             _keyParser = keyParser;
             _producerManager = producerManager;
-            _useReplay = configuration.Environment == SdkEnvironment.Replay;
+            _useReplay = configuration.Environment.IsReplayEnvironment();
             _executionLog = loggerFactory.CreateLogger<RabbitMqMessageReceiver>();
             _feedLog = loggerFactory.CreateLogger<FeedTraffic>();
         }

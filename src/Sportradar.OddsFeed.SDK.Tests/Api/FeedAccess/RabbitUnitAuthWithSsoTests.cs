@@ -36,8 +36,7 @@ public class RabbitUnitAuthWithSsoTests : RabbitFeedTestBase, IClassFixture<Rabb
         AssertSameOdds(received, sent);
         received.SportId.Id.ShouldBe(2);
         received.SentAt.ShouldBe(1_700_000_000_123);
-        feed.Connection.ConnectionFactory.UserName.ShouldBe(accessToken);
-        feed.Connection.ConnectionFactory.Password.ShouldBe(accessToken);
+        AssertSsoCredentials(feed.Connection.ConnectionFactory, accessToken, accessToken);
     }
 
     [Fact]
@@ -65,15 +64,13 @@ public class RabbitUnitAuthWithSsoTests : RabbitFeedTestBase, IClassFixture<Rabb
         await WaitUntilLogged(ChannelLogger, "Opening the channel ...", 2);
         await WaitUntilLogged(ChannelLogger, "Error checking connection for channelNumber", 2);
         feed.Channel.Channel.ShouldBeNull();
-        feed.Connection.ConnectionFactory.UserName.ShouldBe(accessToken);
-        feed.Connection.ConnectionFactory.Password.ShouldBe(accessToken);
+        AssertSsoCredentials(feed.Connection.ConnectionFactory, accessToken, accessToken);
 
         CreateRabbitUser(accessToken, accessToken);
         await WaitUntilChannelIsReady(feed.Channel);
         var sent = PublishOddsChange();
         AssertSameOdds(await WaitForReceipt(feed, 1), sent);
-        feed.Connection.ConnectionFactory.UserName.ShouldBe(accessToken);
-        feed.Connection.ConnectionFactory.Password.ShouldBe(accessToken);
+        AssertSsoCredentials(feed.Connection.ConnectionFactory, accessToken, accessToken);
     }
 
     [Fact]
@@ -109,8 +106,7 @@ public class RabbitUnitAuthWithSsoTests : RabbitFeedTestBase, IClassFixture<Rabb
         feed.Channel.LastMessageReceived = DateTime.Now.AddMinutes(-1);
         await WaitForChannelRestart(feed.Channel, started);
 
-        feed.Connection.ConnectionFactory.UserName.ShouldBe(accessToken);
-        feed.Connection.ConnectionFactory.Password.ShouldBe(accessToken);
+        AssertSsoCredentials(feed.Connection.ConnectionFactory, accessToken, accessToken);
         var currentName = await WaitForConnectionName(accessToken);
         currentName.ShouldNotBe(previousName);
         await PublishAndAwaitOddsChange(feed, 2, matchId: 2);

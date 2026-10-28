@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using EasyNetQ.Management.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Extended;
@@ -46,8 +48,14 @@ public class UofSdkWrapper
         {
             return;
         }
+        var consumersBeforeOpen = rabbitMgm.FeedConsumerCount();
         UofSdk.Open();
-        TestExecutionHelper.WaitToComplete(() => rabbitMgm.ManagementClient.GetConnectionsAsync().GetAwaiter().GetResult().Count >= 2);
+        TestExecutionHelper.WaitToComplete(() => rabbitMgm.ManagementClient.GetConnectionsAsync(CancellationToken.None).GetAwaiter().GetResult().Count >= 2);
+        var feedConsumerRegistered = TestExecutionHelper.WaitToComplete(() => rabbitMgm.FeedConsumerCount() > consumersBeforeOpen);
+        if (!feedConsumerRegistered)
+        {
+            throw new TimeoutException("UofSdk feed consumer was not registered on RabbitMQ");
+        }
 
         outputHelper.WriteLine("UofSdk started");
     }

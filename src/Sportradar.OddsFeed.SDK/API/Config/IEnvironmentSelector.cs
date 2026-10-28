@@ -10,12 +10,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
     public interface IEnvironmentSelector
     {
         /// <summary>
-        /// Returns a <see cref="IConfigurationBuilder"/> with properties set to values needed to access replay server
-        /// </summary>
-        /// <returns>A <see cref="IConfigurationBuilder"/> with properties set to values needed to access replay server</returns>
-        IConfigurationBuilder SelectReplay();
-
-        /// <summary>
         /// Returns a <see cref="ICustomConfigurationBuilder"/> allowing the properties to be set to custom values (useful for testing with non-standard AMQP)
         /// </summary>
         /// <returns>A <see cref="ICustomConfigurationBuilder"/> with properties set to values needed to access replay server</returns>
@@ -24,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         /// <summary>
         /// Returns a <see cref="IConfigurationBuilder"/> with properties set to values needed to access specified environment
         /// </summary>
-        /// <remarks>For accessing replay or custom server use SelectReplay or SelectCustom</remarks>
+        /// <remarks>For accessing custom server use SelectCustom</remarks>
         /// <param name="ufEnvironment">A <see cref="SdkEnvironment"/> specifying to which environment to connect</param>
         /// <returns>A <see cref="IConfigurationBuilder"/> with properties set to values needed to access production environment</returns>
         IConfigurationBuilder SelectEnvironment(SdkEnvironment ufEnvironment);
@@ -32,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         /// <summary>
         /// Returns a <see cref="IConfigurationBuilder"/> with properties set to values needed to access specified environment
         /// </summary>
-        /// <remarks>For accessing replay or custom server use SelectReplay or SelectCustom</remarks>
+        /// <remarks>For accessing custom server use SelectCustom</remarks>
         /// <returns>A <see cref="IConfigurationBuilder"/> with properties set to values needed to access predefined environment</returns>
         IConfigurationBuilder SelectEnvironmentFromConfigFile();
     }

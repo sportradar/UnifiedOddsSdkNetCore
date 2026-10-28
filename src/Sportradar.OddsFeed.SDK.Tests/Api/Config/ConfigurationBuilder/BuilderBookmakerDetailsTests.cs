@@ -3,6 +3,7 @@
 using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Configuration;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Extensions;
@@ -19,7 +20,8 @@ public class BuilderBookmakerDetailsTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void ConfigurationIsBuiltForPredefinedEnvironmentWhenTokenSetterHasBookmakerDetailsThenBookmakerConfigurationIsNotEmpty(SdkEnvironment environment)
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object,
@@ -68,17 +70,17 @@ public class BuilderBookmakerDetailsTests : ConfigurationBuilderSetup
     }
 
     [Fact]
-    public void ReplayEnvironmentRetrievesIntegrationBookmakerIdWhenIntegrationSucceedsAndProductionFails()
+    public void ReplayWithIntegrationCredentialsRetrievesIntegrationBookmakerIdWhenIntegrationSucceeds()
     {
         var integrationBookmakerDetails = BookmakerDetailsEndpoint.GetValidBookmakerDetails();
 
         var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
-                                                   .WithStubbedIntegrationBookmakerDetailsAndProductionFailure(integrationBookmakerDetails)
+                                                   .WithStubbedIntegrationBookmakerDetails(integrationBookmakerDetails)
                                                    .WithOneProducer()
                                                    .BuildTokenSetter();
         var config = tokenSetter
                     .SetAccessToken(TestConsts.AnyAccessToken)
-                    .SelectReplay()
+                    .SelectEnvironment(SdkEnvironment.ReplayWithIntegrationCredentials)
                     .SetDefaultLanguage(TestConsts.CultureEn)
                     .Build();
 
@@ -86,72 +88,121 @@ public class BuilderBookmakerDetailsTests : ConfigurationBuilderSetup
     }
 
     [Fact]
-    public void ReplayEnvironmentFallsBackToProductionBookmakerDetailsWhenIntegrationFailsAndProductionSucceeds()
+    public void ReplayWithProductionCredentialsRetrievesProductionBookmakerIdWhenProductionSucceeds()
     {
         var productionBookmakerDetails = BookmakerDetailsEndpoint.GetValidBookmakerDetails();
 
         var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
-                                                   .WithStubbedProductionBookmakerDetailsAndIntegrationFailure(productionBookmakerDetails)
+                                                   .WithStubbedProductionBookmakerDetails(productionBookmakerDetails)
                                                    .WithOneProducer()
                                                    .BuildTokenSetter();
         var config = tokenSetter
                     .SetAccessToken(TestConsts.AnyAccessToken)
-                    .SelectReplay()
+                    .SelectEnvironment(SdkEnvironment.ReplayWithProductionCredentials)
                     .SetDefaultLanguage(TestConsts.CultureEn)
                     .Build();
 
         config.BookmakerDetails.BookmakerId.ShouldBe(productionBookmakerDetails.bookmaker_id);
     }
 
-    [Fact]
-    public void ReplayEnvironmentReturnsIntegrationBookmakerIdWhenBothEnvironmentsSucceed()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    [InlineData(SdkEnvironment.Production)]
+    [InlineData(SdkEnvironment.GlobalProduction)]
+    [InlineData(SdkEnvironment.Integration)]
+    [InlineData(SdkEnvironment.GlobalIntegration)]
+    public void ReplayWithAccessTokenThrowsWhenConfiguredEnvironmentFailsAndStrategyIsThrow(SdkEnvironment environment)
     {
-        var integrationBookmakerDetails = BookmakerDetailsEndpoint.GetValidBookmakerDetails();
-        integrationBookmakerDetails.bookmaker_id = 100;
-        var productionBookmakerDetails = BookmakerDetailsEndpoint.GetValidBookmakerDetails();
-        productionBookmakerDetails.bookmaker_id = 200;
-
         var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
-                                                   .WithStubbedIntegrationAndProductionBookmakerDetails(integrationBookmakerDetails, productionBookmakerDetails)
+                                                   .WithFailingBookmakerDetailsFor(environment)
                                                    .WithOneProducer()
                                                    .BuildTokenSetter();
-        var config = tokenSetter
-                    .SetAccessToken(TestConsts.AnyAccessToken)
-                    .SelectReplay()
-                    .SetDefaultLanguage(TestConsts.CultureEn)
-                    .Build();
 
-        config.BookmakerDetails.BookmakerId.ShouldBe(integrationBookmakerDetails.bookmaker_id);
+        Should.Throw<CommunicationException>(() => tokenSetter
+                                                .SetAccessToken(TestConsts.AnyAccessToken)
+                                                .SelectEnvironment(environment)
+                                                .SetDefaultLanguage(TestConsts.CultureEn)
+                                                .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Throw)
+                                                .Build());
     }
 
     [Theory]
-    [InlineData(ExceptionHandlingStrategy.Catch)]
-    [InlineData(ExceptionHandlingStrategy.Throw)]
-    public void ReplayEnvironmentReturnsNullBookmakerDetailsWhenBothEnvironmentsFail(ExceptionHandlingStrategy exceptionHandlingStrategy)
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    [InlineData(SdkEnvironment.Production)]
+    [InlineData(SdkEnvironment.GlobalProduction)]
+    [InlineData(SdkEnvironment.Integration)]
+    [InlineData(SdkEnvironment.GlobalIntegration)]
+    public void EnvironmentWithClientAuthenticationThrowsWhenConfiguredEnvironmentFailsAndStrategyIsThrow(SdkEnvironment environment)
     {
         var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
+                                                   .WithFailingBookmakerDetailsFor(environment)
                                                    .WithOneProducer()
                                                    .BuildTokenSetter();
-        var config = tokenSetter
-                    .SetAccessToken(TestConsts.AnyAccessToken)
-                    .SelectReplay()
-                    .SetDefaultLanguage(TestConsts.CultureEn)
-                    .SetExceptionHandlingStrategy(exceptionHandlingStrategy)
-                    .Build();
 
-        config.BookmakerDetails.ShouldBeNull();
+        Should.Throw<CommunicationException>(() => tokenSetter
+                                                  .SetClientAuthentication(TestConsts.AnyPrivateKeyJwt)
+                                                  .SelectEnvironment(environment)
+                                                  .SetDefaultLanguage(TestConsts.CultureEn)
+                                                  .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Throw)
+                                                  .Build());
+    }
+
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    [InlineData(SdkEnvironment.Production)]
+    [InlineData(SdkEnvironment.GlobalProduction)]
+    [InlineData(SdkEnvironment.Integration)]
+    [InlineData(SdkEnvironment.GlobalIntegration)]
+    public void ReplayWithAccessTokenThrowsWhenConfiguredEnvironmentFailsAndStrategyIsCatch(SdkEnvironment environment)
+    {
+        var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
+                                                   .WithFailingBookmakerDetailsFor(environment)
+                                                   .WithOneProducer()
+                                                   .BuildTokenSetter();
+
+        Should.Throw<CommunicationException>(() => tokenSetter
+                                                  .SetAccessToken(TestConsts.AnyAccessToken)
+                                                  .SelectEnvironment(environment)
+                                                  .SetDefaultLanguage(TestConsts.CultureEn)
+                                                  .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch)
+                                                  .Build());
+    }
+
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    [InlineData(SdkEnvironment.Production)]
+    [InlineData(SdkEnvironment.GlobalProduction)]
+    [InlineData(SdkEnvironment.Integration)]
+    [InlineData(SdkEnvironment.GlobalIntegration)]
+    public void EnvironmentWithClientAuthenticationThrowsWhenConfiguredEnvironmentFailsAndStrategyIsCatch(SdkEnvironment environment)
+    {
+        var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
+                                                   .WithFailingBookmakerDetailsFor(environment)
+                                                   .WithOneProducer()
+                                                   .BuildTokenSetter();
+
+        Should.Throw<CommunicationException>(() => tokenSetter
+                                                  .SetClientAuthentication(TestConsts.AnyPrivateKeyJwt)
+                                                  .SelectEnvironment(environment)
+                                                  .SetDefaultLanguage(TestConsts.CultureEn)
+                                                  .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch)
+                                                  .Build());
     }
 
     [Fact]
-    public void ReplayEnvironmentSetsApiHostToIntegrationHostWhenIntegrationSucceeds()
+    public void ReplayWithIntegrationCredentialsUsesIntegrationApiHost()
     {
         var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
-                                                   .WithStubbedIntegrationBookmakerDetailsAndProductionFailure(BookmakerDetailsEndpoint.GetValidBookmakerDetails())
+                                                   .WithStubbedIntegrationBookmakerDetails(BookmakerDetailsEndpoint.GetValidBookmakerDetails())
                                                    .WithOneProducer()
                                                    .BuildTokenSetter();
         var config = tokenSetter
                     .SetAccessToken(TestConsts.AnyAccessToken)
-                    .SelectReplay()
+                    .SelectEnvironment(SdkEnvironment.ReplayWithIntegrationCredentials)
                     .SetDefaultLanguage(TestConsts.CultureEn)
                     .Build();
 
@@ -159,31 +210,31 @@ public class BuilderBookmakerDetailsTests : ConfigurationBuilderSetup
     }
 
     [Fact]
-    public void ReplayEnvironmentSetsRabbitHostToReplayMqHostWhenIntegrationSucceeds()
+    public void ReplayWithIntegrationCredentialsUsesReplayRabbitMqHost()
     {
         var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
-                                                   .WithStubbedIntegrationBookmakerDetailsAndProductionFailure(BookmakerDetailsEndpoint.GetValidBookmakerDetails())
+                                                   .WithStubbedIntegrationBookmakerDetails(BookmakerDetailsEndpoint.GetValidBookmakerDetails())
                                                    .WithOneProducer()
                                                    .BuildTokenSetter();
         var config = tokenSetter
                     .SetAccessToken(TestConsts.AnyAccessToken)
-                    .SelectReplay()
+                    .SelectEnvironment(SdkEnvironment.ReplayWithIntegrationCredentials)
                     .SetDefaultLanguage(TestConsts.CultureEn)
                     .Build();
 
-        config.Rabbit.Host.ShouldBe(EnvironmentManager.GetMqHost(SdkEnvironment.Replay));
+        config.Rabbit.Host.ShouldBe(EnvironmentManager.GetMqHost(SdkEnvironment.ReplayWithIntegrationCredentials));
     }
 
     [Fact]
-    public void ReplayEnvironmentSetsApiHostToProductionHostWhenOnlyProductionSucceeds()
+    public void ReplayWithProductionCredentialsUsesProductionApiHost()
     {
         var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
-                                                   .WithStubbedProductionBookmakerDetailsAndIntegrationFailure(BookmakerDetailsEndpoint.GetValidBookmakerDetails())
+                                                   .WithStubbedProductionBookmakerDetails(BookmakerDetailsEndpoint.GetValidBookmakerDetails())
                                                    .WithOneProducer()
                                                    .BuildTokenSetter();
         var config = tokenSetter
                     .SetAccessToken(TestConsts.AnyAccessToken)
-                    .SelectReplay()
+                    .SelectEnvironment(SdkEnvironment.ReplayWithProductionCredentials)
                     .SetDefaultLanguage(TestConsts.CultureEn)
                     .Build();
 
@@ -191,60 +242,18 @@ public class BuilderBookmakerDetailsTests : ConfigurationBuilderSetup
     }
 
     [Fact]
-    public void ReplayEnvironmentSetsRabbitHostToReplayMqHostWhenOnlyProductionSucceeds()
+    public void ReplayWithProductionCredentialsUsesReplayRabbitMqHost()
     {
         var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
-                                                   .WithStubbedProductionBookmakerDetailsAndIntegrationFailure(BookmakerDetailsEndpoint.GetValidBookmakerDetails())
+                                                   .WithStubbedProductionBookmakerDetails(BookmakerDetailsEndpoint.GetValidBookmakerDetails())
                                                    .WithOneProducer()
                                                    .BuildTokenSetter();
         var config = tokenSetter
                     .SetAccessToken(TestConsts.AnyAccessToken)
-                    .SelectReplay()
+                    .SelectEnvironment(SdkEnvironment.ReplayWithProductionCredentials)
                     .SetDefaultLanguage(TestConsts.CultureEn)
                     .Build();
 
-        config.Rabbit.Host.ShouldBe(EnvironmentManager.GetMqHost(SdkEnvironment.Replay));
-    }
-
-    [Fact]
-    public void ReplayEnvironmentSetsApiHostToIntegrationHostWhenBothEnvironmentsSucceed()
-    {
-        var integrationBookmakerDetails = BookmakerDetailsEndpoint.GetValidBookmakerDetails();
-        integrationBookmakerDetails.bookmaker_id = 100;
-        var productionBookmakerDetails = BookmakerDetailsEndpoint.GetValidBookmakerDetails();
-        productionBookmakerDetails.bookmaker_id = 200;
-
-        var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
-                                                   .WithStubbedIntegrationAndProductionBookmakerDetails(integrationBookmakerDetails, productionBookmakerDetails)
-                                                   .WithOneProducer()
-                                                   .BuildTokenSetter();
-        var config = tokenSetter
-                    .SetAccessToken(TestConsts.AnyAccessToken)
-                    .SelectReplay()
-                    .SetDefaultLanguage(TestConsts.CultureEn)
-                    .Build();
-
-        config.Api.Host.ShouldBe(EnvironmentManager.GetApiHost(SdkEnvironment.Integration));
-    }
-
-    [Fact]
-    public void ReplayEnvironmentSetsRabbitHostToReplayMqHostWhenBothEnvironmentsSucceed()
-    {
-        var integrationBookmakerDetails = BookmakerDetailsEndpoint.GetValidBookmakerDetails();
-        integrationBookmakerDetails.bookmaker_id = 100;
-        var productionBookmakerDetails = BookmakerDetailsEndpoint.GetValidBookmakerDetails();
-        productionBookmakerDetails.bookmaker_id = 200;
-
-        var tokenSetter = ConfigurationUnitBuilders.StubbingOutDataProviders()
-                                                   .WithStubbedIntegrationAndProductionBookmakerDetails(integrationBookmakerDetails, productionBookmakerDetails)
-                                                   .WithOneProducer()
-                                                   .BuildTokenSetter();
-        var config = tokenSetter
-                    .SetAccessToken(TestConsts.AnyAccessToken)
-                    .SelectReplay()
-                    .SetDefaultLanguage(TestConsts.CultureEn)
-                    .Build();
-
-        config.Rabbit.Host.ShouldBe(EnvironmentManager.GetMqHost(SdkEnvironment.Replay));
+        config.Rabbit.Host.ShouldBe(EnvironmentManager.GetMqHost(SdkEnvironment.ReplayWithProductionCredentials));
     }
 }

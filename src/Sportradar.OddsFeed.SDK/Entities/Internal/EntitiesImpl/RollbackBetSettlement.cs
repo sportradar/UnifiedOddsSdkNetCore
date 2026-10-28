@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// Represents a message dispatched by the feed indicating settlements notified by <see cref="IBetSettlement{T}" /> message have to be reverted
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    internal class RollbackBetSettlement<T> : MarketMessage<IMarketCancel, T>, IRollbackBetSettlement<T> where T : ISportEvent
+    internal class RollbackBetSettlement<T> : MarketMessage<IMarketRollbackSettlement, T>, IRollbackBetSettlement<T> where T : ISportEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RollbackBetSettlement{T}" /> message
@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="markets">An <see cref="IMarketMessage{T,T1}" /> describing markets associated with the current <see cref="EventMessage{T}" /></param>
         /// <param name="rawMessage">The raw message</param>
         /// <param name="messageHeaders">The AMQP message headers</param>
-        public RollbackBetSettlement(IMessageTimestamp timestamp, IProducer producer, T sportEvent, long? requestId, IEnumerable<IMarketCancel> markets, byte[] rawMessage, IReadOnlyDictionary<string, string> messageHeaders)
+        public RollbackBetSettlement(IMessageTimestamp timestamp, IProducer producer, T sportEvent, long? requestId, IEnumerable<IMarketRollbackSettlement> markets, byte[] rawMessage, IReadOnlyDictionary<string, string> messageHeaders)
             : base(timestamp, producer, sportEvent, requestId, markets, rawMessage, messageHeaders)
         {
         }

@@ -134,7 +134,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             Task.Run(async () =>
                      {
                          await OnTimerElapsedAsync().ConfigureAwait(false);
-                         await LockManager.CleanAsync();
+                         await LockManager.CleanAsync().ConfigureAwait(false);
                      });
         }
 

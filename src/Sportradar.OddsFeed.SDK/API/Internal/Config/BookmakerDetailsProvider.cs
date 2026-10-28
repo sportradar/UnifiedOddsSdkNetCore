@@ -1,6 +1,7 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Collections.Generic;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
@@ -36,66 +37,44 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             _logger.LogInformation("Loading bookmaker details from Sports API");
             lock (_lock)
             {
-                if (config.BookmakerDetails != null)
+                try
                 {
-                    return;
+                    // first try get bookmaker details from wanted UF environment
+                    LoadWhoamiData(config.Api.Host, config.Api.UseSsl, true, config.Environment, config);
                 }
-
-                if (config.Environment != SdkEnvironment.Replay)
+                catch (Exception ex)
                 {
-                    try
-                    {
-                        // first try get bookmaker details from wanted UF environment
-                        LoadWhoamiData(config.Api.Host, config.Api.UseSsl, true, config.Environment, config);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Failed to load whoami data. Environment={SdkEnvironment}", Enum.GetName(typeof(SdkEnvironment), config.Environment));
+                    _logger.LogError(ex, "Failed to load whoami data. Environment={SdkEnvironment}", Enum.GetName(typeof(SdkEnvironment), config.Environment));
 
-                        var wantedEnvironment = EnvironmentManager.GetSetting(config.Environment);
-                        if (wantedEnvironment != null && !wantedEnvironment.EnvironmentRetryList.IsNullOrEmpty())
-                        {
-                            foreach (var sdkEnvironment in wantedEnvironment.EnvironmentRetryList)
-                            {
-                                var newSetting = EnvironmentManager.GetSetting(sdkEnvironment);
-                                if (newSetting != null && !string.IsNullOrEmpty(newSetting.ApiHost))
-                                {
-                                    if (newSetting.OnlySsl && !config.Api.UseSsl)
-                                    {
-                                        _logger.LogWarning("Configuration set to not use SSL when connecting to API");
-                                    }
-                                    var result = LoadWhoamiData(newSetting.ApiHost, config.Api.UseSsl, false, sdkEnvironment, config);
-                                    if (result)
-                                    {
-                                        _logger.LogInformation("Access granted. The provided access token is valid for the {SdkEnvironment} environment", sdkEnvironment);
-                                    }
-                                    else
-                                    {
-                                        _logger.LogWarning("Access denied. The provided access token is not valid for the {SdkEnvironment} environment", sdkEnvironment);
-                                    }
-                                }
-                            }
-                        }
-
-                        throw;
-                    }
-                }
-                else
-                {
-                    //replay server supports both integration & production tokens, so the token must be checked against both environments
-                    if (!LoadWhoamiData(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), config.Api.UseSsl, false, SdkEnvironment.Integration, config))
+                    var environmentsToRetry = GetEnvironmentsToRetry(config);
+                    foreach (var sdkEnvironment in environmentsToRetry)
                     {
-                        try
+                        var newSetting = EnvironmentManager.GetSetting(sdkEnvironment);
+                        var result = LoadWhoamiData(newSetting.ApiHost, config.Api.UseSsl, false, sdkEnvironment, config);
+                        if (result)
                         {
-                            LoadWhoamiData(EnvironmentManager.GetApiHost(SdkEnvironment.Production), config.Api.UseSsl, true, SdkEnvironment.Production, config);
+                            _logger.LogInformation("Access granted. The provided access token is valid for the {SdkEnvironment} environment", sdkEnvironment);
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            _logger.LogError(ex, "Failed to load whoami data. Environment={SdkEnvironment}", Enum.GetName(typeof(SdkEnvironment), config.Environment));
+                            _logger.LogWarning("Access denied. The provided access token is not valid for the {SdkEnvironment} environment", sdkEnvironment);
                         }
                     }
+
+                    throw;
                 }
             }
+        }
+
+        private static IEnumerable<SdkEnvironment> GetEnvironmentsToRetry(UofConfiguration config)
+        {
+            var wantedEnvironment = EnvironmentManager.GetSetting(config.Environment);
+            if (wantedEnvironment == null || wantedEnvironment.EnvironmentRetryList.IsNullOrEmpty())
+            {
+                return Array.Empty<SdkEnvironment>();
+            }
+
+            return wantedEnvironment.EnvironmentRetryList;
         }
 
         /// <summary>
@@ -121,7 +100,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                 var bookmakerDetailsDto = _bookmakerDetailsProvider.GetData(hostUrl);
                 _logger.LogInformation("Whoami data successfully retrieved. Host URL={HostUrl}, Environment={SdkEnvironment}", hostUrl, Enum.GetName(typeof(SdkEnvironment), environment));
 
-                config.UpdateBookmakerDetails(new BookmakerDetails(bookmakerDetailsDto), hostName);
+                config.UpdateBookmakerDetails(new BookmakerDetails(bookmakerDetailsDto));
 
                 if (config.BookmakerDetails.ServerTimeDifference > TimeSpan.FromSeconds(5))
                 {

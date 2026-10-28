@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.Entities
     /// Defines a contract implemented by bet-settlement-rollback messages
     /// </summary>
     /// <typeparam name="T">A <see cref="ICompetition"/> derived type specifying the type of the associated sport event</typeparam>
-    public interface IRollbackBetSettlement<out T> : IMarketMessage<IMarketCancel, T> where T : ISportEvent
+    public interface IRollbackBetSettlement<out T> : IMarketMessage<IMarketRollbackSettlement, T> where T : ISportEvent
     {
     }
 }

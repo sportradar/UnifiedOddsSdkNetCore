@@ -122,7 +122,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 EventMode = EventMode,
                 Referee = Referee != null ? await Referee.ExportAsync().ConfigureAwait(false) : null,
                 WeatherInfo = WeatherInfo != null ? await WeatherInfo.ExportAsync().ConfigureAwait(false) : null,
-                Pitchers = pitcherTasks != null ? await Task.WhenAll(pitcherTasks) : null
+                Pitchers = pitcherTasks != null ? await Task.WhenAll(pitcherTasks).ConfigureAwait(false) : null
             };
         }
     }

@@ -36,18 +36,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         ICustomConfigurationBuilder SetMessagingPort(int port);
 
         /// <summary>
-        /// Sets the username used to authenticate with the messaging server
+        /// Sets the credentials used to authenticate with the messaging server
         /// </summary>
         /// <param name="username">The username used to authenticate with the messaging server</param>
-        /// <returns>The <see cref="ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
-        ICustomConfigurationBuilder SetMessagingUsername(string username);
-
-        /// <summary>
-        /// Sets the password used to authenticate with the messaging server
-        /// </summary>
         /// <param name="password">The password used to authenticate with the messaging server</param>
         /// <returns>The <see cref="ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
-        ICustomConfigurationBuilder SetMessagingPassword(string password);
+        ICustomConfigurationBuilder SetMessagingCredentials(string username, string password);
 
         /// <summary>
         /// Sets the value specifying whether SSL should be used to communicate with Sports API
@@ -62,5 +56,33 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         /// <param name="useMessagingSsl">The value specifying whether SSL should be used to communicate with the messaging server</param>
         /// <returns>The <see cref="ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
         ICustomConfigurationBuilder UseMessagingSsl(bool useMessagingSsl);
+
+        /// <summary>
+        /// Sets the host name of the authentication server.
+        /// </summary>
+        /// <param name="authenticationHost">The host name of the authentication server.</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        ICustomConfigurationBuilder SetClientAuthenticationHost(string authenticationHost);
+
+        /// <summary>
+        /// Sets the port used to connect to the authentication server.
+        /// </summary>
+        /// <param name="port">The port used to connect to the authentication server.</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        ICustomConfigurationBuilder SetClientAuthenticationPort(int port);
+
+        /// <summary>
+        /// Sets the value specifying whether SSL should be used to communicate with the authentication server.
+        /// </summary>
+        /// <param name="useSsl">The value specifying whether SSL should be used to communicate with the authentication server.</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        ICustomConfigurationBuilder SetClientAuthenticationUseSsl(bool useSsl);
+
+        /// <summary>
+        /// Sets the tenant to be used in client authentication.
+        /// </summary>
+        /// <param name="tenant">The tenant to be used in client authentication.</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        ICustomConfigurationBuilder SetClientAuthenticationTenant(string tenant);
     }
 }

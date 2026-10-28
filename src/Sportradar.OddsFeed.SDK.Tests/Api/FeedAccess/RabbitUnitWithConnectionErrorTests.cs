@@ -3,6 +3,8 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using EasyNetQ.Management.Client;
 using RabbitMQ.Client;
@@ -11,6 +13,7 @@ using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using xRetry;
 using Xunit;
@@ -29,6 +32,153 @@ public class RabbitUnitWithConnectionErrorTests : RabbitFeedTestBase, IClassFixt
     public RabbitUnitWithConnectionErrorTests(RabbitFeedFixture fixture, ITestOutputHelper output)
         : base(fixture, output)
     {
+    }
+
+    [Fact]
+    public async Task WhenTheConnectionCheckFailsThenTheLogIncludesTheChannelNumber()
+    {
+        using var feed = await OpenFeedAsync(CreateConfiguration(), MessageInterest.AllMessages);
+        feed.Channel.Channel.ExchangeDelete(Project.UfExchange, false);
+        try
+        {
+            feed.Channel.LastMessageReceived = DateTime.Now.AddMinutes(-1);
+
+            await WaitUntilLogged(ChannelLogger, "Error checking connection for channelNumber: ");
+            ChannelLogger.Messages.ShouldContain(message => Regex.IsMatch(message, "Error checking connection for channelNumber: \\d+"));
+        }
+        finally
+        {
+            DeclareFeedExchange();
+        }
+    }
+
+    [Fact]
+    public async Task WhenTheFirstChannelOpenFailsThenTheNextCheckOpensIt()
+    {
+        DeleteFeedExchange();
+        try
+        {
+            using var feed = CreateFeed(CreateConfiguration());
+            feed.Receiver.Open(MessageInterest.AllMessages, RoutingKeysFor(MessageInterest.AllMessages));
+            await WaitUntilLogged(ChannelLogger, "Error checking connection for channelNumber:");
+
+            DeclareFeedExchange();
+            var ready = await TestExecutionHelper.WaitToCompleteAsync(() => feed.Channel.Channel != null && feed.Channel.ChannelStarted != DateTime.MinValue);
+            ready.ShouldBeTrue();
+            await PublishAndAwaitOddsChange(feed, 1);
+        }
+        finally
+        {
+            DeclareFeedExchange();
+        }
+    }
+
+    [Fact]
+    public async Task WhenChannelCloseThrowsThenTheReceiverIsClosedAndTheChannelIsReleased()
+    {
+        using var feed = await OpenFeedAsync(CreateConfiguration(), MessageInterest.AllMessages);
+        feed.Channel.Channel.Dispose();
+
+        feed.Receiver.Close();
+
+        feed.Receiver.IsChannelOpened.ShouldBeFalse();
+        feed.Channel.Channel.ShouldBeNull();
+    }
+
+    [Fact]
+    public void WhenTheChannelTimerFailsToStartThenTheChannelStaysClosed()
+    {
+        using var timer = new SdkTimer("ConnectionCheckTimer", TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(100));
+        timer.Dispose();
+        using var channelFactory = CreateChannelFactory();
+        var channel = new RabbitMqChannel(channelFactory, timer, TimeSpan.FromSeconds(5), "AnyAccessToken", LoggerFactory.GetOrCreateLogger<RabbitMqChannel>());
+
+        Should.Throw<ObjectDisposedException>(() => channel.Open(MessageInterest.AllMessages, RoutingKeysFor(MessageInterest.AllMessages)));
+
+        channel.IsOpened.ShouldBeFalse();
+        ChannelLogger.Messages.ShouldContain(message => message.Contains("Error starting the channel timer"));
+        Should.Throw<ObjectDisposedException>(() => channel.Open(MessageInterest.AllMessages, RoutingKeysFor(MessageInterest.AllMessages)));
+    }
+
+    [Fact]
+    public void WhenTheChannelTimerFailsToStopThenTheChannelStillCloses()
+    {
+        using var channelFactory = CreateChannelFactory();
+        var timer = new ConnectionCheckTimer { ThrowOnStop = true };
+        var channel = new RabbitMqChannel(channelFactory, timer, TimeSpan.FromSeconds(5), "AnyAccessToken", LoggerFactory.GetOrCreateLogger<RabbitMqChannel>());
+        channel.Open(MessageInterest.AllMessages, RoutingKeysFor(MessageInterest.AllMessages));
+
+        channel.Close();
+
+        channel.IsOpened.ShouldBeFalse();
+        channel.Channel.ShouldBeNull();
+        ChannelLogger.Messages.ShouldContain(message => message.Contains("Error stopping the channel timer"));
+    }
+
+    [Fact]
+    public void WhenDetachingChannelShutdownThrowsThenTheChannelIsStillReleased()
+    {
+        using var timer = new SdkTimer("ConnectionCheckTimer", TimeSpan.FromHours(1), TimeSpan.FromHours(1));
+        using var channelFactory = CreateChannelFactory();
+        var channel = new RabbitMqChannel(channelFactory, timer, TimeSpan.FromSeconds(5), "AnyAccessToken", LoggerFactory.GetOrCreateLogger<RabbitMqChannel>());
+        channel.Open(MessageInterest.AllMessages, RoutingKeysFor(MessageInterest.AllMessages));
+        var stub = new StubChannel(7);
+        stub.PrepareForThrowOnShutdownUnsubscribe();
+        channel.Channel = stub;
+
+        channel.Close();
+
+        channel.IsOpened.ShouldBeFalse();
+        channel.Channel.ShouldBeNull();
+    }
+
+    [Fact]
+    public void WhenTheChannelTimerSemaphoreFailsToDisposeThenTheChannelStillCloses()
+    {
+        using var timer = new SdkTimer("ConnectionCheckTimer", TimeSpan.FromHours(1), TimeSpan.FromHours(1));
+        using var channelFactory = CreateChannelFactory();
+        var channel = new RabbitMqChannel(channelFactory, timer, TimeSpan.FromSeconds(5), "AnyAccessToken", LoggerFactory.GetOrCreateLogger<RabbitMqChannel>());
+        channel.Open(MessageInterest.AllMessages, RoutingKeysFor(MessageInterest.AllMessages));
+        var opened = channel.TimerSemaphore;
+        channel.TimerSemaphore = new ThrowingSemaphore();
+        opened.Dispose();
+
+        channel.Close();
+
+        channel.IsOpened.ShouldBeFalse();
+        ChannelLogger.Messages.ShouldContain(message => message.Contains("Error disposing the channel timer semaphore"));
+    }
+
+    [Fact]
+    public async Task WhenTheConnectionCheckFindsADisposedSemaphoreThenTheCheckIsSkipped()
+    {
+        var timer = new ConnectionCheckTimer();
+        using var channelFactory = CreateChannelFactory();
+        var channel = new RabbitMqChannel(channelFactory, timer, TimeSpan.FromSeconds(5), "AnyAccessToken", LoggerFactory.GetOrCreateLogger<RabbitMqChannel>());
+        channel.Open(MessageInterest.AllMessages, RoutingKeysFor(MessageInterest.AllMessages));
+        var opened = channel.TimerSemaphore;
+        var disposed = new SemaphoreSlim(1);
+        disposed.Dispose();
+        channel.TimerSemaphore = disposed;
+        opened.Dispose();
+
+        timer.Elapse();
+
+        await WaitUntilLogged(ChannelLogger, "Connection check skipped because the channel is closed");
+        channel.IsOpened.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task WhenTheChannelIsAlreadyGoneThenShutdownStillLogs()
+    {
+        using var feed = await OpenFeedAsync(CreateConfiguration(), MessageInterest.AllMessages);
+        var model = feed.Channel.Channel;
+        feed.Channel.Channel = null;
+
+        model.Close();
+        await WaitUntilLogged(ChannelLogger, "The channel is shutdown.");
+
+        model.Dispose();
     }
 
     [Fact]
@@ -83,8 +233,7 @@ public class RabbitUnitWithConnectionErrorTests : RabbitFeedTestBase, IClassFixt
         await WaitForChannelRestart(feed.Channel, started);
 
         feed.Connection.IsConnected().ShouldBeTrue();
-        feed.Connection.ConnectionFactory.UserName.ShouldBe(Project.SdkRabbitUsername);
-        feed.Connection.ConnectionFactory.Password.ShouldBe(Project.SdkRabbitPassword);
+        AssertSsoCredentials(feed.Connection.ConnectionFactory, Project.SdkRabbitUsername, Project.SdkRabbitPassword);
         (await WaitForConnectionName(Project.SdkRabbitUsername)).ShouldNotBe(previousName);
         await PublishAndAwaitOddsChange(feed, 2, matchId: 2);
     }
@@ -129,6 +278,19 @@ public class RabbitUnitWithConnectionErrorTests : RabbitFeedTestBase, IClassFixt
     }
 
     [Fact]
+    public async Task WhenTheConsumerIsAlreadyGoneThenShutdownStillLogs()
+    {
+        using var feed = await OpenFeedAsync(CreateConfiguration(), MessageInterest.AllMessages);
+        var consumer = feed.Channel.BasicConsumer;
+        feed.Channel.BasicConsumer = null;
+
+        consumer.HandleModelShutdown(feed.Channel.Channel, new ShutdownEventArgs(ShutdownInitiator.Application, 200, "Goodbye"));
+
+        await WaitUntilLogged(ChannelLogger, "The consumer is shutdown.");
+        ChannelLogger.Messages.ShouldContain(message => message.Contains("Reason=Goodbye"));
+    }
+
+    [Fact]
     public async Task WhenTheChannelShutsDownWithoutAReasonThenNoReasonIsLogged()
     {
         using var feed = await OpenFeedAsync(CreateConfiguration(), MessageInterest.AllMessages);
@@ -163,8 +325,7 @@ public class RabbitUnitWithConnectionErrorTests : RabbitFeedTestBase, IClassFixt
         await WaitForChannelRestart(feed.Channel, started);
 
         (await WaitForConnectionName(Project.SdkRabbitUsername)).ShouldNotBe(previousName);
-        feed.Connection.ConnectionFactory.UserName.ShouldBe(Project.SdkRabbitUsername);
-        feed.Connection.ConnectionFactory.Password.ShouldBe(Project.SdkRabbitPassword);
+        AssertSsoCredentials(feed.Connection.ConnectionFactory, Project.SdkRabbitUsername, Project.SdkRabbitPassword);
         await PublishAndAwaitOddsChange(feed, 2, matchId: 3);
 
         var recoveredName = await WaitForConnectionName(Project.SdkRabbitUsername);
@@ -363,11 +524,13 @@ public class RabbitUnitWithConnectionErrorTests : RabbitFeedTestBase, IClassFixt
         feed.Count.ShouldBe(0);
     }
 
-    [Fact]
-    public async Task WhenTheEnvironmentIsReplayThenAnUnavailableProducerIsStillDispatched()
+    [Theory]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
+    public async Task WhenTheEnvironmentIsReplayThenAnUnavailableProducerIsStillDispatched(SdkEnvironment environment)
     {
         var product = TestProducerManager.Create().Producers.First(producer => !producer.IsAvailable).Id;
-        using var feed = await OpenFeedAsync(CreateConfiguration(environment: SdkEnvironment.Replay), MessageInterest.AllMessages);
+        using var feed = await OpenFeedAsync(CreateConfiguration(environment: environment), MessageInterest.AllMessages);
 
         var sent = PublishOddsChange(product: product);
         AssertSameOdds(await WaitForReceipt(feed, 1), sent);
@@ -376,12 +539,37 @@ public class RabbitUnitWithConnectionErrorTests : RabbitFeedTestBase, IClassFixt
     [Fact]
     public async Task WhenTheEnvironmentIsReplayThenAnUnknownProducerIsNotDispatched()
     {
-        using var feed = await OpenFeedAsync(CreateConfiguration(environment: SdkEnvironment.Replay), MessageInterest.AllMessages);
+        using var feed = await OpenFeedAsync(CreateConfiguration(environment: SdkEnvironment.ReplayWithIntegrationCredentials), MessageInterest.AllMessages);
 
         PublishOddsChange(product: UnknownProducerId);
         await WaitUntilLogged(ReceiverLogger, "A message for producer which is not defined was received.");
 
         feed.Count.ShouldBe(0);
+    }
+
+    private void DeleteFeedExchange()
+    {
+        UseAdminChannel(channel => channel.ExchangeDelete(Project.UfExchange, false));
+    }
+
+    private void DeclareFeedExchange()
+    {
+        UseAdminChannel(channel => channel.ExchangeDeclare(Project.UfExchange, ExchangeType.Topic, true));
+    }
+
+    private void UseAdminChannel(Action<IModel> action)
+    {
+        var factory = new ConnectionFactory
+        {
+            HostName = Project.GetRabbitIp(),
+            Port = Project.DefaultRabbitPort,
+            UserName = Project.DefaultAdminRabbitUserName,
+            Password = Project.DefaultAdminRabbitPassword,
+            VirtualHost = Project.VirtualHostName
+        };
+        using var connection = factory.CreateConnection();
+        using var channel = connection.CreateModel();
+        action(channel);
     }
 
     private async Task AssertClosedConnectionRecovers(bool nullTheChannel)
@@ -401,6 +589,72 @@ public class RabbitUnitWithConnectionErrorTests : RabbitFeedTestBase, IClassFixt
 
         (await WaitForConnectionName(Project.SdkRabbitUsername)).ShouldNotBe(previousName);
         await PublishAndAwaitOddsChange(feed, 2, matchId: 2);
+    }
+
+    private ChannelFactory CreateChannelFactory()
+    {
+        var config = CreateConfiguration(withBookmaker: false);
+        var connectionLogger = LoggerFactory.GetOrCreateLogger<ConfiguredConnectionFactory>();
+        var connection = new ConfiguredConnectionFactory(ConfiguredConnectionFactory.CreateConnectionFactoryWithImmutableFields(config, null, connectionLogger),
+                                                         config,
+                                                         connectionLogger);
+        return new ChannelFactory(connection);
+    }
+
+    /// <summary>
+    /// <see cref="SdkTimer.Stop"/> does not throw, so the channel stop catch needs a timer that does.
+    /// Elapse raises the connection check only when the test asks.
+    /// </summary>
+    private sealed class ConnectionCheckTimer : ISdkTimer
+    {
+        public bool ThrowOnStop { get; set; }
+
+        public string TimerName => "ConnectionCheckTimer";
+
+        public event EventHandler Elapsed;
+
+        public void Start()
+        {
+        }
+
+        public void Start(TimeSpan dueTime, TimeSpan period)
+        {
+        }
+
+        public void FireOnce(TimeSpan dueTime)
+        {
+        }
+
+        public void Stop()
+        {
+            if (ThrowOnStop)
+            {
+                throw new InvalidOperationException("Error stopping timer");
+            }
+        }
+
+        public void Dispose()
+        {
+        }
+
+        public void Elapse()
+        {
+            Elapsed?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private sealed class ThrowingSemaphore : SemaphoreSlim
+    {
+        public ThrowingSemaphore()
+            : base(1)
+        {
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            throw new InvalidOperationException("Error disposing semaphore");
+        }
     }
 
     private sealed class ThrowingRoutingKeyParser : IRoutingKeyParser

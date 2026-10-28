@@ -1,5 +1,6 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System.Collections.Generic;
 using Sportradar.OddsFeed.SDK.Api;
 
 namespace Sportradar.OddsFeed.SDK.Entities
@@ -19,5 +20,11 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// </summary>
         /// <value>The timestamps</value>
         IMessageTimestamp Timestamps { get; }
+
+        /// <summary>
+        /// Gets all AMQP headers delivered with the message as a read-only string dictionary.
+        /// The returned dictionary is never null.
+        /// </summary>
+        IReadOnlyDictionary<string, string> MessageHeaders { get; }
     }
 }

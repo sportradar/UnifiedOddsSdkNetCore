@@ -4,8 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
@@ -26,6 +29,8 @@ public class WireMockMappingBuilder
 {
     private readonly WireMockServer _server;
     private const string MappingNameForWhoAmI = "WhoAmIMapping";
+    private const string MappingNameForCommonIAmForApi = "CommonIAmForApiMapping";
+    private const string MappingNameForCommonIAmForFeed = "CommonIAmForfeedMapping";
     private const string MappingNameForProducers = "ProducersMapping";
     private const string MappingNameForMatchStatus = "MatchStatusMapping";
     private const string MappingNameForVoidReasons = "VoidReasonsMapping";
@@ -42,6 +47,8 @@ public class WireMockMappingBuilder
     private const string MappingNameForCompetitorProfile = "CompetitorProfileRequestMapping";
     private const string MappingNameForPlayerProfile = "PlayerProfileRequestMapping";
     private const string MappingNameForMatchSummary = "MatchSummaryMapping";
+
+    private const string CommonIamUriPath = "/oauth/token";
 
     public static ICollection<string> LogIgnoreUris { get; } = ResetLogIgnoreUri();
 
@@ -118,6 +125,31 @@ public class WireMockMappingBuilder
                .WithTitle(MappingNameForWhoAmI)
                .RespondWith(Response.Create().WithBody(responseXmlBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
+    }
+
+    public WireMockMappingBuilder WithCommonIAmStubbedWithTokenForApi(string commonIAmJwtToken, int tokenExpiryInSeconds)
+    {
+        SetCommonIAmStubbedWithToken(commonIAmJwtToken, tokenExpiryInSeconds, AuthenticationTokenCache.UofApiTokenAudience, MappingNameForCommonIAmForApi, HttpStatusCode.OK);
+
+        return this;
+    }
+
+    public WireMockMappingBuilder WithCommonIAmStubbedWithTokenForFeed(string commonIAmJwtToken, int tokenExpiryInSeconds)
+    {
+        SetCommonIAmStubbedWithToken(commonIAmJwtToken, tokenExpiryInSeconds, AuthenticationTokenCache.UofFeedTokenAudience, MappingNameForCommonIAmForFeed, HttpStatusCode.OK);
+
+        return this;
+    }
+
+    public void SetCommonIAmStubbedWithToken(string commonIAmJwtToken, int tokenExpiryInSeconds, string audience, string title, HttpStatusCode statusCode)
+    {
+        var wildCardAudience = $"*audience={Uri.EscapeDataString(audience)}*";
+        var commonIamResponse = GetCommonIamResponseForToken(commonIAmJwtToken, tokenExpiryInSeconds);
+        var commonIamResponseBody = JsonSerializer.Serialize(commonIamResponse);
+
+        _server.Given(Request.Create().WithPath(CommonIamUriPath).UsingPost().WithBody(new WildcardMatcher(wildCardAudience)))
+               .WithTitle(title)
+               .RespondWith(Response.Create().WithBody(commonIamResponseBody).WithStatusCode(statusCode));
     }
 
     public WireMockMappingBuilder MapProducers()
@@ -462,5 +494,15 @@ public class WireMockMappingBuilder
         // TODO
         _server.ResetMappings();
         return this;
+    }
+
+    private static CommonIamResponse GetCommonIamResponseForToken(string commonIAmJwtToken, int expiresInSeconds)
+    {
+        return new CommonIamResponse
+        {
+            AccessToken = commonIAmJwtToken,
+            TokenType = "bearer",
+            ExpiresIn = expiresInSeconds
+        };
     }
 }

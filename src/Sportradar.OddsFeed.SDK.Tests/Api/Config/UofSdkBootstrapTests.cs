@@ -252,8 +252,6 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
         var connectionFactory = configuredConnectionFactory.ConnectionFactory;
 
         connectionFactory.ShouldNotBeNull();
-        connectionFactory.UserName.ShouldBe(UofConfig.Rabbit.Username);
-        connectionFactory.Password.ShouldBe(UofConfig.Rabbit.Password ?? string.Empty);
         connectionFactory.VirtualHost.ShouldBe(UofConfig.Rabbit.VirtualHost);
         connectionFactory.ClientProperties.ShouldNotBeNull();
         connectionFactory.ClientProperties.ShouldNotBeEmpty();

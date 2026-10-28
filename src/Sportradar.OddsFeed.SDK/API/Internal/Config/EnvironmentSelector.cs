@@ -19,6 +19,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         private readonly Func<IUofConfiguration, IProducersProvider> _producersProviderFactory;
 
+        private readonly UofClientAuthentication.IPrivateKeyJwtData _privateKeyJwtData;
+
         private readonly UofConfiguration _configuration;
 
         /// <summary>
@@ -28,10 +30,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <param name="sectionProvider">A <see cref="IUofConfigurationSectionProvider"/> used to access <see cref="IUofConfigurationSection"/></param>
         /// <param name="bookmakerDetailsProviderFactory">Factory to create the bookmaker details provider</param>
         /// <param name="producersProviderFactory">Factory to create the producers provider</param>
+        /// <param name="privateKeyJwtData">JWT private key data.</param>
         internal EnvironmentSelector(UofConfiguration configuration,
                                      IUofConfigurationSectionProvider sectionProvider,
                                      Func<IUofConfiguration, IBookmakerDetailsProvider> bookmakerDetailsProviderFactory,
-                                     Func<IUofConfiguration, IProducersProvider> producersProviderFactory)
+                                     Func<IUofConfiguration, IProducersProvider> producersProviderFactory,
+                                     UofClientAuthentication.IPrivateKeyJwtData privateKeyJwtData = null)
         {
             Guard.Argument(configuration, nameof(configuration)).NotNull();
             Guard.Argument(sectionProvider, nameof(sectionProvider)).NotNull();
@@ -40,15 +44,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             _sectionProvider = sectionProvider;
             _bookmakerDetailsProviderFactory = bookmakerDetailsProviderFactory;
             _producersProviderFactory = producersProviderFactory;
-        }
-
-        public IConfigurationBuilder SelectReplay()
-        {
-            return SelectEnvironment(SdkEnvironment.Replay);
+            _privateKeyJwtData = privateKeyJwtData;
         }
 
         public ICustomConfigurationBuilder SelectCustom()
         {
+            _configuration.Authentication = (PrivateKeyJwt)_privateKeyJwtData;
             return new CustomConfigurationBuilder(_configuration, _sectionProvider, _bookmakerDetailsProviderFactory, _producersProviderFactory);
         }
 
@@ -58,7 +59,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             {
                 throw new InvalidOperationException("Use SelectCustom() for custom environment.");
             }
+
+            _configuration.Authentication = _privateKeyJwtData == null
+                                                ? null
+                                                : ConfigureAuthenticationHostForEnvironment(ufEnvironment);
+
             return new ConfigurationBuilder(_configuration, _sectionProvider, ufEnvironment, _bookmakerDetailsProviderFactory, _producersProviderFactory);
+
         }
 
         public IConfigurationBuilder SelectEnvironmentFromConfigFile()
@@ -69,6 +76,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                 throw new InvalidOperationException("Missing configuration section");
             }
             return SelectEnvironment(section.Environment);
+        }
+
+        private PrivateKeyJwt ConfigureAuthenticationHostForEnvironment(SdkEnvironment ufEnvironment)
+        {
+            var privateKeyJwt = new PrivateKeyJwt(_privateKeyJwtData.SigningKeyId, _privateKeyJwtData.ClientId, _privateKeyJwtData.PrivateKey);
+            privateKeyJwt.SetHost(EnvironmentManager.GetAuthenticationHost(ufEnvironment));
+            privateKeyJwt.SetPort(EnvironmentManager.DefaultApiSslPort);
+            privateKeyJwt.SetUseSsl(true);
+            return privateKeyJwt;
         }
     }
 }

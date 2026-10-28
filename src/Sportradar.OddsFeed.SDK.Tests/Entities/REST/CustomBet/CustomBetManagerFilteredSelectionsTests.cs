@@ -22,24 +22,19 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.CustomBet;
 public class CustomBetManagerFilteredSelectionsTests
 {
     private const int AnyMarketId = 10;
-    private readonly Mock<IDataPoster> _dataPosterMock;
-
-    public CustomBetManagerFilteredSelectionsTests()
-    {
-        _dataPosterMock = new Mock<IDataPoster>();
-    }
+    private readonly Mock<IDataPoster> _dataPosterMock = new Mock<IDataPoster>();
 
     [Fact]
     public async Task CalculateProbabilityFilterWhenRequestIsNullThenThrowsArgumentNullException()
     {
-        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var manager = CustomBetManagerBuilder.Create()
                                                                   .AddDefaultDependencies()
                                                                   .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                                   .WithDataPoster(_dataPosterMock.Object)
                                                                   .Build();
 
         var exception = await Should.ThrowAsync<ArgumentNullException>(
-            () => manager.CalculateProbabilityFilterAsync(null));
+            () => manager.CalculateProbabilityFilterAsync((ICalculateRequestBuilder)null));
 
         exception.ParamName.ShouldBe("request");
     }
@@ -47,7 +42,7 @@ public class CustomBetManagerFilteredSelectionsTests
     [Fact]
     public async Task CalculateProbabilityFilterWhenRequestWasNotCreatedByManagerThenThrowsArgumentException()
     {
-        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var manager = CustomBetManagerBuilder.Create()
                                                                   .AddDefaultDependencies()
                                                                   .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                                   .WithDataPoster(_dataPosterMock.Object)
@@ -73,7 +68,7 @@ public class CustomBetManagerFilteredSelectionsTests
            {
                Content = new StringContent(MsgSerializer.SerializeToXml(expectedResponse))
            });
-        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var manager = CustomBetManagerBuilder.Create()
                                                                   .AddDefaultDependencies()
                                                                   .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                                   .WithDataPoster(_dataPosterMock.Object)
@@ -100,7 +95,7 @@ public class CustomBetManagerFilteredSelectionsTests
            {
                Content = new StringContent(MsgSerializer.SerializeToXml(expectedResponse))
            });
-        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var manager = CustomBetManagerBuilder.Create()
                                                                   .AddDefaultDependencies()
                                                                   .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                                   .WithDataPoster(_dataPosterMock.Object)
@@ -128,7 +123,7 @@ public class CustomBetManagerFilteredSelectionsTests
            {
                Content = new StringContent(MsgSerializer.SerializeToXml(expectedResponse))
            });
-        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var manager = CustomBetManagerBuilder.Create()
                                                                   .AddDefaultDependencies()
                                                                   .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                                   .WithDataPoster(_dataPosterMock.Object)
@@ -147,7 +142,7 @@ public class CustomBetManagerFilteredSelectionsTests
         _dataPosterMock
            .Setup(s => s.PostDataAsync(It.IsAny<Uri>(), It.IsAny<HttpContent>()))
            .ThrowsAsync(new CommunicationException("Not found", "/v1/custombet/calculate-filter", HttpStatusCode.NotFound, null));
-        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var manager = CustomBetManagerBuilder.Create()
                                                                   .AddDefaultDependencies()
                                                                   .WithConfigurationProvidingAnyBookmakerIdAndStrategyCatch()
                                                                   .WithDataPoster(_dataPosterMock.Object)
@@ -164,7 +159,7 @@ public class CustomBetManagerFilteredSelectionsTests
         _dataPosterMock
            .Setup(s => s.PostDataAsync(It.IsAny<Uri>(), It.IsAny<HttpContent>()))
            .ThrowsAsync(new CommunicationException("Not found", "/v1/custombet/calculate-filter", HttpStatusCode.NotFound, null));
-        var manager = (ICustomBetManagerV2)CustomBetManagerBuilder.Create()
+        var manager = CustomBetManagerBuilder.Create()
                                                                   .AddDefaultDependencies()
                                                                   .WithConfigurationProvidingAnyBookmakerIdAndStrategyThrow()
                                                                   .WithDataPoster(_dataPosterMock.Object)
@@ -174,14 +169,14 @@ public class CustomBetManagerFilteredSelectionsTests
             () => manager.CalculateProbabilityFilterAsync(BuildRequestContainingOnlyAndSelections(manager, AnyMarketId)));
     }
 
-    private static ICalculateRequestBuilder BuildRequestContainingOnlyAndSelections(ICustomBetManagerV2 manager, int marketId)
+    private static ICalculateRequestBuilder BuildRequestContainingOnlyAndSelections(ICustomBetManager manager, int marketId)
     {
         return manager.GetCalculateRequestBuilder()
                       .AndSelection(new Selection(TestConsts.AnyMatchId, marketId, "9", null))
                       .AndSelection(new Selection(TestConsts.AnyMatchId, marketId, "74", null));
     }
 
-    private static ICalculateRequestBuilder BuildRequestCombiningAndSelectionsWithOrSelection(ICustomBetManagerV2 manager, int marketId1, int marketId2)
+    private static ICalculateRequestBuilder BuildRequestCombiningAndSelectionsWithOrSelection(ICustomBetManager manager, int marketId1, int marketId2)
     {
         return manager.GetCalculateRequestBuilder()
                       .AndSelection(new Selection(TestConsts.AnyMatchId, marketId1, "9", null))
@@ -190,7 +185,7 @@ public class CustomBetManagerFilteredSelectionsTests
                                           new Selection(TestConsts.AnyMatchId, marketId2, "2", null));
     }
 
-    private static ICalculateRequestBuilder BuildRequestContainingOnlyOrSelections(ICustomBetManagerV2 manager, int marketId)
+    private static ICalculateRequestBuilder BuildRequestContainingOnlyOrSelections(ICustomBetManager manager, int marketId)
     {
         return manager.GetCalculateRequestBuilder()
                       .AndAnyOfSelections(

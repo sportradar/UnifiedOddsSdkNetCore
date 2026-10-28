@@ -167,26 +167,4 @@ internal class MarketMappingsWriter
             _log.LogDebug("\tOutcome for market={MarketId} and outcomeId={OutcomeId} is mapped to [Id:{MappedOutcomeId}, Name:'{MappedOutcomeName}']", marketId, outcome.Id, mappedOutcome.Id, mappedOutcome.GetName(_culture));
         }
     }
-
-    //public static string GetMarketMappingData(IMarketMappingData data, CultureInfo culture)
-    //{
-    //    if (data == null)
-    //    {
-    //        return null;
-    //    }
-
-    //    var producerIds = data.ProducerIds?.Aggregate(string.Empty, (current, i) => current + $"{i},");
-    //    var outcomeMappingData =
-    //        data.OutcomeMappings?.Aggregate(string.Empty, (current, mappingData) => current + $"{GetOutcomeMappingData(mappingData, culture)}|");
-    //    return $"MarketId:{data.MarketId}, MarketTypeId:{data.MarketTypeId}, MarketSubTypeId:{data.MarketSubTypeId}, SovTemplate:{data.SovTemplate}, ValidFor:{data.ValidFor}, ProducerIds:[{producerIds}], OutcomeMappingData:[{outcomeMappingData}]";
-    //}
-
-    //public static string GetOutcomeMappingData(IOutcomeMappingData data, CultureInfo culture)
-    //{
-    //    if (data == null)
-    //    {
-    //        return null;
-    //    }
-    //    return $"MarketId:{data.MarketId}, OutcomeId:{data.OutcomeId}, ProducerOutcomeId:{data.ProducerOutcomeId}, ProducerOutcomeName[{culture.TwoLetterISOLanguageName}]:{data.GetProducerOutcomeName(culture)}";
-    //}
 }

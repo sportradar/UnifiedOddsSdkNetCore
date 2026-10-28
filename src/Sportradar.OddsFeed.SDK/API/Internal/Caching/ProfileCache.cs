@@ -188,7 +188,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                     // try to fetch for competitor, to avoid requests by each player
                     if (cachedItem?.CompetitorId != null)
                     {
-                        await GetCompetitorProfileInsteadOfPlayerProfile(playerId, cachedItem.CompetitorId, missingLanguages.ToList());
+                        await GetCompetitorProfileInsteadOfPlayerProfile(playerId, cachedItem.CompetitorId, missingLanguages.ToList()).ConfigureAwait(false);
                     }
 
                     cachedItem = (PlayerProfileCacheItem)_cache.Get(playerId.ToString());
@@ -391,7 +391,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         private async Task FetchSummaryForAssociatedEvent(ICollection<CultureInfo> wantedLanguages, Urn associatedEventId)
         {
             var sportEvent = _sportEventCache.GetEventCacheItem(associatedEventId);
-            await sportEvent.GetNamesAsync(wantedLanguages);
+            await sportEvent.GetNamesAsync(wantedLanguages).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -1070,7 +1070,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             IEnumerable<IExportableBase> exportable;
             try
             {
-                await _exportSemaphore.WaitAsync();
+                await _exportSemaphore.WaitAsync().ConfigureAwait(false);
                 exportable = _cache.GetValues().Select(i => (IExportableBase)i);
             }
             finally

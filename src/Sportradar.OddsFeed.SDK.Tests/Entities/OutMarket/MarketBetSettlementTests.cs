@@ -6,7 +6,6 @@ using System.Linq;
 using Moq;
 using Shouldly;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 using Sportradar.OddsFeed.SDK.Tests.Common;
@@ -26,8 +25,8 @@ public class MarketBetSettlementTests
     public void OutcomeResultsAreMappedCorrectlyForPartialSettlement()
     {
         var marketFactory = MarketFactoryBuilder.BuilderStubbingOutSportEventAndCaches
-                                           .StubbingOutCaches()
-                                           .Build();
+                                                .StubbingOutCaches()
+                                                .Build();
 
         const int wonOutcomeId = 70;
         const int lostOutcomeId = 71;
@@ -55,8 +54,8 @@ public class MarketBetSettlementTests
     public void UnexpectedValuesInOutcomesResultsMapsToUnsupportedBySdk()
     {
         var marketFactory = MarketFactoryBuilder.BuilderStubbingOutSportEventAndCaches
-                                           .StubbingOutCaches()
-                                           .Build();
+                                                .StubbingOutCaches()
+                                                .Build();
 
         const int outcomeId = 70;
         const int unexpectedOutcomeResult = 999;
@@ -82,8 +81,8 @@ public class MarketBetSettlementTests
     public void EachWayAttributesAreReturnedWhenPresentOnOutcome(string eachWayResultFeedMessage, EachWayResult? expectedEachWayResult)
     {
         var marketFactory = MarketFactoryBuilder.BuilderStubbingOutSportEventAndCaches
-                                           .StubbingOutCaches()
-                                           .Build();
+                                                .StubbingOutCaches()
+                                                .Build();
 
         const int outcomeId = 70;
         const double eachWayFactor = 0.25;
@@ -105,7 +104,7 @@ public class MarketBetSettlementTests
 
         market.OutcomeSettlements.ShouldNotBeNull();
         market.OutcomeSettlements.ShouldHaveSingleItem();
-        var settlement = (IOutcomeSettlementV2)market.OutcomeSettlements.First(x => x.Id == outcomeId.ToString());
+        var settlement = market.OutcomeSettlements.First(x => x.Id == outcomeId.ToString());
         settlement.EachWayResult.ShouldBe(expectedEachWayResult);
         settlement.EachWayPlaceFactor.ShouldBe(eachWayFactor);
         settlement.DeadHeatFactorPlace.ShouldBe(deadHeatFactorPlace);
@@ -119,8 +118,8 @@ public class MarketBetSettlementTests
     public void EachWayResultIsNullWhenNullOrEmpty(string eachWayResultFeedMessage)
     {
         var marketFactory = MarketFactoryBuilder.BuilderStubbingOutSportEventAndCaches
-                                           .StubbingOutCaches()
-                                           .Build();
+                                                .StubbingOutCaches()
+                                                .Build();
 
         const int outcomeId = 70;
         const double eachWayFactor = 0.25;
@@ -142,7 +141,7 @@ public class MarketBetSettlementTests
 
         market.OutcomeSettlements.ShouldNotBeNull();
         market.OutcomeSettlements.ShouldHaveSingleItem();
-        var settlement = (IOutcomeSettlementV2)market.OutcomeSettlements.First(x => x.Id == outcomeId.ToString());
+        var settlement = market.OutcomeSettlements.First(x => x.Id == outcomeId.ToString());
         settlement.EachWayResult.ShouldBeNull();
         settlement.EachWayPlaceFactor.ShouldBe(eachWayFactor);
         settlement.DeadHeatFactorPlace.ShouldBe(deadHeatFactorPlace);
@@ -152,8 +151,8 @@ public class MarketBetSettlementTests
     public void EachWayIsNullWhenNotPresent()
     {
         var marketFactory = MarketFactoryBuilder.BuilderStubbingOutSportEventAndCaches
-                                           .StubbingOutCaches()
-                                           .Build();
+                                                .StubbingOutCaches()
+                                                .Build();
 
         const int outcomeId = 70;
         const double eachWayFactor = 0.25;
@@ -174,7 +173,7 @@ public class MarketBetSettlementTests
 
         market.OutcomeSettlements.ShouldNotBeNull();
         market.OutcomeSettlements.ShouldHaveSingleItem();
-        var settlement = (IOutcomeSettlementV2)market.OutcomeSettlements.First(x => x.Id == outcomeId.ToString());
+        var settlement = market.OutcomeSettlements.First(x => x.Id == outcomeId.ToString());
         settlement.EachWayResult.ShouldBeNull();
         settlement.EachWayPlaceFactor.ShouldBe(eachWayFactor);
         settlement.DeadHeatFactorPlace.ShouldBe(deadHeatFactorPlace);
@@ -184,8 +183,8 @@ public class MarketBetSettlementTests
     public void EachWayAttributesAreNullWhenAbsentOnOutcome()
     {
         var marketFactory = MarketFactoryBuilder.BuilderStubbingOutSportEventAndCaches
-                                           .StubbingOutCaches()
-                                           .Build();
+                                                .StubbingOutCaches()
+                                                .Build();
 
         const int outcomeId = 70;
         var betSettlementWithOutcomes = BetSettlementMarketBuilder.Create()
@@ -200,7 +199,7 @@ public class MarketBetSettlementTests
 
         market.OutcomeSettlements.ShouldNotBeNull();
         market.OutcomeSettlements.ShouldHaveSingleItem();
-        var settlement = (IOutcomeSettlementV2)market.OutcomeSettlements.First(x => x.Id == outcomeId.ToString());
+        var settlement = market.OutcomeSettlements.First(x => x.Id == outcomeId.ToString());
         settlement.EachWayResult.ShouldBeNull();
         settlement.EachWayPlaceFactor.ShouldBeNull();
         settlement.DeadHeatFactorPlace.ShouldBeNull();

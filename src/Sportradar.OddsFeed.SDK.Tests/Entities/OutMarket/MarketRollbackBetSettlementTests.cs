@@ -7,8 +7,6 @@ using Moq;
 using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities;
-using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Tests.Common;
@@ -65,11 +63,9 @@ public class MarketRollbackBetSettlementTests
                                                        .AddOutcome("2")
                                                        .Build();
 
-        var market = marketFactory.GetMarketForRollbackSettlement(sportEvent, rollbackBetSettlementMarket, AnyProducerId, AnySportId, cultures);
+        var marketRollbackSettlement = marketFactory.GetMarketForRollbackSettlement(sportEvent, rollbackBetSettlementMarket, AnyProducerId, AnySportId, cultures);
 
-        market.ShouldNotBeNull();
-        market.ShouldBeAssignableTo<IMarketRollbackSettlement>();
-        var marketRollbackSettlement = (MarketRollbackSettlement)market;
+        marketRollbackSettlement.ShouldNotBeNull();
         marketRollbackSettlement.Id.ShouldBe(AnyMarketId);
         marketRollbackSettlement.Specifiers.ShouldNotBeNull();
         marketRollbackSettlement.Specifiers.ShouldHaveSingleItem();
@@ -98,11 +94,9 @@ public class MarketRollbackBetSettlementTests
                                                        .WithExtendedSpecifiers("anything=2")
                                                        .Build();
 
-        var market = marketFactory.GetMarketForRollbackSettlement(sportEvent, rollbackBetSettlementMarket, AnyProducerId, AnySportId, cultures);
+        var marketRollbackSettlement = marketFactory.GetMarketForRollbackSettlement(sportEvent, rollbackBetSettlementMarket, AnyProducerId, AnySportId, cultures);
 
-        market.ShouldNotBeNull();
-        market.ShouldBeAssignableTo<IMarketRollbackSettlement>();
-        var marketRollbackSettlement = (MarketRollbackSettlement)market;
+        marketRollbackSettlement.ShouldNotBeNull();
         marketRollbackSettlement.Id.ShouldBe(AnyMarketId);
         marketRollbackSettlement.Specifiers.ShouldNotBeNull();
         marketRollbackSettlement.Specifiers.ShouldHaveSingleItem();
@@ -137,11 +131,9 @@ public class MarketRollbackBetSettlementTests
                                                        .WithVoidReason(voidReasonId)
                                                        .Build();
 
-        var market = marketFactory.GetMarketForRollbackSettlement(sportEvent, rollbackBetSettlementMarket, AnyProducerId, AnySportId, cultures);
+        var marketRollbackSettlement = marketFactory.GetMarketForRollbackSettlement(sportEvent, rollbackBetSettlementMarket, AnyProducerId, AnySportId, cultures);
 
-        market.ShouldNotBeNull();
-        market.ShouldBeAssignableTo<IMarketRollbackSettlement>();
-        var marketRollbackSettlement = (MarketRollbackSettlement)market;
+        marketRollbackSettlement.ShouldNotBeNull();
         marketRollbackSettlement.Id.ShouldBe(AnyMarketId);
         marketRollbackSettlement.Specifiers.ShouldNotBeNull();
         marketRollbackSettlement.Specifiers.ShouldHaveSingleItem();

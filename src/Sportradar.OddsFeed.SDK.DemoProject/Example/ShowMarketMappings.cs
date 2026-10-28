@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 
@@ -18,13 +19,13 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
 /// <seealso cref="MarketWriter"/>
 public class ShowMarketMappings : ExampleBase
 {
-    private readonly CultureInfo _culture;
+    private readonly UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
     private MarketMappingsWriter _marketMappingsWriter;
 
-    public ShowMarketMappings(ILogger<ShowMarketMappings> logger, CultureInfo culture)
+    public ShowMarketMappings(ILogger<ShowMarketMappings> logger, UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
         : base(logger)
     {
-        _culture = culture;
+        _clientAuthentication = clientAuthentication;
     }
 
     public override void Run(MessageInterest messageInterest)
@@ -32,7 +33,12 @@ public class ShowMarketMappings : ExampleBase
         Log.LogInformation("Running the Markets Names example");
 
         Log.LogInformation("Retrieving configuration from application configuration file");
-        var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication)
+                                  .SelectEnvironment(SdkEnvironment.GlobalIntegration)
+                                  .SetDefaultLanguage(CultureInfo.GetCultureInfo("en"))
+                                  .SetNodeId(457)
+                                  .Build();
+
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
         AttachToGlobalEvents(uofSdk);
 
@@ -41,7 +47,7 @@ public class ShowMarketMappings : ExampleBase
                             .SetMessageInterest(messageInterest)
                             .Build();
 
-        _marketMappingsWriter = new MarketMappingsWriter(TaskProcessor, _culture, Log);
+        _marketMappingsWriter = new MarketMappingsWriter(TaskProcessor, configuration.DefaultLanguage, Log);
 
         AttachToGlobalEvents(uofSdk);
         AttachToSessionEvents(session);

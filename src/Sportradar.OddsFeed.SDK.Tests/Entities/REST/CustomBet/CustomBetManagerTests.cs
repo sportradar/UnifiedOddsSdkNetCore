@@ -213,7 +213,7 @@ public class CustomBetManagerTests
     [Fact]
     public async Task CalculateProbabilityThrowsWhenSelectionsIsNull()
     {
-        var act = async () => await _customBetManagerThrow.CalculateProbabilityAsync(null);
+        var act = async () => await _customBetManagerThrow.CalculateProbabilityAsync((ICollection<ISelection>)null);
 
         await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("selections");
     }
@@ -311,7 +311,7 @@ public class CustomBetManagerTests
     [Fact]
     public async Task CalculateProbabilityFilterThrowsWhenSelectionsIsNull()
     {
-        var act = async () => await _customBetManagerThrow.CalculateProbabilityFilterAsync(null);
+        var act = async () => await _customBetManagerThrow.CalculateProbabilityFilterAsync((ICollection<ISelection>)null);
 
         await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("selections");
     }

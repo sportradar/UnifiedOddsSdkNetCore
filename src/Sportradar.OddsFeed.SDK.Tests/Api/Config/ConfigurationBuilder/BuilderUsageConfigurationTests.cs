@@ -16,7 +16,8 @@ public class BuilderUsageConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.Replay)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials)]
     public void WhenBuiltForPredefinedEnvironmentThenUsageHasDefaultValues(SdkEnvironment environment)
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)
@@ -51,8 +52,10 @@ public class BuilderUsageConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration, false)]
     [InlineData(SdkEnvironment.GlobalProduction, true)]
     [InlineData(SdkEnvironment.GlobalProduction, false)]
-    [InlineData(SdkEnvironment.Replay, true)]
-    [InlineData(SdkEnvironment.Replay, false)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, true)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, true)]
+    [InlineData(SdkEnvironment.ReplayWithIntegrationCredentials, false)]
+    [InlineData(SdkEnvironment.ReplayWithProductionCredentials, false)]
     public void WhenUsageExportEnabledSetForPredefinedEnvironmentThenUsageReflectsFlag(SdkEnvironment environment, bool usageExportEnabled)
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, _ => BookmakerDetailsProvider, _ => ProducersProvider)

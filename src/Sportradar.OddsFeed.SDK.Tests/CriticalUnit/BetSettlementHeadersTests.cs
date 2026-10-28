@@ -95,17 +95,13 @@ public class BetSettlementHeadersTests
         stubRabbitChannel.SendMessage(betSettlement, amqpHeaders);
 
         receivedBetSettlement.ShouldNotBeNull();
-
-        var v2 = receivedBetSettlement as IMessageV2;
-        v2.ShouldNotBeNull();
-
-        v2.MessageHeaders.ShouldNotBeNull();
-        v2.MessageHeaders.ContainsKey("Product").ShouldBeTrue();
-        v2.MessageHeaders["Product"].ShouldBe("ODDS_THIRD_PARTIES_PROVIDER|nvenue");
-        v2.MessageHeaders.ContainsKey("NULL_HEADER").ShouldBeTrue();
-        v2.MessageHeaders["NULL_HEADER"].ShouldBeNull();
-        v2.MessageHeaders.ContainsKey("custom_header").ShouldBeTrue();
-        v2.MessageHeaders["custom_header"].ShouldBe(5.ToString());
+        receivedBetSettlement.MessageHeaders.ShouldNotBeNull();
+        receivedBetSettlement.MessageHeaders.ContainsKey("Product").ShouldBeTrue();
+        receivedBetSettlement.MessageHeaders["Product"].ShouldBe("ODDS_THIRD_PARTIES_PROVIDER|nvenue");
+        receivedBetSettlement.MessageHeaders.ContainsKey("NULL_HEADER").ShouldBeTrue();
+        receivedBetSettlement.MessageHeaders["NULL_HEADER"].ShouldBeNull();
+        receivedBetSettlement.MessageHeaders.ContainsKey("custom_header").ShouldBeTrue();
+        receivedBetSettlement.MessageHeaders["custom_header"].ShouldBe(5.ToString());
 
         feedUnit.Close();
     }

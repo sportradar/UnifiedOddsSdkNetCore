@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
-using Microsoft.IdentityModel.Tokens;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Markets;

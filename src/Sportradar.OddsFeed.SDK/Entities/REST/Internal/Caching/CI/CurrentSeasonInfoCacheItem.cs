@@ -155,7 +155,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 StartDate = StartDate,
                 EndDate = EndDate,
                 SeasonCoverage = SeasonCoverage != null ? await SeasonCoverage.ExportAsync().ConfigureAwait(false) : null,
-                Groups = groupsTask != null ? await Task.WhenAll(groupsTask) : null,
+                Groups = groupsTask != null ? await Task.WhenAll(groupsTask).ConfigureAwait(false) : null,
                 CurrentRound = CurrentRound != null ? await CurrentRound.ExportAsync().ConfigureAwait(false) : null,
                 Competitors = CompetitorsIds?.Select(s => s.ToString()),
                 Schedule = Schedule?.Select(s => s.ToString()).ToList()

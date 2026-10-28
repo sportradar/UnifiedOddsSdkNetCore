@@ -92,7 +92,7 @@ public class ConfigurationBuilderWithSectionSetup
     {
         return new TokenSetter(new TestSectionProvider(section), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessTokenFromConfigFile()
-              .SelectReplay()
+              .SelectEnvironment(SdkEnvironment.ReplayWithIntegrationCredentials)
               .LoadFromConfigFile();
     }
 
@@ -100,7 +100,7 @@ public class ConfigurationBuilderWithSectionSetup
     {
         return new TokenSetter(new TestSectionProvider(null), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
               .SetAccessToken(token)
-              .SelectReplay();
+              .SelectEnvironment(SdkEnvironment.ReplayWithIntegrationCredentials);
     }
 
     internal static ICustomConfigurationBuilder CustomBuilder(IUofConfigurationSection section)
@@ -149,10 +149,10 @@ public class ConfigurationBuilderWithSectionSetup
     {
         Assert.Equal(TestData.AccessToken, config.AccessToken);
         Assert.Equal(environment, config.Environment);
-        Assert.Equal(TestData.Culture, config.DefaultLanguage);
+        Assert.Equal(TestConsts.CultureEn, config.DefaultLanguage);
         Assert.Single(config.Languages);
-        Assert.Contains(TestData.Culture, config.Languages);
-        Assert.Equal(ExceptionHandlingStrategy.Catch, config.ExceptionHandlingStrategy);
+        Assert.Contains(TestConsts.CultureEn, config.Languages);
+        Assert.Equal(ExceptionHandlingStrategy.Throw, config.ExceptionHandlingStrategy);
         Assert.Equal(0, config.NodeId);
     }
 

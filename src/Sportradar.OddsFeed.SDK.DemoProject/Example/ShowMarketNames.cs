@@ -5,6 +5,7 @@ using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 
@@ -16,13 +17,13 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
 /// <seealso cref="MarketWriter"/>
 public class ShowMarketNames : ExampleBase
 {
-    private readonly CultureInfo _culture;
+    private readonly UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
     private MarketWriter _marketWriter;
 
-    public ShowMarketNames(ILogger<ShowMarketNames> logger, CultureInfo culture)
+    public ShowMarketNames(ILogger<ShowMarketNames> logger, UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
         : base(logger)
     {
-        _culture = culture;
+        _clientAuthentication = clientAuthentication;
     }
 
     public override void Run(MessageInterest messageInterest)
@@ -30,7 +31,12 @@ public class ShowMarketNames : ExampleBase
         Log.LogInformation("Running the Display Markets Names example");
 
         Log.LogInformation("Retrieving configuration from application configuration file");
-        var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication)
+                                  .SelectEnvironment(SdkEnvironment.GlobalIntegration)
+                                  .SetDefaultLanguage(CultureInfo.GetCultureInfo("en"))
+                                  .SetNodeId(457)
+                                  .Build();
+
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
         AttachToGlobalEvents(uofSdk);
 
@@ -39,7 +45,7 @@ public class ShowMarketNames : ExampleBase
                             .SetMessageInterest(messageInterest)
                             .Build();
 
-        _marketWriter = new MarketWriter(TaskProcessor, _culture, Log);
+        _marketWriter = new MarketWriter(TaskProcessor, configuration.DefaultLanguage, Log);
 
         var defaultEventsProcessor = new EntityProcessor<ISportEvent>(session, null, _marketWriter, Log);
 

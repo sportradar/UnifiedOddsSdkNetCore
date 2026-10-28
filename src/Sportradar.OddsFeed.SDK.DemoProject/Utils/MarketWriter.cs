@@ -212,3 +212,4 @@ internal class MarketWriter
         return $"Win={probabilities.Win}, Lose={probabilities.Lose}, HalfWin={probabilities.HalfWin}, HalfLose={probabilities.HalfLose}, Refund={probabilities.Refund}";
     }
 }
+

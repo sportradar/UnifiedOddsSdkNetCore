@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
     /// caused by XSD schema issues and will be removed when the schemes are fixed
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    internal class OverrideXmlNamespaceAttribute : Attribute
+    internal sealed class OverrideXmlNamespaceAttribute : Attribute
     {
         /// <summary>
         /// Gets or sets a value indicating whether the xml namespace should be ignored when deserializing the

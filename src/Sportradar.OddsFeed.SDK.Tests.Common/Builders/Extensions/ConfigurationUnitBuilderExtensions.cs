@@ -13,36 +13,33 @@ internal static class ConfigurationUnitBuilderExtensions
 {
     public static ConfigurationUnitBuilder WithStubbedProductionBookmakerDetails(this ConfigurationUnitBuilder builder, bookmaker_details bookmakerDetails)
     {
-        return builder.WithStubbedProductionBookmakerDetailsAndIntegrationFailure(bookmakerDetails);
+        var apiHost = EnvironmentManager.GetApiHost(SdkEnvironment.Production);
+        return GetFetcherProvidingBookmakerDetailsOnlyIfApiHostMatches(builder, bookmakerDetails, apiHost);
     }
 
-    public static ConfigurationUnitBuilder WithStubbedIntegrationBookmakerDetailsAndProductionFailure(this ConfigurationUnitBuilder builder, bookmaker_details bookmakerDetails)
+    public static ConfigurationUnitBuilder WithStubbedIntegrationBookmakerDetails(this ConfigurationUnitBuilder builder, bookmaker_details bookmakerDetails)
     {
         var apiHost = EnvironmentManager.GetApiHost(SdkEnvironment.Integration);
         return GetFetcherProvidingBookmakerDetailsOnlyIfApiHostMatches(builder, bookmakerDetails, apiHost);
     }
 
-    public static ConfigurationUnitBuilder WithStubbedProductionBookmakerDetailsAndIntegrationFailure(this ConfigurationUnitBuilder builder, bookmaker_details bookmakerDetails)
+    public static ConfigurationUnitBuilder WithFailingBookmakerDetailsFor(this ConfigurationUnitBuilder builder, SdkEnvironment environment)
     {
-        var apiHost = EnvironmentManager.GetApiHost(SdkEnvironment.Production);
-        return GetFetcherProvidingBookmakerDetailsOnlyIfApiHostMatches(builder, bookmakerDetails, apiHost);
+        var apiHost = EnvironmentManager.GetApiHost(environment);
+        return GetFailingFetcher(builder, apiHost);
     }
 
-    public static ConfigurationUnitBuilder WithStubbedIntegrationAndProductionBookmakerDetails(
-        this ConfigurationUnitBuilder builder,
-        bookmaker_details integrationBookmakerDetails,
-        bookmaker_details productionBookmakerDetails)
+    public static ConfigurationUnitBuilder WithFailingFirstThenProvidingBookmakerDetails(this ConfigurationUnitBuilder builder, bookmaker_details bookmakerDetails)
     {
-        var integrationHost = EnvironmentManager.GetApiHost(SdkEnvironment.Integration);
-        var productionHost = EnvironmentManager.GetApiHost(SdkEnvironment.Production);
-        var dataFetcher = DataFetcherMockHelper.GetDataFetcherProvidingBookmakerDetailsForBothHosts(
-            integrationBookmakerDetails, integrationHost,
-            productionBookmakerDetails, productionHost);
-
-        return builder.WithBookmakerDetailsFetcher(dataFetcher);
+        return GetFetcherFailingOnceThenProvidingValue(builder, bookmakerDetails);
     }
 
     public static ConfigurationUnitBuilder WithOneProducer(this ConfigurationUnitBuilder builder)
+    {
+        return SetOneProducerFetcher(builder);
+    }
+
+    public static ConfigurationUnitBuilder WithProducerFailingWIthTimeoutException(this ConfigurationUnitBuilder builder)
     {
         return SetOneProducerFetcher(builder);
     }
@@ -67,6 +64,18 @@ internal static class ConfigurationUnitBuilderExtensions
     private static ConfigurationUnitBuilder GetFetcherProvidingBookmakerDetailsOnlyIfApiHostMatches(ConfigurationUnitBuilder builder, bookmaker_details bookmakerDetails, string apiHost)
     {
         var dataFetcher = DataFetcherMockHelper.GetDataFetcherProvidingBookmakerDetailsIfHostMatches(bookmakerDetails, apiHost);
+        return builder.WithBookmakerDetailsFetcher(dataFetcher);
+    }
+
+    private static ConfigurationUnitBuilder GetFailingFetcher(ConfigurationUnitBuilder builder, string apiHost)
+    {
+        var dataFetcher = DataFetcherMockHelper.GetDataFetcherThrowingCommunicationExceptionIfHostMatches(apiHost);
+        return builder.WithBookmakerDetailsFetcher(dataFetcher);
+    }
+
+    private static ConfigurationUnitBuilder GetFetcherFailingOnceThenProvidingValue(ConfigurationUnitBuilder builder, bookmaker_details bookmakerDetails)
+    {
+        var dataFetcher = DataFetcherMockHelper.GetDataFetcherThrowingExceptionThenProvidingData(bookmakerDetails);
         return builder.WithBookmakerDetailsFetcher(dataFetcher);
     }
 }

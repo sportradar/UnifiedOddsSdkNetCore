@@ -1,5 +1,7 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
@@ -28,7 +30,36 @@ internal static class TestConfiguration
 
         if (dto != null)
         {
-            ((UofConfiguration)config).UpdateBookmakerDetails(new BookmakerDetails(dto), config.Api.Host);
+            ((UofConfiguration)config).UpdateBookmakerDetails(new BookmakerDetails(dto));
+        }
+
+        return config;
+    }
+
+    public static IUofConfiguration GetConfigWithCiam(BookmakerDetailsDto dto = null, ExceptionHandlingStrategy exceptionHandlingStrategy = ExceptionHandlingStrategy.Throw)
+    {
+        AsymmetricSecurityKey testPrivateKey = new RsaSecurityKey(RSA.Create(2056));
+
+        var privateKeyJwt = UofClientAuthentication.PrivateKeyJwt()
+                                                   .SetClientId("clientId")
+                                                   .SetSigningKeyId("signingKeyId")
+                                                   .SetPrivateKey(testPrivateKey)
+                                                   .Build();
+
+        var configBuilder = new TokenSetter(new TestSectionProvider(TestSection.GetDefaultSection()), _ => new TestBookmakerDetailsProvider(), _ => new TestProducersProvider())
+                           .SetClientAuthentication(privateKeyJwt)
+                           .SelectEnvironment(SdkEnvironment.Integration)
+                           .SetInactivitySeconds(30)
+                           .SetHttpClientTimeout(30)
+                           .SetHttpClientRecoveryTimeout(20)
+                           .SetDesiredLanguages(TestData.Cultures3)
+                           .SetExceptionHandlingStrategy(exceptionHandlingStrategy);
+
+        var config = configBuilder.Build();
+
+        if (dto != null)
+        {
+            ((UofConfiguration)config).UpdateBookmakerDetails(new BookmakerDetails(dto));
         }
 
         return config;
